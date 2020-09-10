@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -24,12 +25,12 @@ public class UserController {
     IUserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseDTO> userRegistration(@Valid @RequestBody RegistrationDTO registrationDTO , BindingResult bindingResult, HttpServletRequest request) {
+    public ResponseEntity<ResponseDTO> userRegistration(@Valid @RequestBody RegistrationDTO registrationDTO , BindingResult bindingResult) throws MessagingException {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity(bindingResult.getAllErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
         }
 
-        String registration = userService.userRegistration(registrationDTO,request.getHeader("Referer"));
+        String registration = userService.userRegistration(registrationDTO);
         ResponseDTO responseDTO=new ResponseDTO(registration,null,200);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }

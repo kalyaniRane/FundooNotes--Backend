@@ -39,7 +39,7 @@ public class UserControllerTest {
 
         String message="REGISTRATION SUCCESSFUL";
 
-        when(userService.userRegistration(any(),any())).thenReturn(message);
+        when(userService.userRegistration(any())).thenReturn(message);
         MvcResult mvcResult = this.mockMvc.perform(post("/user/register").contentType(MediaType.APPLICATION_JSON)
                 .content(stringConvertedDto)).andReturn();
 
@@ -60,7 +60,7 @@ public class UserControllerTest {
 
         String message="REGISTRATION UNSUCCESSFUL";
 
-        when(userService.userRegistration(any(),any())).thenReturn(message);
+        when(userService.userRegistration(any())).thenReturn(message);
         MvcResult mvcResult = this.mockMvc.perform(post("/user/register").contentType(MediaType.APPLICATION_JSON)
                 .content(stringConvertedDto)).andReturn();
 
