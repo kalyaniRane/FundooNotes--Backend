@@ -51,4 +51,25 @@ public class UserControllerTest {
 
     }
 
+    @Test
+    public void givenUser_WhenNotRegisterSuccessful_ShouldReturnFalse() throws Exception {
+
+        RegistrationDTO registrationDTO = new RegistrationDTO("kalyani","kalyanirane19@gmail.com","kalyani@123","8855223366");
+        UserDetails userDetails=new UserDetails(registrationDTO);
+        String stringConvertedDto = gson.toJson(userDetails);
+
+        String message="REGISTRATION UNSUCCESSFUL";
+
+        when(userService.userRegistration(any())).thenReturn(message);
+        MvcResult mvcResult = this.mockMvc.perform(post("/user/register").contentType(MediaType.APPLICATION_JSON)
+                .content(stringConvertedDto)).andReturn();
+
+        String response = mvcResult.getResponse().getContentAsString();
+        ResponseDTO responseDto = gson.fromJson(response, ResponseDTO.class);
+        String responseMessage = responseDto.message;
+
+        Assert.assertEquals(message,responseMessage);
+    }
+
+
 }
