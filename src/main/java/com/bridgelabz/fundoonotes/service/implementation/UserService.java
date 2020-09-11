@@ -38,4 +38,9 @@ public class UserService implements IUserService {
         mailService.sendMail("Hii, Your registration Successful","Registration Successful",registrationDTO.emailID);
         return "Verification Mail Has Been Sent Successfully";
     }
+
+    @Override
+    public String sendVerificationMail(String email, String requestURL) throws MessagingException {
+        return "Verification Mail Has Been Sent Successfully";
+    }
 }
