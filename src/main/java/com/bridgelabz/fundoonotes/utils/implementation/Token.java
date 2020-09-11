@@ -30,5 +30,16 @@ public class Token implements IToken {
                 .compact();
     }
 
+    @Override
+    public int decodeJWT(String jwt) throws JWTException {
+        try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(jwtProperties.getJwtSecret()).parseClaimsJws(jwt).getBody();
+
+            return Integer.parseInt(claims.getId());
+        } catch (ExpiredJwtException e) {
+            throw new JWTException("session time out");
+        }
+    }
 
 }
