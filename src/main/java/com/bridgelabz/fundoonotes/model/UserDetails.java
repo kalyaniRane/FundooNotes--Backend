@@ -5,10 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
@@ -20,13 +18,22 @@ public class UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    @NotNull
+    @Column(name = "emailID",unique = true)
     private String emailID;
+
+    @NotNull
     @JsonIgnore
     private String password;
 
+    @NotNull
+    @Column(name = "mobileNumber",unique = true)
     private String mobileNumber;
+
+    @NotNull
     private String fullName;
 
+    @NotNull
     private boolean  isVerified;
 
     public UserDetails() {
