@@ -73,6 +73,21 @@ public class UserService implements IUserService {
 
     @Override
     public String userLogin(LoginDTO loginDTO) {
-        return  null;
+        Optional<UserDetails> userDetail = userRepository.findByEmailID(loginDTO.emailID);
+
+        if (userDetail.isPresent()) {
+            if(userDetail.get().isVerified()){
+                boolean password = bCryptPasswordEncoder.matches(loginDTO.password, userDetail.get().getPassword());
+                if (password) {
+                    String tokenString = jwtToken.generateLoginToken(userDetail.get());
+                    RedisUserDto redisUserDto=new RedisUserDto(tokenString);
+                    redisUserService.saveData(redisUserDto);
+                    return "LOGIN SUCCESSFUL";
+                }
+                throw new UserServiceException("INCORRECT PASSWORD");
+            }
+            throw new UserServiceException("Please verify your email before proceeding");
+        }
+        throw new UserServiceException("INCORRECT EMAIL");
     }
 }
