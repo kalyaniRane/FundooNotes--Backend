@@ -55,7 +55,7 @@ public class UserService implements IUserService {
 
     @Override
     public String verifyEmail(String token) {
-        return null;
+        return "User Has Been Verified";
     }
 
 }
