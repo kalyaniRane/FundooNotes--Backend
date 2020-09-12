@@ -7,6 +7,7 @@ import com.bridgelabz.fundoonotes.repository.IUserRepository;
 import com.bridgelabz.fundoonotes.service.IUserService;
 import com.bridgelabz.fundoonotes.utils.IToken;
 import com.bridgelabz.fundoonotes.utils.implementation.MailService;
+import com.bridgelabz.fundoonotes.utils.template.EmailVerificationTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,9 @@ public class UserService implements IUserService {
 
     @Autowired
     IToken jwtToken;
+
+    @Autowired
+    EmailVerificationTemplate verificationTemplate;
 
     @Override
     public String userRegistration(RegistrationDTO registrationDTO, String requestURL) throws MessagingException {
@@ -55,7 +59,11 @@ public class UserService implements IUserService {
 
     @Override
     public String verifyEmail(String token) {
-        return "User Has Been Verified";
+        int userId = jwtToken.decodeJWT(token);
+        UserDetails user = userRepository.findById(userId).get();
+        user.setVerified(true);
+        userRepository.save(user);
+        return verificationTemplate.getHeader(user.getFullName());
     }
 
 }
