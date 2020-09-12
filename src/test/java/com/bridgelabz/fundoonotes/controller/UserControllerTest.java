@@ -1,6 +1,7 @@
 package com.bridgelabz.fundoonotes.controller;
 
 
+import com.bridgelabz.fundoonotes.dto.LoginDTO;
 import com.bridgelabz.fundoonotes.dto.RegistrationDTO;
 import com.bridgelabz.fundoonotes.dto.ResponseDTO;
 import com.bridgelabz.fundoonotes.model.UserDetails;
@@ -17,10 +18,14 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.validation.BindingResult;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 @WebMvcTest(UserController.class)
 @TestPropertySource(properties =
@@ -78,6 +83,22 @@ public class UserControllerTest {
         Assert.assertEquals(message,responseMessage);
     }
 
+    @Test
+    void givenUserLogin_WhenFieldsAreCorrect_ShouldReturnMessage() throws Exception {
+        LoginDTO logInDTO = new LoginDTO("kalyanirane19@gmail.com", "Kalyani@123");
+        UserDetails userDetails = new UserDetails(logInDTO);
+        String stringConvertDTO = gson.toJson(userDetails);
+        String message = "LOGIN SUCCESSFUL";
+        when(userService.userLogin(any())).thenReturn(message);
+        MvcResult mvcResult = this.mockMvc.perform(post("/user/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(stringConvertDTO)).andReturn();
+
+        String response = mvcResult.getResponse().getContentAsString();
+        ResponseDTO responseDto = gson.fromJson(response, ResponseDTO.class);
+        String responseMessage = responseDto.message;
+        Assert.assertEquals("LOGIN SUCCESSFUL", responseMessage);
+    }
 
 
 }

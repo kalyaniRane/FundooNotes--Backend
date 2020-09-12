@@ -12,13 +12,13 @@ public class FundooNotesExceptionHandler {
 
     @ExceptionHandler(UserServiceException.class)
     public ResponseEntity<ResponseDTO> userServiceExceptionHandler(UserServiceException e) {
-        ResponseDTO responseDto = new ResponseDTO(e.getMessage(),null,500);
+        ResponseDTO responseDto = new ResponseDTO(e.getMessage(),500);
         return new ResponseEntity<>(responseDto, HttpStatus.ALREADY_REPORTED);
     }
 
     @ExceptionHandler(JWTException.class)
     public ResponseEntity userServiceExceptionHandler(JWTException e){
-        ResponseDTO responseDTO = new ResponseDTO(e.getMessage(),null,500);
+        ResponseDTO responseDTO = new ResponseDTO(e.getMessage(),500);
         return new ResponseEntity(responseDTO,HttpStatus.ALREADY_REPORTED);
     }
 

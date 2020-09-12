@@ -1,6 +1,7 @@
 package com.bridgelabz.fundoonotes.controller;
 
 
+import com.bridgelabz.fundoonotes.dto.LoginDTO;
 import com.bridgelabz.fundoonotes.dto.RegistrationDTO;
 import com.bridgelabz.fundoonotes.dto.ResponseDTO;
 import com.bridgelabz.fundoonotes.service.IUserService;
@@ -30,7 +31,7 @@ public class UserController {
         }
 
         String registration = userService.userRegistration(registrationDTO,request.getHeader("Referer"));
-        ResponseDTO responseDTO=new ResponseDTO(registration,null,200);
+        ResponseDTO responseDTO=new ResponseDTO(registration,200);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
@@ -38,6 +39,16 @@ public class UserController {
     public String verifyEmail(@PathVariable(name="token") String token){
         String verifyEmail = userService.verifyEmail(token);
         return verifyEmail;
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity userLogin(@Valid @RequestBody LoginDTO logInDTO, BindingResult bindingResult){
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity(bindingResult.getAllErrors().get(0).getDefaultMessage(), HttpStatus.NOT_ACCEPTABLE);
+        }
+        String message = userService.userLogin(logInDTO);
+        ResponseDTO responseDTO=new ResponseDTO(message,200);
+        return new ResponseEntity(responseDTO, HttpStatus.OK);
     }
 
 }

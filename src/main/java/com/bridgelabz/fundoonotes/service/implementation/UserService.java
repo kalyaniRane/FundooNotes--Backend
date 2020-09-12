@@ -1,5 +1,7 @@
 package com.bridgelabz.fundoonotes.service.implementation;
 
+import com.bridgelabz.fundoonotes.dto.LoginDTO;
+import com.bridgelabz.fundoonotes.dto.RedisUserDto;
 import com.bridgelabz.fundoonotes.dto.RegistrationDTO;
 import com.bridgelabz.fundoonotes.exceptions.UserServiceException;
 import com.bridgelabz.fundoonotes.model.UserDetails;
@@ -64,6 +66,11 @@ public class UserService implements IUserService {
         user.setVerified(true);
         userRepository.save(user);
         return verificationTemplate.getHeader(user.getFullName());
+    }
+
+    @Override
+    public String userLogin(LoginDTO loginDTO) {
+        return null;
     }
 
 }

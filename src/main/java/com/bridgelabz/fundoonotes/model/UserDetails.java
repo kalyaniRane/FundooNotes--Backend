@@ -1,5 +1,6 @@
 package com.bridgelabz.fundoonotes.model;
 
+import com.bridgelabz.fundoonotes.dto.LoginDTO;
 import com.bridgelabz.fundoonotes.dto.RegistrationDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
@@ -45,5 +46,10 @@ public class UserDetails {
         this.password = registrationDTO.password;
         this.mobileNumber = registrationDTO.mobileNumber;
         this.fullName = registrationDTO.fullName;
+    }
+
+    public UserDetails(LoginDTO logInDTO) {
+        this.emailID=logInDTO.emailID;
+        this.password=logInDTO.password;
     }
 }
