@@ -66,5 +66,22 @@ public class UserServiceTest {
         Assert.assertEquals(message,user);
     }
 
+    @Test
+    void givenUserDetails_WhenUserNotRegistered_ShouldThrowException() throws MessagingException {
+        RegistrationDTO registrationDTO = new RegistrationDTO("Kalyani", "kalyani@gmail.com", "Kalyani@123", "8855885588", true);
+        UserDetails userDetails = new UserDetails(registrationDTO);
+        String message="User Not Found";
+        try{
+            when(jwtToken.generateVerificationToken(any())).thenReturn(String.valueOf(userDetails));
+            when(userRepository.findByEmailID(registrationDTO.emailID)).thenReturn(java.util.Optional.of(userDetails));
+            when(userRepository.save(any())).thenReturn(userDetails);
+            when(mailService.sendMail(any(),any(),any())).thenReturn(message);
+            userService.sendVerificationMail("kajal@gmail.com", "tokenuser");
+        }catch (UserServiceException e){
+            Assert.assertEquals(message,e.getMessage());
+        }
+
+
+    }
 
 }
