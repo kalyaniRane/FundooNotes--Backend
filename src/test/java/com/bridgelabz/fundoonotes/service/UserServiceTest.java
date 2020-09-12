@@ -1,5 +1,6 @@
 package com.bridgelabz.fundoonotes.service;
 
+import com.bridgelabz.fundoonotes.dto.LoginDTO;
 import com.bridgelabz.fundoonotes.dto.RegistrationDTO;
 import com.bridgelabz.fundoonotes.exceptions.JWTException;
 import com.bridgelabz.fundoonotes.exceptions.UserServiceException;
@@ -16,9 +17,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import javax.mail.MessagingException;
-
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
@@ -43,6 +43,8 @@ public class UserServiceTest {
     @Mock
     EmailVerificationTemplate verificationTemplate;
 
+    @Mock
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Test
     void givenUserDetails_WhenUserAlreadyPresent_ShouldThrowException() {
@@ -118,6 +120,48 @@ public class UserServiceTest {
             userService.verifyEmail("authorization");
         } catch (JWTException e) {
             Assert.assertEquals(message, e.getMessage());
+        }
+    }
+
+    @Test
+    void givenUserLogin_WhenUnverifiedEmailID_ShouldThrowException() {
+        LoginDTO loginDTO = new LoginDTO("kalyani@gmail.com", "Kalyani@123");
+        UserDetails userDetails = new UserDetails(loginDTO);
+        String message = "Please verify your email before proceeding";
+        try {
+            when(userRepository.findByEmailID(loginDTO.emailID)).thenReturn(java.util.Optional.of(userDetails));
+            when(bCryptPasswordEncoder.matches(loginDTO.password, userDetails.getPassword())).thenReturn(true);
+            userService.userLogin(loginDTO);
+        } catch (UserServiceException e) {
+            Assert.assertEquals(message, e.getMessage());
+        }
+    }
+
+    @Test
+    void givenUserLogin_WhenInvalidEmailID_ShouldThrowException() {
+        LoginDTO loginDTO = new LoginDTO("kalyani@gmail.com", "kalyani@123");
+        UserDetails userDetails = new UserDetails(loginDTO);
+        String message = "INCORRECT EMAIL";
+        try {
+            when(bCryptPasswordEncoder.matches(loginDTO.password, userDetails.getPassword())).thenReturn(Boolean.valueOf(message));
+            userService.userLogin(loginDTO);
+        } catch (UserServiceException e) {
+            Assert.assertEquals(message, e.getMessage());
+        }
+    }
+
+    @Test
+    void givenUserDetailsToLoginUser_WhenIncorrectPasswordEntered_ShouldThrowException() {
+        LoginDTO loginDTO = new LoginDTO("kalyani@gmail.com","Kalyani@123");
+        UserDetails userDetails = new UserDetails(loginDTO);
+        userDetails.setVerified(true);
+        try {
+
+            when(userRepository.findByEmailID(loginDTO.emailID)).thenReturn(java.util.Optional.of(userDetails));
+            when(bCryptPasswordEncoder.matches(loginDTO.password, userDetails.getPassword())).thenReturn(false);
+            userService.userLogin(loginDTO);
+        } catch (UserServiceException ex) {
+            Assert.assertEquals("INCORRECT PASSWORD", ex.getMessage());
         }
     }
 

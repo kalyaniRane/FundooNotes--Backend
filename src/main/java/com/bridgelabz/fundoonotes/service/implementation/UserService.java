@@ -35,6 +35,9 @@ public class UserService implements IUserService {
     @Autowired
     EmailVerificationTemplate verificationTemplate;
 
+    @Autowired
+    RedisUserService redisUserService;
+
     @Override
     public String userRegistration(RegistrationDTO registrationDTO, String requestURL) throws MessagingException {
         Optional<UserDetails> userDetail = userRepository.findByEmailID(registrationDTO.emailID);
@@ -70,7 +73,6 @@ public class UserService implements IUserService {
 
     @Override
     public String userLogin(LoginDTO loginDTO) {
-        return null;
+        return  null;
     }
-
 }
