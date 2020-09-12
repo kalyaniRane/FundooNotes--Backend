@@ -4,6 +4,7 @@ package com.bridgelabz.fundoonotes.controller;
 import com.bridgelabz.fundoonotes.dto.RegistrationDTO;
 import com.bridgelabz.fundoonotes.dto.ResponseDTO;
 import com.bridgelabz.fundoonotes.model.UserDetails;
+import com.bridgelabz.fundoonotes.properties.FileProperties;
 import com.bridgelabz.fundoonotes.service.implementation.UserService;
 import com.google.gson.Gson;
 import org.junit.Assert;
@@ -31,6 +32,9 @@ public class UserControllerTest {
 
     @MockBean
     private UserService userService;
+
+    @MockBean
+    FileProperties fileProperties;
 
     Gson gson = new Gson();
 
