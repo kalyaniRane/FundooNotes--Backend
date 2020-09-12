@@ -6,12 +6,10 @@ import com.bridgelabz.fundoonotes.dto.ResponseDTO;
 import com.bridgelabz.fundoonotes.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +32,12 @@ public class UserController {
         String registration = userService.userRegistration(registrationDTO,request.getHeader("Referer"));
         ResponseDTO responseDTO=new ResponseDTO(registration,null,200);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/verify/mail/{token}", produces = MediaType.TEXT_HTML_VALUE)
+    public String verifyEmail(@PathVariable(name="token") String token){
+        String verifyEmail = userService.verifyEmail(token);
+        return verifyEmail;
     }
 
 }

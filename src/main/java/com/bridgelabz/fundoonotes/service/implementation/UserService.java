@@ -47,10 +47,15 @@ public class UserService implements IUserService {
     public String sendVerificationMail(String email, String requestURL) throws MessagingException {
         UserDetails user = userRepository.findByEmailID(email).orElseThrow(()->new UserServiceException("User Not Found"));
         String token = jwtToken.generateVerificationToken(user);
-        requestURL = requestURL.substring(0, requestURL.lastIndexOf("s") - 1) + "/verify/email/" + token;
+        requestURL = requestURL.substring(0, requestURL.lastIndexOf("s") - 1) + "/user/verify/email/" + token;
         String subject="Email Verification";
         mailService.sendMail(requestURL,subject,user.getEmailID());
         return "Verification Mail Has Been Sent Successfully";
+    }
+
+    @Override
+    public String verifyEmail(String token) {
+        return null;
     }
 
 }
