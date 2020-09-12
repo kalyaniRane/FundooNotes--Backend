@@ -25,12 +25,13 @@ public class UserController {
     IUserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseDTO> userRegistration(@Valid @RequestBody RegistrationDTO registrationDTO , BindingResult bindingResult) throws MessagingException {
+    public ResponseEntity<ResponseDTO> userRegistration(@Valid @RequestBody RegistrationDTO registrationDTO , BindingResult bindingResult, HttpServletRequest request) throws MessagingException {
         if (bindingResult.hasErrors()) {
+            System.out.println("hi");
             return new ResponseEntity(bindingResult.getAllErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
         }
 
-        String registration = userService.userRegistration(registrationDTO);
+        String registration = userService.userRegistration(registrationDTO,request.getHeader("Referer"));
         ResponseDTO responseDTO=new ResponseDTO(registration,null,200);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }

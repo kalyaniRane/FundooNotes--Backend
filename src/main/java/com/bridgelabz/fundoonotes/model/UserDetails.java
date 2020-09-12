@@ -27,6 +27,8 @@ public class UserDetails {
     private String mobileNumber;
     private String fullName;
 
+    private boolean  isVerified;
+
     public UserDetails() {
     }
 

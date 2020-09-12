@@ -40,21 +40,22 @@ public class UserServiceTest {
 
     @Test
     void givenUserDetails_WhenUserAlreadyPresent_ShouldThrowException() {
-        RegistrationDTO registrationDTO = new RegistrationDTO("Kalyani", "kalyani@gmail.com", "Kalyani@123", "8855885588");
+        RegistrationDTO registrationDTO = new RegistrationDTO("Kalyani", "kalyani@gmail.com", "Kalyani@123", "8855885588", true);
         UserDetails userDetails = new UserDetails(registrationDTO);
         String message = "USER ALREADY EXISTS WITH THIS EMAIL ID";
         try {
             when(userRepository.findByEmailID(any())).thenReturn(java.util.Optional.of(userDetails));
             when(userRepository.save(any())).thenReturn(message);
-            userService.userRegistration(registrationDTO);
+            userService.userRegistration(registrationDTO, "url");
         } catch (UserServiceException | MessagingException e) {
             Assert.assertEquals(message, e.getMessage());
         }
     }
 
+
     @Test
     void givenUserDetails_WhenUserRegistered_ShouldReturnVerificationMessage() throws MessagingException {
-        RegistrationDTO registrationDTO = new RegistrationDTO("Kalyani", "kalyani@gmail.com", "Kalyani@123", "8855885588");
+        RegistrationDTO registrationDTO = new RegistrationDTO("Kalyani", "kalyani@gmail.com", "Kalyani@123", "8855885588", true);
         UserDetails userDetails = new UserDetails(registrationDTO);
         String message="Verification Mail Has Been Sent Successfully";
         when(jwtToken.generateVerificationToken(any())).thenReturn(String.valueOf(userDetails));

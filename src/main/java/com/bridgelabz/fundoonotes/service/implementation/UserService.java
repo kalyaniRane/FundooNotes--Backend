@@ -5,6 +5,7 @@ import com.bridgelabz.fundoonotes.exceptions.UserServiceException;
 import com.bridgelabz.fundoonotes.model.UserDetails;
 import com.bridgelabz.fundoonotes.repository.IUserRepository;
 import com.bridgelabz.fundoonotes.service.IUserService;
+import com.bridgelabz.fundoonotes.utils.IToken;
 import com.bridgelabz.fundoonotes.utils.implementation.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,11 +23,14 @@ public class UserService implements IUserService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-   @Autowired
-   MailService mailService;
+    @Autowired
+    MailService mailService;
+
+    @Autowired
+    IToken jwtToken;
 
     @Override
-    public String userRegistration(RegistrationDTO registrationDTO) throws MessagingException {
+    public String userRegistration(RegistrationDTO registrationDTO, String requestURL) throws MessagingException {
         Optional<UserDetails> userDetail = userRepository.findByEmailID(registrationDTO.emailID);
         if (userDetail.isPresent()) {
             throw new UserServiceException("USER ALREADY EXISTS WITH THIS EMAIL ID");
@@ -35,12 +39,18 @@ public class UserService implements IUserService {
         UserDetails userDetails = new UserDetails(registrationDTO);
         userDetails.setPassword(password);
         userRepository.save(userDetails);
-        mailService.sendMail("Hii, Your registration Successful","Registration Successful",registrationDTO.emailID);
-        return "Verification Mail Has Been Sent Successfully";
+        return sendVerificationMail(registrationDTO.emailID, requestURL);
     }
+
 
     @Override
     public String sendVerificationMail(String email, String requestURL) throws MessagingException {
+        UserDetails user = userRepository.findByEmailID(email).orElseThrow(()->new UserServiceException("User Not Found"));
+        String token = jwtToken.generateVerificationToken(user);
+        requestURL = requestURL.substring(0, requestURL.lastIndexOf("s") - 1) + "/verify/email/" + token;
+        String subject="Email Verification";
+        mailService.sendMail(requestURL,subject,user.getEmailID());
         return "Verification Mail Has Been Sent Successfully";
     }
+
 }

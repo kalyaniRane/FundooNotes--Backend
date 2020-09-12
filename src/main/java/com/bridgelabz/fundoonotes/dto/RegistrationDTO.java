@@ -25,4 +25,6 @@ public class RegistrationDTO {
     @Pattern(regexp = "^([6-9]{1}[0-9]{9})$", message = "Please Enter Mobile Number")
     public final String mobileNumber;
 
+    public boolean isVerified;
+
 }
