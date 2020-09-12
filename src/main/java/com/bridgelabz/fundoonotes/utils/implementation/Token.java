@@ -42,4 +42,18 @@ public class Token implements IToken {
         }
     }
 
+    @Override
+    public String generateLoginToken(UserDetails userDetails) {
+
+        long currentTime = System.currentTimeMillis();
+
+        return Jwts.builder()
+                .setId(String.valueOf(userDetails.getId()))
+                .setSubject(userDetails.getFullName())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(currentTime + jwtProperties.getJwtExpirationMs()))
+                .signWith(SignatureAlgorithm.HS256, jwtProperties.getJwtSecret())
+                .compact();
+    }
+
 }

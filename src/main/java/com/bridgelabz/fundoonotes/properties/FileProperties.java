@@ -7,7 +7,15 @@ public class FileProperties {
     private String jwtSecret;
 
     private int verificationMs;
+    private int jwtExpirationMs;
 
+    public int getJwtExpirationMs() {
+        return jwtExpirationMs;
+    }
+
+    public void setJwtExpirationMs(int jwtExpirationMs) {
+        this.jwtExpirationMs = jwtExpirationMs;
+    }
 
     public String getJwtSecret() {
         return jwtSecret;
