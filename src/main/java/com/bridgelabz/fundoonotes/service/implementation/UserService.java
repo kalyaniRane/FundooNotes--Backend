@@ -100,4 +100,9 @@ public class UserService implements IUserService {
         return "Reset Password Link Has Been Sent To Your Email Address";
     }
 
+    @Override
+    public String resetPassword(String password, String urlToken) {
+        return null;
+    }
+
 }

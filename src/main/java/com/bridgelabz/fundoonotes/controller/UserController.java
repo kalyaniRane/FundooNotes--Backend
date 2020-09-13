@@ -58,4 +58,11 @@ public class UserController {
         return new ResponseEntity(response,HttpStatus.OK);
     }
 
+    @PostMapping("/reset/password/")
+    public ResponseEntity resetPassword(@RequestParam(name = "password") String password,@RequestParam(value = "token",defaultValue = "") String urlToken){
+        String resetPassword = userService.resetPassword(password,urlToken);
+        ResponseDTO response = new ResponseDTO(resetPassword,200);
+        return new ResponseEntity(response,HttpStatus.OK);
+    }
+
 }

@@ -16,4 +16,6 @@ public interface IUserService {
     String userLogin(LoginDTO loginDTO);
 
     String resetPasswordLink(String email, String urlToken) throws MessagingException;
+
+    String resetPassword(String password, String urlToken);
 }

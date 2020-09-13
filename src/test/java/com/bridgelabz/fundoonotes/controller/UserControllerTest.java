@@ -113,5 +113,20 @@ public class UserControllerTest {
         Assert.assertEquals(message, responseMessage);
     }
 
+    @Test
+    void givenPassword_WhenProper_ShouldReturnProperMessage() throws Exception {
+        String password = "Kalyani@123";
+        String urlToken = "gvfa454";
+        String message = "Password Has Been Reset";
+        when(userService.resetPassword(any(), any())).thenReturn(message);
+        MvcResult mvcResult = this.mockMvc.perform(post("/user/reset/password/")
+                .param("password", password)
+                .param("token", urlToken)).andReturn();
+        String response = mvcResult.getResponse().getContentAsString();
+        ResponseDTO responseDto = gson.fromJson(response, ResponseDTO.class);
+        String responseMessage = responseDto.message;
+        Assert.assertEquals(message, responseMessage);
+    }
+
 
 }
