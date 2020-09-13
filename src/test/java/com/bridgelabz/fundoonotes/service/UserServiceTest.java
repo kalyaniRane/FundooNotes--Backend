@@ -176,4 +176,20 @@ public class UserServiceTest {
         Assert.assertEquals("Reset Password Link Has Been Sent To Your Email Address",user);
     }
 
+    @Test
+    void givenUserDetails_WhenUserSetThePassword_ShouldReturnMessage() {
+        String password="Kalyani@12345";
+        String token="ghfd12hvw";
+        String message = "Password Has Been Reset";
+        LoginDTO loginDTO = new LoginDTO("kalyani@gmail.com","Kalyani@123");
+        UserDetails userDetails = new UserDetails(loginDTO);
+
+        when(jwtToken.decodeJWT(anyString())).thenReturn(1);
+        when(userRepository.findById(anyInt())).thenReturn(java.util.Optional.of(userDetails));
+        when(bCryptPasswordEncoder.encode(password)).thenReturn(password);
+        when(userRepository.save(any())).thenReturn(userDetails);
+        String reset = userService.resetPassword(password,token);
+        Assert.assertEquals(message,reset);
+    }
+
 }

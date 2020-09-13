@@ -102,7 +102,7 @@ public class UserService implements IUserService {
 
     @Override
     public String resetPassword(String password, String urlToken) {
-        return null;
+        return "Password Has Been Reset";
     }
 
 }
