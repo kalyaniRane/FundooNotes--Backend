@@ -102,6 +102,11 @@ public class UserService implements IUserService {
 
     @Override
     public String resetPassword(String password, String urlToken) {
+        int userId = jwtToken.decodeJWT(urlToken);
+        UserDetails userDetails = userRepository.findById(userId).orElseThrow(() -> new UserServiceException("User Not Found"));
+        String encodePassword = bCryptPasswordEncoder.encode(password);
+        userDetails.setPassword(encodePassword);
+        userRepository.save(userDetails);
         return "Password Has Been Reset";
     }
 
