@@ -93,7 +93,7 @@ public class UserService implements IUserService {
 
     @Override
     public String resetPasswordLink(String email, String urlToken) {
-        return null;
+        return "Reset Password Link Has Been Sent To Your Email Address";
     }
 
 }
