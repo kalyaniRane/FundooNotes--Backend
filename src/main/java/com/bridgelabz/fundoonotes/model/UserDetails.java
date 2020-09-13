@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -19,23 +20,26 @@ public class UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @NotNull
-    @Column(name = "emailID",unique = true)
+    @Column(unique = true,nullable = false)
     private String emailID;
 
-    @NotNull
-    @JsonIgnore
+    @Column(nullable = false)
     private String password;
 
-    @NotNull
-    @Column(name = "mobileNumber",unique = true)
+    @Column(unique = true,nullable = false)
     private String mobileNumber;
 
-    @NotNull
+    @Column(nullable = false)
     private String fullName;
 
-    @NotNull
+    @Column(nullable = false)
     private boolean  isVerified;
+
+    @Column(nullable = false)
+    private LocalDateTime created;
+
+    @Column(nullable = false)
+    private LocalDateTime modified;
 
     public UserDetails() {
     }
@@ -46,6 +50,8 @@ public class UserDetails {
         this.password = registrationDTO.password;
         this.mobileNumber = registrationDTO.mobileNumber;
         this.fullName = registrationDTO.fullName;
+        this.created=LocalDateTime.now();
+        this.modified=LocalDateTime.now();
     }
 
     public UserDetails(LoginDTO logInDTO) {
