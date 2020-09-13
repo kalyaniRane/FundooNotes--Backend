@@ -100,5 +100,18 @@ public class UserControllerTest {
         Assert.assertEquals("LOGIN SUCCESSFUL", responseMessage);
     }
 
+    @Test
+    void givenEmailId_WhenProper_ShouldReturnMessage() throws Exception {
+        String emailID="kalyani@gmail.com";
+        String message="Reset Password Link Has Been Sent To Your Email Address";
+        when(userService.resetPasswordLink(any(),any())).thenReturn(message);
+        MvcResult result = this.mockMvc.perform(post("/user/forget/password")
+                .param("emailID", emailID)).andReturn();
+        String response=result.getResponse().getContentAsString();
+        ResponseDTO responseDTO = gson.fromJson(response, ResponseDTO.class);
+        String responseMessage = responseDTO.message;
+        Assert.assertEquals(message, responseMessage);
+    }
+
 
 }

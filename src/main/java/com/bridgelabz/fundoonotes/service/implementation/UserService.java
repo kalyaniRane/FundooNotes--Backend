@@ -90,4 +90,10 @@ public class UserService implements IUserService {
         }
         throw new UserServiceException("INCORRECT EMAIL");
     }
+
+    @Override
+    public String resetPasswordLink(String email, String urlToken) {
+        return null;
+    }
+
 }

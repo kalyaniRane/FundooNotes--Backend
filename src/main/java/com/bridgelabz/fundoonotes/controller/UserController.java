@@ -51,4 +51,11 @@ public class UserController {
         return new ResponseEntity(responseDTO, HttpStatus.OK);
     }
 
+    @PostMapping("/forget/password")
+    public ResponseEntity getResetPassword(@RequestParam("emailID") String emailID,HttpServletRequest httpServletRequest) throws MessagingException {
+        String resetPassword = userService.resetPasswordLink(emailID,httpServletRequest.getHeader("Referer"));
+        ResponseDTO response = new ResponseDTO(resetPassword,200);
+        return new ResponseEntity(response,HttpStatus.OK);
+    }
+
 }

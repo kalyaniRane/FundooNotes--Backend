@@ -14,4 +14,6 @@ public interface IUserService {
     String verifyEmail(String token);
 
     String userLogin(LoginDTO loginDTO);
+
+    String resetPasswordLink(String email, String urlToken);
 }
