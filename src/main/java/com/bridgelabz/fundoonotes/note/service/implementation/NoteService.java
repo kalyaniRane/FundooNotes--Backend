@@ -1,12 +1,18 @@
 package com.bridgelabz.fundoonotes.note.service.implementation;
 
 
+import com.bridgelabz.fundoonotes.exceptions.NoteServiceException;
+import com.bridgelabz.fundoonotes.exceptions.UserServiceException;
 import com.bridgelabz.fundoonotes.note.dto.NoteDTO;
+import com.bridgelabz.fundoonotes.note.model.NoteDetails;
 import com.bridgelabz.fundoonotes.note.repository.INoteRepository;
 import com.bridgelabz.fundoonotes.note.service.INoteService;
+import com.bridgelabz.fundoonotes.user.model.RedisUserModel;
+import com.bridgelabz.fundoonotes.user.model.UserDetails;
 import com.bridgelabz.fundoonotes.user.repository.IUserRepository;
 import com.bridgelabz.fundoonotes.user.repository.RedisUserRepository;
 import com.bridgelabz.fundoonotes.utils.IToken;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +33,18 @@ public class NoteService implements INoteService {
 
     @Override
     public String createNote(NoteDTO noteDTO, String token) {
-        return "NEW NOTE CREATE";
+        RedisUserModel byToken = redisUserRepository.findByToken(token);
+
+        if (byToken.getToken().equals(token)){
+            int userID = iToken.decodeJWT(token);
+            UserDetails user = userRepository.findById(userID).orElseThrow(()->new UserServiceException("User Not Found"));
+            NoteDetails noteDetails=new NoteDetails();
+            BeanUtils.copyProperties(noteDTO,noteDetails);
+            noteDetails.setUser(user);
+            noteRepository.save(noteDetails);
+            return "NEW NOTE CREATE";
+        }
+        throw new NoteServiceException("Token Not Found");
     }
+
 }
