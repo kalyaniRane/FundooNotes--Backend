@@ -1,5 +1,6 @@
 package com.bridgelabz.fundoonotes.user.model;
 
+import com.bridgelabz.fundoonotes.note.model.NoteDetails;
 import com.bridgelabz.fundoonotes.user.dto.LoginDTO;
 import com.bridgelabz.fundoonotes.user.dto.RegistrationDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -8,6 +9,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,6 +20,7 @@ public class UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
 
     @Column(unique = true,nullable = false)
     private String emailID;
@@ -39,6 +42,9 @@ public class UserDetails {
 
     @Column(nullable = false)
     private LocalDateTime modified;
+
+    @OneToMany(mappedBy = "user")
+    private List<NoteDetails> noteDetailsList;
 
     public UserDetails() {
     }

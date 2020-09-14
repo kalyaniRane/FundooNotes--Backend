@@ -27,5 +27,9 @@ public class NoteDetails {
     private LocalDateTime created=LocalDateTime.now();
     private boolean isTrash;
 
+    @ManyToOne()
+    @JoinColumn(name = "userID")
+    private UserDetails user;
 
 }
+
