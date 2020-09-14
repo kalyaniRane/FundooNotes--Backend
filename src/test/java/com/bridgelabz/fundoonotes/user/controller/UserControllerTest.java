@@ -3,7 +3,7 @@ package com.bridgelabz.fundoonotes.user.controller;
 
 import com.bridgelabz.fundoonotes.user.dto.LoginDTO;
 import com.bridgelabz.fundoonotes.user.dto.RegistrationDTO;
-import com.bridgelabz.fundoonotes.user.dto.ResponseDTO;
+import com.bridgelabz.fundoonotes.dto.ResponseDTO;
 import com.bridgelabz.fundoonotes.user.model.UserDetails;
 import com.bridgelabz.fundoonotes.properties.FileProperties;
 import com.bridgelabz.fundoonotes.user.service.implementation.UserService;
