@@ -1,9 +1,9 @@
-package com.bridgelabz.fundoonotes.service.implementation;
+package com.bridgelabz.fundoonotes.user.service.implementation;
 
-import com.bridgelabz.fundoonotes.dto.RedisUserDto;
-import com.bridgelabz.fundoonotes.model.RedisUserModel;
-import com.bridgelabz.fundoonotes.repository.RedisUserRepository;
-import com.bridgelabz.fundoonotes.service.IRedisUser;
+import com.bridgelabz.fundoonotes.user.dto.RedisUserDto;
+import com.bridgelabz.fundoonotes.user.model.RedisUserModel;
+import com.bridgelabz.fundoonotes.user.repository.RedisUserRepository;
+import com.bridgelabz.fundoonotes.user.service.IRedisUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

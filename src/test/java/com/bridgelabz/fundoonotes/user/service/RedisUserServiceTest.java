@@ -1,11 +1,11 @@
-package com.bridgelabz.fundoonotes.service;
+package com.bridgelabz.fundoonotes.user.service;
 
 
-import com.bridgelabz.fundoonotes.dto.RedisUserDto;
-import com.bridgelabz.fundoonotes.model.RedisUserModel;
+import com.bridgelabz.fundoonotes.user.dto.RedisUserDto;
+import com.bridgelabz.fundoonotes.user.model.RedisUserModel;
 import com.bridgelabz.fundoonotes.properties.FileProperties;
-import com.bridgelabz.fundoonotes.repository.RedisUserRepository;
-import com.bridgelabz.fundoonotes.service.implementation.RedisUserService;
+import com.bridgelabz.fundoonotes.user.repository.RedisUserRepository;
+import com.bridgelabz.fundoonotes.user.service.implementation.RedisUserService;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

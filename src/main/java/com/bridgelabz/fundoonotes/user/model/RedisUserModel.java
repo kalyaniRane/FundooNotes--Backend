@@ -1,7 +1,7 @@
-package com.bridgelabz.fundoonotes.model;
+package com.bridgelabz.fundoonotes.user.model;
 
 
-import com.bridgelabz.fundoonotes.dto.RedisUserDto;
+import com.bridgelabz.fundoonotes.user.dto.RedisUserDto;
 import lombok.Getter;
 import lombok.Setter;
 

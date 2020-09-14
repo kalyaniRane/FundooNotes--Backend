@@ -1,15 +1,14 @@
-package com.bridgelabz.fundoonotes.controller;
+package com.bridgelabz.fundoonotes.user.controller;
 
 
-import com.bridgelabz.fundoonotes.dto.LoginDTO;
-import com.bridgelabz.fundoonotes.dto.RegistrationDTO;
-import com.bridgelabz.fundoonotes.dto.ResponseDTO;
-import com.bridgelabz.fundoonotes.model.UserDetails;
+import com.bridgelabz.fundoonotes.user.dto.LoginDTO;
+import com.bridgelabz.fundoonotes.user.dto.RegistrationDTO;
+import com.bridgelabz.fundoonotes.user.dto.ResponseDTO;
+import com.bridgelabz.fundoonotes.user.model.UserDetails;
 import com.bridgelabz.fundoonotes.properties.FileProperties;
-import com.bridgelabz.fundoonotes.service.implementation.UserService;
+import com.bridgelabz.fundoonotes.user.service.implementation.UserService;
 import com.google.gson.Gson;
 import org.junit.Assert;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -18,14 +17,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.validation.BindingResult;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 @WebMvcTest(UserController.class)
 @TestPropertySource(properties =

@@ -1,7 +1,7 @@
 package com.bridgelabz.fundoonotes.exceptions;
 
 
-import com.bridgelabz.fundoonotes.dto.ResponseDTO;
+import com.bridgelabz.fundoonotes.user.dto.ResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

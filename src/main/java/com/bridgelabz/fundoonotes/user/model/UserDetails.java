@@ -1,13 +1,12 @@
-package com.bridgelabz.fundoonotes.model;
+package com.bridgelabz.fundoonotes.user.model;
 
-import com.bridgelabz.fundoonotes.dto.LoginDTO;
-import com.bridgelabz.fundoonotes.dto.RegistrationDTO;
+import com.bridgelabz.fundoonotes.user.dto.LoginDTO;
+import com.bridgelabz.fundoonotes.user.dto.RegistrationDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity

@@ -1,7 +1,7 @@
-package com.bridgelabz.fundoonotes.repository;
+package com.bridgelabz.fundoonotes.user.repository;
 
 
-import com.bridgelabz.fundoonotes.model.UserDetails;
+import com.bridgelabz.fundoonotes.user.model.UserDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

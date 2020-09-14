@@ -1,4 +1,4 @@
-package com.bridgelabz.fundoonotes.dto;
+package com.bridgelabz.fundoonotes.user.dto;
 
 
 public class ResponseDTO {

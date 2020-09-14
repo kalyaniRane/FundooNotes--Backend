@@ -1,7 +1,7 @@
-package com.bridgelabz.fundoonotes.service;
+package com.bridgelabz.fundoonotes.user.service;
 
-import com.bridgelabz.fundoonotes.dto.LoginDTO;
-import com.bridgelabz.fundoonotes.dto.RegistrationDTO;
+import com.bridgelabz.fundoonotes.user.dto.LoginDTO;
+import com.bridgelabz.fundoonotes.user.dto.RegistrationDTO;
 
 import javax.mail.MessagingException;
 

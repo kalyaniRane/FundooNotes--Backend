@@ -1,7 +1,7 @@
 package com.bridgelabz.fundoonotes.utils.implementation;
 
 import com.bridgelabz.fundoonotes.exceptions.JWTException;
-import com.bridgelabz.fundoonotes.model.UserDetails;
+import com.bridgelabz.fundoonotes.user.model.UserDetails;
 import com.bridgelabz.fundoonotes.properties.FileProperties;
 import com.bridgelabz.fundoonotes.utils.IToken;
 import io.jsonwebtoken.Claims;

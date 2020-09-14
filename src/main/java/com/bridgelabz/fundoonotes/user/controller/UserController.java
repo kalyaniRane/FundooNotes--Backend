@@ -1,10 +1,10 @@
-package com.bridgelabz.fundoonotes.controller;
+package com.bridgelabz.fundoonotes.user.controller;
 
 
-import com.bridgelabz.fundoonotes.dto.LoginDTO;
-import com.bridgelabz.fundoonotes.dto.RegistrationDTO;
-import com.bridgelabz.fundoonotes.dto.ResponseDTO;
-import com.bridgelabz.fundoonotes.service.IUserService;
+import com.bridgelabz.fundoonotes.user.dto.LoginDTO;
+import com.bridgelabz.fundoonotes.user.dto.RegistrationDTO;
+import com.bridgelabz.fundoonotes.user.dto.ResponseDTO;
+import com.bridgelabz.fundoonotes.user.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

@@ -1,13 +1,13 @@
-package com.bridgelabz.fundoonotes.service;
+package com.bridgelabz.fundoonotes.user.service;
 
-import com.bridgelabz.fundoonotes.dto.LoginDTO;
-import com.bridgelabz.fundoonotes.dto.RegistrationDTO;
+import com.bridgelabz.fundoonotes.user.dto.LoginDTO;
+import com.bridgelabz.fundoonotes.user.dto.RegistrationDTO;
 import com.bridgelabz.fundoonotes.exceptions.JWTException;
 import com.bridgelabz.fundoonotes.exceptions.UserServiceException;
-import com.bridgelabz.fundoonotes.model.UserDetails;
+import com.bridgelabz.fundoonotes.user.model.UserDetails;
 import com.bridgelabz.fundoonotes.properties.FileProperties;
-import com.bridgelabz.fundoonotes.repository.IUserRepository;
-import com.bridgelabz.fundoonotes.service.implementation.UserService;
+import com.bridgelabz.fundoonotes.user.repository.IUserRepository;
+import com.bridgelabz.fundoonotes.user.service.implementation.UserService;
 import com.bridgelabz.fundoonotes.utils.implementation.MailService;
 import com.bridgelabz.fundoonotes.utils.implementation.Token;
 import com.bridgelabz.fundoonotes.utils.template.EmailVerificationTemplate;
