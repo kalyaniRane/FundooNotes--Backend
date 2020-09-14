@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController
@@ -42,12 +43,13 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity userLogin(@Valid @RequestBody LoginDTO logInDTO, BindingResult bindingResult){
+    public ResponseEntity userLogin(@Valid @RequestBody LoginDTO logInDTO, BindingResult bindingResult, HttpServletResponse response){
         if (bindingResult.hasErrors()) {
             return new ResponseEntity(bindingResult.getAllErrors().get(0).getDefaultMessage(), HttpStatus.NOT_ACCEPTABLE);
         }
-        String message = userService.userLogin(logInDTO);
-        ResponseDTO responseDTO=new ResponseDTO(message,200);
+        String userLogin = userService.userLogin(logInDTO);
+        response.setHeader("Authorization",userLogin);
+        ResponseDTO responseDTO=new ResponseDTO("LOGIN SUCCESSFUL",200);
         return new ResponseEntity(responseDTO, HttpStatus.OK);
     }
 
