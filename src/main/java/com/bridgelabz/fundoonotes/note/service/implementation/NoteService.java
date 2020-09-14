@@ -27,6 +27,6 @@ public class NoteService implements INoteService {
 
     @Override
     public String createNote(NoteDTO noteDTO, String token) {
-        return null;
+        return "NEW NOTE CREATE";
     }
 }
