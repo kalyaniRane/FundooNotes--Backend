@@ -49,7 +49,14 @@ public class NoteService implements INoteService {
 
     @Override
     public String trashNote(Integer noteID, String token) {
-        return "Note Added In Trash";
+        RedisUserModel byToken = redisUserRepository.findByToken(token);
+        if (byToken.getToken().equals(token)) {
+            NoteDetails noteDetails = noteRepository.findById(noteID).orElseThrow(() -> new NoteServiceException("Note Not Found"));
+            noteDetails.setTrash(true);
+            noteRepository.save(noteDetails);
+            return "Note Added In Trash";
+        }
+        throw new NoteServiceException("Token Not Found");
     }
 
 }
