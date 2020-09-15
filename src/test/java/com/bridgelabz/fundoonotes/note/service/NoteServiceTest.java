@@ -89,4 +89,20 @@ public class NoteServiceTest {
         }
     }
 
+    @Test
+    void givenNoteId_WhenCorrect_ShouldReturnMeassage(){
+        NoteDetails noteDetails=new NoteDetails();
+        Integer noteId=2;
+        String token="token";
+        String message="Note Added In Trash";
+
+        when(redisUserRepository.findByToken(token)).thenReturn(redisUserModel);
+        when(redisUserModel.getToken()).thenReturn(token);
+        when(noteRepository.findById(any())).thenReturn(java.util.Optional.of(noteDetails));
+        when(noteRepository.save(noteDetails)).thenReturn(noteDetails);
+        String note = noteService.trashNote(noteId, token);
+
+        Assert.assertEquals(message,note);
+    }
+
 }

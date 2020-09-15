@@ -29,4 +29,13 @@ public class NoteController {
         return new ResponseEntity(responseDTO, HttpStatus.OK);
     }
 
+    @PutMapping("/trash")
+    public ResponseEntity<ResponseDTO> trashNote (@RequestParam(value = "noteID") Integer noteID,@RequestHeader(value = "token",required = false) String token){
+
+        String message = noteService.trashNote(noteID, token);
+        ResponseDTO responseDTO=new ResponseDTO(message,200);
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+
+    }
+
 }

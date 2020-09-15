@@ -56,7 +56,7 @@ public class UserService implements IUserService {
     public String sendVerificationMail(String email, String requestURL) throws MessagingException {
         UserDetails user = userRepository.findByEmailID(email).orElseThrow(()->new UserServiceException("User Not Found"));
         String token = jwtToken.generateVerificationToken(user);
-        requestURL = requestURL.substring(0, requestURL.lastIndexOf("s") - 1) + "/user/verify/email/" + token;
+        requestURL = requestURL.substring(0, requestURL.lastIndexOf("s") - 1) + "/user/verify/mail/" + token;
         String subject="Email Verification";
         mailService.sendMail(requestURL,subject,user.getEmailID());
         return "Verification Mail Has Been Sent Successfully";
@@ -82,7 +82,7 @@ public class UserService implements IUserService {
                     String tokenString = jwtToken.generateLoginToken(userDetail.get());
                     RedisUserDto redisUserDto=new RedisUserDto(tokenString);
                     redisUserService.saveData(redisUserDto);
-                    return "LOGIN SUCCESSFUL";
+                    return tokenString;
                 }
                 throw new UserServiceException("INCORRECT PASSWORD");
             }
