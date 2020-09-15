@@ -5,5 +5,6 @@ import com.bridgelabz.fundoonotes.note.dto.NoteDTO;
 public interface INoteService {
 
     String createNote(NoteDTO noteDTO,String token);
+    String trashNote(Integer noteID,String token);
 
 }
