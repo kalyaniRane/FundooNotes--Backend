@@ -61,7 +61,7 @@ public class NoteService implements INoteService {
 
     @Override
     public String deleteNote(Integer noteID, String token) {
-        return null;
+        return "Note Deleted Successfully";
     }
 
 }

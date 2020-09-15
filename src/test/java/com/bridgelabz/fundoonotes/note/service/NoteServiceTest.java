@@ -105,4 +105,21 @@ public class NoteServiceTest {
         Assert.assertEquals(message,note);
     }
 
+    @Test
+    void givenNoteID_WhenAvailable_ShouldReturnMessage(){
+        NoteDetails noteDetails=new NoteDetails();
+        Integer noteId=2;
+        noteDetails.setTrash(true);
+        String token="token";
+        String message="Note Deleted Successfully";
+
+        when(redisUserRepository.findByToken(token)).thenReturn(redisUserModel);
+        when(redisUserModel.getToken()).thenReturn(token);
+        when(noteRepository.findById(any())).thenReturn(java.util.Optional.of(noteDetails));
+        String note = noteService.deleteNote(noteId, token);
+
+        Assert.assertEquals(message,note);
+
+    }
+
 }
