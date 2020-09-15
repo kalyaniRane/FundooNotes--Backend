@@ -49,7 +49,7 @@ public class NoteService implements INoteService {
 
     @Override
     public String trashNote(Integer noteID, String token) {
-        return null;
+        return "Note Added In Trash";
     }
 
 }
