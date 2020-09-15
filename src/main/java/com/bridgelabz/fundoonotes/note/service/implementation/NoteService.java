@@ -59,4 +59,9 @@ public class NoteService implements INoteService {
         throw new NoteServiceException("Token Not Found");
     }
 
+    @Override
+    public String deleteNote(Integer noteID, String token) {
+        return null;
+    }
+
 }

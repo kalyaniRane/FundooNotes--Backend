@@ -7,4 +7,5 @@ public interface INoteService {
     String createNote(NoteDTO noteDTO,String token);
     String trashNote(Integer noteID,String token);
 
+    String deleteNote(Integer noteID, String token);
 }

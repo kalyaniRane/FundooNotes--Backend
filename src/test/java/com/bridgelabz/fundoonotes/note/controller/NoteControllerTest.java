@@ -21,8 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 @WebMvcTest(NoteController.class)
 @TestPropertySource(properties =
@@ -87,6 +86,22 @@ public class NoteControllerTest {
         String responseMessage = responseDto.message;
         Assert.assertEquals(message, responseMessage);
 
+    }
+
+    @Test
+    void givenNoteId_WhenAvailable_ShouldReturnMessage() throws Exception {
+        Integer noteID=2;
+        String message="Note Deleted Successfully";
+
+        when(noteService.deleteNote(any(),any())).thenReturn(message);
+        MvcResult mvcResult = this.mockMvc.perform(delete("/note/delete")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("noteID", String.valueOf(noteID))).andReturn();
+
+        String response = mvcResult.getResponse().getContentAsString();
+        ResponseDTO responseDto = gson.fromJson(response, ResponseDTO.class);
+        String responseMessage = responseDto.message;
+        Assert.assertEquals(message, responseMessage);
     }
 
 }

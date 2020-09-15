@@ -38,4 +38,11 @@ public class NoteController {
 
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<ResponseDTO> deleteNote (@RequestParam(value = "noteID") Integer noteID,@RequestHeader(value = "token",required = false) String token){
+        String message=noteService.deleteNote(noteID,token);
+        ResponseDTO responseDTO=new ResponseDTO(message,200);
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+    }
+
 }
