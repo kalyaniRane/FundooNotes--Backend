@@ -3,6 +3,7 @@ package com.bridgelabz.fundoonotes.note.controller;
 
 import com.bridgelabz.fundoonotes.dto.ResponseDTO;
 import com.bridgelabz.fundoonotes.note.dto.NoteDTO;
+import com.bridgelabz.fundoonotes.note.model.NoteDetails;
 import com.bridgelabz.fundoonotes.note.service.INoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/note")
@@ -42,6 +44,13 @@ public class NoteController {
     public ResponseEntity<ResponseDTO> deleteNote (@RequestParam(value = "noteID") Integer noteID,@RequestHeader(value = "token",required = false) String token){
         String message=noteService.deleteNote(noteID,token);
         ResponseDTO responseDTO=new ResponseDTO(message,200);
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+    }
+
+    @GetMapping()
+    public ResponseEntity<ResponseDTO> getAllNotes(@RequestHeader(value = "token",required = false) String token){
+        List<NoteDetails> allNotes = noteService.getAllNotes(token);
+        ResponseDTO responseDTO= new ResponseDTO("Notes Fetched",200,allNotes);
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
 

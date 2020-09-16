@@ -16,6 +16,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class NoteService implements INoteService {
 
@@ -71,6 +73,11 @@ public class NoteService implements INoteService {
             throw new NoteServiceException("Note is Not in trash");
         }
         throw new NoteServiceException("Token Not Found");
+    }
+
+    @Override
+    public List<NoteDetails> getAllNotes(String token) {
+        return null;
     }
 
 }

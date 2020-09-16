@@ -21,6 +21,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.validation.BindingResult;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -127,5 +130,39 @@ public class NoteControllerTest {
         Assert.assertEquals(message, responseMessage);
     }
 
+    @Test
+    void getAllNotes() throws Exception {
+        List<NoteDetails> noteDetailsList=new ArrayList();
+        NoteDTO noteDTO=new NoteDTO(" ","This is my first note");
+        NoteDetails noteDetails=new NoteDetails();
+        BeanUtils.copyProperties(noteDTO,noteDetails);
+        noteDetailsList.add(noteDetails);
+        String message="Notes Fetched";
+
+        when(noteService.getAllNotes(any())).thenReturn(noteDetailsList);
+        MvcResult mvcResult = this.mockMvc.perform(get("/note")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+
+        String response = mvcResult.getResponse().getContentAsString();
+        ResponseDTO responseDto = gson.fromJson(response, ResponseDTO.class);
+        String responseMessage = responseDto.message;
+        Assert.assertEquals(message, responseMessage);
+    }
+
+    @Test
+    void getAllNotes_ShouldReturnStatus() throws Exception {
+        List<NoteDetails> noteDetailsList=new ArrayList();
+        NoteDTO noteDTO=new NoteDTO(" ","This is my first note");
+        NoteDetails noteDetails=new NoteDetails();
+        BeanUtils.copyProperties(noteDTO,noteDetails);
+        noteDetailsList.add(noteDetails);
+
+        when(noteService.getAllNotes(any())).thenReturn(noteDetailsList);
+        int mvcResult = this.mockMvc.perform(get("/note")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn().getResponse().getStatus();
+
+        Assert.assertEquals(200, mvcResult);
+    }
 
 }
