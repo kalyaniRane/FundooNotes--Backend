@@ -2,6 +2,7 @@ package com.bridgelabz.fundoonotes.note.model;
 
 
 import com.bridgelabz.fundoonotes.user.model.UserDetails;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,6 +28,7 @@ public class NoteDetails {
     private LocalDateTime created=LocalDateTime.now();
     private boolean isTrash;
 
+    @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "userID")
     private UserDetails user;

@@ -20,6 +20,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -212,6 +215,24 @@ public class NoteServiceTest {
         }catch (NoteServiceException e){
             Assert.assertEquals(message,e.getMessage());
         }
+    }
+
+    @Test
+    void givenToken_WhenCorrect_ShouldReturnNotes(){
+        List<NoteDetails> noteDetailsList=new ArrayList();
+        NoteDTO noteDTO=new NoteDTO("First Note","This is my first note");
+        NoteDetails noteDetails=new NoteDetails();
+        BeanUtils.copyProperties(noteDTO,noteDetails);
+        noteDetailsList.add(noteDetails);
+        String token="token";
+
+        when(redisUserRepository.findByToken(token)).thenReturn(redisUserModel);
+        when(redisUserModel.getToken()).thenReturn(token);
+        when(jwtToken.decodeJWT(token)).thenReturn(2);
+        when(userRepository.findById(2)).thenReturn(java.util.Optional.of(userDetails));
+        when(noteRepository.findAllNotes(2)).thenReturn(noteDetailsList);
+        List<NoteDetails> allNotes = noteService.getAllNotes(token);
+        Assert.assertEquals(noteDetailsList,allNotes);
     }
 
 }

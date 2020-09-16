@@ -1,6 +1,7 @@
 package com.bridgelabz.fundoonotes.note.service.implementation;
 
 
+import com.bridgelabz.fundoonotes.exceptions.JWTException;
 import com.bridgelabz.fundoonotes.exceptions.NoteServiceException;
 import com.bridgelabz.fundoonotes.exceptions.UserServiceException;
 import com.bridgelabz.fundoonotes.note.dto.NoteDTO;
@@ -12,10 +13,12 @@ import com.bridgelabz.fundoonotes.user.model.UserDetails;
 import com.bridgelabz.fundoonotes.user.repository.IUserRepository;
 import com.bridgelabz.fundoonotes.user.repository.RedisUserRepository;
 import com.bridgelabz.fundoonotes.utils.IToken;
+import io.jsonwebtoken.JwtException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -58,7 +61,7 @@ public class NoteService implements INoteService {
             noteRepository.save(noteDetails);
             return "Note Added In Trash";
         }
-        throw new NoteServiceException("Token Not Found");
+        throw new JWTException("Token Not Found");
     }
 
     @Override
@@ -72,12 +75,13 @@ public class NoteService implements INoteService {
             }
             throw new NoteServiceException("Note is Not in trash");
         }
-        throw new NoteServiceException("Token Not Found");
+        throw new JWTException("Token Not Found");
     }
 
     @Override
     public List<NoteDetails> getAllNotes(String token) {
-        return null;
+        List<NoteDetails> noteDetailsList=new ArrayList<>();
+        return noteDetailsList;
     }
 
 }
