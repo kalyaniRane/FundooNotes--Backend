@@ -95,8 +95,22 @@ public class NoteService implements INoteService {
     }
 
     @Override
-    public String updateNote(NoteDTO noteDTO, String token){
-        return "Note Updated Successful";
+    public String updateNote(NoteDTO noteDTO, String token) {
+        RedisUserModel byToken = redisUserRepository.findByToken(token);
+        if (byToken.getToken().equals(token)) {
+            int userID = iToken.decodeJWT(token);
+            userRepository.findById(userID).orElseThrow(() -> new UserServiceException("User Not Found"));
+            NoteDetails noteDetails = noteRepository.findById(noteDTO.id).orElseThrow(() -> new NoteServiceException("Note Not Found"));
+            if(!noteDetails.isTrash()){
+                noteDetails.setTitle(noteDTO.title);
+                noteDetails.setDescription(noteDTO.description);
+                noteDetails.setModified(LocalDateTime.now());
+                noteRepository.save(noteDetails);
+                return "Note Updated Successful";
+            }
+            throw new NoteServiceException("Can't Edit In Trash");
+        }
+        throw new JWTException("Token Not Found");
     }
 
 
