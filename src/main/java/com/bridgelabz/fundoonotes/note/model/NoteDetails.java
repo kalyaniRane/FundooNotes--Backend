@@ -26,6 +26,7 @@ public class NoteDetails {
     @Column(nullable = false)
     private String description;
     private LocalDateTime created=LocalDateTime.now();
+    private LocalDateTime modified=LocalDateTime.now();
     private boolean isTrash;
 
     @JsonIgnore

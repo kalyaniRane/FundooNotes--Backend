@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class NoteDTO {
 
     @NotNull(message = "Please Enter NoteID")
-    public Integer Id;
+    public Integer id;
     @NotNull(message = "Please Enter Title")
     public String title;
     @NotNull(message = "Please Enter Description")
