@@ -122,4 +122,22 @@ public class NoteServiceTest {
 
     }
 
+    @Test
+    void givenNoteID_WhenNotAvailable_ShouldReturnMessage(){
+        NoteDetails noteDetails=new NoteDetails();
+        Integer noteId=2;
+        noteDetails.setTrash(true);
+        String token="token";
+        String message="Note Not Found";
+
+        try{
+            when(redisUserRepository.findByToken(token)).thenReturn(redisUserModel);
+            when(redisUserModel.getToken()).thenReturn(token);
+            when(noteRepository.findById(any())).thenThrow(new NoteServiceException("Note Not Found"));
+            noteService.deleteNote(noteId, token);
+        }catch (NoteServiceException e){
+            Assert.assertEquals(message,e.getMessage());
+        }
+    }
+
 }

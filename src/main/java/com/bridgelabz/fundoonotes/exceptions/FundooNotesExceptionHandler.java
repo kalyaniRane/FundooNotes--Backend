@@ -21,5 +21,11 @@ public class FundooNotesExceptionHandler {
         ResponseDTO responseDTO = new ResponseDTO(e.getMessage(),500);
         return new ResponseEntity(responseDTO,HttpStatus.ALREADY_REPORTED);
     }
+    
+    @ExceptionHandler(NoteServiceException.class)
+    public ResponseEntity noteServiceExceptionHandler(NoteServiceException e){
+        ResponseDTO responseDTO = new ResponseDTO(e.getMessage(),500);
+        return new ResponseEntity(responseDTO,HttpStatus.ALREADY_REPORTED);
+    }
 
 }
