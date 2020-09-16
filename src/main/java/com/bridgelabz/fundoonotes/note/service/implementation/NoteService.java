@@ -93,4 +93,9 @@ public class NoteService implements INoteService {
         throw new JWTException("Token Not Found");
     }
 
+    @Override
+    public String updateNote(NoteDTO noteDTO, String token) {
+        return null;
+    }
+
 }

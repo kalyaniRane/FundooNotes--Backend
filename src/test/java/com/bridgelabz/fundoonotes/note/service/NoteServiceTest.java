@@ -55,7 +55,7 @@ public class NoteServiceTest {
     @Test
     void givenData_WhenCorrect_ShouldReturnMessage(){
 
-        NoteDTO noteDTO=new NoteDTO("First Note","This is my first note");
+        NoteDTO noteDTO=new NoteDTO(2,"First Note","This is my first note");
         NoteDetails noteDetails=new NoteDetails();
         BeanUtils.copyProperties(noteDTO,noteDetails);
         String token="token";
@@ -74,7 +74,7 @@ public class NoteServiceTest {
     @Test
     void givenDataAndToken_WhenNotCorrect_ShouldThrowException(){
 
-        NoteDTO noteDTO=new NoteDTO("First Note","This is my first note");
+        NoteDTO noteDTO=new NoteDTO(2,"First Note","This is my first note");
         NoteDetails noteDetails=new NoteDetails();
         BeanUtils.copyProperties(noteDTO,noteDetails);
         String token="token";
@@ -220,7 +220,7 @@ public class NoteServiceTest {
     @Test
     void givenToken_WhenCorrect_ShouldReturnNotes(){
         List<NoteDetails> noteDetailsList=new ArrayList();
-        NoteDTO noteDTO=new NoteDTO("First Note","This is my first note");
+        NoteDTO noteDTO=new NoteDTO(2,"First Note","This is my first note");
         NoteDetails noteDetails=new NoteDetails();
         BeanUtils.copyProperties(noteDTO,noteDetails);
         noteDetailsList.add(noteDetails);

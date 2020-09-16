@@ -12,4 +12,6 @@ public interface INoteService {
 
     String deleteNote(Integer noteID, String token);
     List<NoteDetails> getAllNotes(String token);
+
+    String updateNote(NoteDTO noteDTO, String token);
 }

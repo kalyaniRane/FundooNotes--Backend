@@ -46,7 +46,7 @@ public class NoteControllerTest {
 
     @Test
     void givenData_WhenCorrect_ShouldReturnMessage() throws Exception {
-        NoteDTO noteDTO=new NoteDTO("First Note","This is my first note");
+        NoteDTO noteDTO=new NoteDTO(2,"First Note","This is my first note");
         NoteDetails noteDetails=new NoteDetails();
         BeanUtils.copyProperties(noteDTO,noteDetails);
         String stringConvertedDto = gson.toJson(noteDetails);
@@ -66,7 +66,7 @@ public class NoteControllerTest {
 
     @Test
     void givenData_WhenWrongData_ShouldReturn400Status() throws Exception {
-        NoteDTO noteDTO=new NoteDTO("First Note","This is my first note");
+        NoteDTO noteDTO=new NoteDTO(2,"First Note","This is my first note");
 
         String message="NOTE CREATE";
         when(noteService.createNote(any(),any())).thenReturn(message);
@@ -111,7 +111,7 @@ public class NoteControllerTest {
 
     @Test
     void givenData_WhenIncorrect_ShouldReturnMessage() throws Exception {
-        NoteDTO noteDTO=new NoteDTO(" ","This is my first note");
+        NoteDTO noteDTO=new NoteDTO(2," ","This is my first note");
         NoteDetails noteDetails=new NoteDetails();
         BeanUtils.copyProperties(noteDTO,noteDetails);
         String stringConvertedDto = gson.toJson(noteDetails);
@@ -133,7 +133,7 @@ public class NoteControllerTest {
     @Test
     void getAllNotes() throws Exception {
         List<NoteDetails> noteDetailsList=new ArrayList();
-        NoteDTO noteDTO=new NoteDTO(" ","This is my first note");
+        NoteDTO noteDTO=new NoteDTO(2,"First Note","This is my first note");
         NoteDetails noteDetails=new NoteDetails();
         BeanUtils.copyProperties(noteDTO,noteDetails);
         noteDetailsList.add(noteDetails);
@@ -153,7 +153,7 @@ public class NoteControllerTest {
     @Test
     void getAllNotes_ShouldReturnStatus() throws Exception {
         List<NoteDetails> noteDetailsList=new ArrayList();
-        NoteDTO noteDTO=new NoteDTO(" ","This is my first note");
+        NoteDTO noteDTO=new NoteDTO(2," ","This is my first note");
         NoteDetails noteDetails=new NoteDetails();
         BeanUtils.copyProperties(noteDTO,noteDetails);
         noteDetailsList.add(noteDetails);
@@ -163,6 +163,26 @@ public class NoteControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)).andReturn().getResponse().getStatus();
 
         Assert.assertEquals(200, mvcResult);
+    }
+
+    @Test
+    void givenData_WhenCorrectToUpdate_ShouldReturnMessage() throws Exception {
+        NoteDTO noteDTO=new NoteDTO(2,"First Note","This is my first note");
+        NoteDetails noteDetails=new NoteDetails();
+        BeanUtils.copyProperties(noteDTO,noteDetails);
+        String stringConvertedDto = gson.toJson(noteDetails);
+
+        String message="NOTE UPDATED";
+
+        when(noteService.updateNote(any(),any())).thenReturn(message);
+        MvcResult mvcResult = this.mockMvc.perform(post("/note/update")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(stringConvertedDto)).andReturn();
+
+        String response = mvcResult.getResponse().getContentAsString();
+        ResponseDTO responseDto = gson.fromJson(response, ResponseDTO.class);
+        String responseMessage = responseDto.message;
+        Assert.assertEquals(message, responseMessage);
     }
 
 }

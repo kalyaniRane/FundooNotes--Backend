@@ -13,8 +13,11 @@ import java.time.LocalDateTime;
 @Setter
 public class NoteDTO {
 
+    @NotNull(message = "Please Enter NoteID")
+    public Integer Id;
     @NotNull(message = "Please Enter Title")
     public String title;
     @NotNull(message = "Please Enter Description")
     public String description;
+
 }

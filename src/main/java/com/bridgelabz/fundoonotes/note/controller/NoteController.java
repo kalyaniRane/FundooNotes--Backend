@@ -54,4 +54,11 @@ public class NoteController {
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
 
+    @PostMapping("/update")
+    public ResponseEntity<ResponseDTO> updateNote (@RequestBody NoteDTO noteDTO,@RequestHeader(value = "token",required = false) String token){
+        String note = noteService.updateNote(noteDTO, token);
+        ResponseDTO responseDTO=new ResponseDTO(note,200);
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+    }
+
 }
