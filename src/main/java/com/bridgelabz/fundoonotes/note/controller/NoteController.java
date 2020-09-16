@@ -29,7 +29,7 @@ public class NoteController {
         return new ResponseEntity(responseDTO, HttpStatus.OK);
     }
 
-    @PutMapping("/trash")
+    @PutMapping("/delete")
     public ResponseEntity<ResponseDTO> trashNote (@RequestParam(value = "noteID") Integer noteID,@RequestHeader(value = "token",required = false) String token){
 
         String message = noteService.trashNote(noteID, token);
@@ -38,7 +38,7 @@ public class NoteController {
 
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/trash")
     public ResponseEntity<ResponseDTO> deleteNote (@RequestParam(value = "noteID") Integer noteID,@RequestHeader(value = "token",required = false) String token){
         String message=noteService.deleteNote(noteID,token);
         ResponseDTO responseDTO=new ResponseDTO(message,200);

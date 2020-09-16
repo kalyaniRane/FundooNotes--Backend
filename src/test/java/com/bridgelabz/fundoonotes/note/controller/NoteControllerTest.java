@@ -79,7 +79,7 @@ public class NoteControllerTest {
         String message="Note Added In Trash";
 
         when(noteService.trashNote(any(),any())).thenReturn(message);
-        MvcResult mvcResult = this.mockMvc.perform(put("/note/trash")
+        MvcResult mvcResult = this.mockMvc.perform(put("/note/delete")
                 .contentType(MediaType.APPLICATION_JSON)
                 .param("noteID", String.valueOf(noteID))).andReturn();
 
@@ -96,7 +96,7 @@ public class NoteControllerTest {
         String message="Note Deleted Successfully";
 
         when(noteService.deleteNote(any(),any())).thenReturn(message);
-        MvcResult mvcResult = this.mockMvc.perform(delete("/note/delete")
+        MvcResult mvcResult = this.mockMvc.perform(delete("/note/trash")
                 .contentType(MediaType.APPLICATION_JSON)
                 .param("noteID", String.valueOf(noteID))).andReturn();
 
