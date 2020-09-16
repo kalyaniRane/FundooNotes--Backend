@@ -42,7 +42,7 @@ public class UserControllerTest {
 
     @Test
     public void givenUser_WhenRegisterSuccessful_ShouldReturnTrue() throws Exception {
-        RegistrationDTO registrationDTO = new RegistrationDTO("kalyani","kalyanirane19@gmail.com","kalyani@123","8855223366");
+        RegistrationDTO registrationDTO = new RegistrationDTO("kalyani","kalyanirane19@gmail.com","Kalyani@123","8855223366");
         UserDetails userDetails=new UserDetails(registrationDTO);
         String stringConvertedDto = gson.toJson(userDetails);
 
@@ -63,7 +63,7 @@ public class UserControllerTest {
     @Test
     public void givenUser_WhenNotRegisterSuccessful_ShouldReturnFalse() throws Exception {
 
-        RegistrationDTO registrationDTO = new RegistrationDTO("kalyani","kalyanirane19@gmail.com","kalyani@123","8855223366");
+        RegistrationDTO registrationDTO = new RegistrationDTO("kalyani","kalyanirane19@gmail.com","Kalyani@123","8855223366");
         UserDetails userDetails=new UserDetails(registrationDTO);
         String stringConvertedDto = gson.toJson(userDetails);
 

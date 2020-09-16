@@ -19,6 +19,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.validation.BindingResult;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -103,5 +105,27 @@ public class NoteControllerTest {
         String responseMessage = responseDto.message;
         Assert.assertEquals(message, responseMessage);
     }
+
+    @Test
+    void givenData_WhenIncorrect_ShouldReturnMessage() throws Exception {
+        NoteDTO noteDTO=new NoteDTO(" ","This is my first note");
+        NoteDetails noteDetails=new NoteDetails();
+        BeanUtils.copyProperties(noteDTO,noteDetails);
+        String stringConvertedDto = gson.toJson(noteDetails);
+        BindingResult bindingResult = mock(BindingResult.class);
+
+        String message="Please Enter Title";
+
+        when(noteService.createNote(any(),any())).thenReturn(message);
+        MvcResult mvcResult = this.mockMvc.perform(post("/note/create")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(stringConvertedDto)).andReturn();
+
+        String response = mvcResult.getResponse().getContentAsString();
+        ResponseDTO responseDto = gson.fromJson(response, ResponseDTO.class);
+        String responseMessage = responseDto.message;
+        Assert.assertEquals(message, responseMessage);
+    }
+
 
 }

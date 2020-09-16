@@ -167,12 +167,12 @@ public class UserServiceTest {
 
     @Test
     void givenUserDetails_WhenUserResetPassword_ShouldReturnResetPasswordLinkMessage() throws MessagingException {
-        LoginDTO loginDTO = new LoginDTO("pritam@gmail.com","pritam123");
+        LoginDTO loginDTO = new LoginDTO("kalyani@gmail.com","kalyani123");
         UserDetails userDetails = new UserDetails(loginDTO);
         when(userRepository.findByEmailID(loginDTO.emailID)).thenReturn(java.util.Optional.of(userDetails));
         when(jwtToken.generateVerificationToken(any())).thenReturn(String.valueOf(userDetails));
         when(mailService.sendMail(any(),any(),any())).thenReturn("Mail has been send");
-        String user = userService.resetPasswordLink("pritam@gmail.com", "tokenforgot");
+        String user = userService.resetPasswordLink("kalyani@gmail.com", "tokenuser");
         Assert.assertEquals("Reset Password Link Has Been Sent To Your Email Address",user);
     }
 

@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -106,6 +107,7 @@ public class UserService implements IUserService {
         UserDetails userDetails = userRepository.findById(userId).orElseThrow(() -> new UserServiceException("User Not Found"));
         String encodePassword = bCryptPasswordEncoder.encode(password);
         userDetails.setPassword(encodePassword);
+        userDetails.setModified(LocalDateTime.now());
         userRepository.save(userDetails);
         return "Password Has Been Reset";
     }
