@@ -106,6 +106,44 @@ public class NoteServiceTest {
     }
 
     @Test
+    void givenNoteId_WhenIncorrect_ShouldThrowException(){
+        NoteDetails noteDetails=new NoteDetails();
+        Integer noteId=2;
+        String token="token";
+        String message="Note Not Found";
+
+        try {
+            when(redisUserRepository.findByToken(token)).thenReturn(redisUserModel);
+            when(redisUserModel.getToken()).thenReturn(token);
+            when(noteRepository.findById(any())).thenThrow(new NoteServiceException("Note Not Found"));
+            when(noteRepository.save(noteDetails)).thenReturn(noteDetails);
+            noteService.trashNote(noteId, token);
+        }catch (NoteServiceException e){
+            Assert.assertEquals(message,e.getMessage());
+        }
+
+    }
+
+    @Test
+    void givenToken_WhenIncorrect_ShouldThrowException(){
+        NoteDetails noteDetails=new NoteDetails();
+        Integer noteId=2;
+        String token="token";
+        String message="Token Not Found";
+
+        try {
+            when(redisUserRepository.findByToken(token)).thenReturn(redisUserModel);
+            when(redisUserModel.getToken()).thenReturn("tokennn");
+            when(noteRepository.findById(any())).thenReturn(java.util.Optional.of(noteDetails));
+            when(noteRepository.save(noteDetails)).thenReturn(noteDetails);
+            noteService.trashNote(noteId, token);
+        }catch (NoteServiceException e){
+            Assert.assertEquals(message,e.getMessage());
+        }
+
+    }
+
+    @Test
     void givenNoteID_WhenAvailable_ShouldReturnMessage(){
         NoteDetails noteDetails=new NoteDetails();
         Integer noteId=2;
