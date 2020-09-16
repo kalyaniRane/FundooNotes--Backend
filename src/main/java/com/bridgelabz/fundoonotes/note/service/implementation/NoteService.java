@@ -18,7 +18,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -80,8 +79,18 @@ public class NoteService implements INoteService {
 
     @Override
     public List<NoteDetails> getAllNotes(String token) {
-        List<NoteDetails> noteDetailsList=new ArrayList<>();
-        return noteDetailsList;
+
+        RedisUserModel byToken = redisUserRepository.findByToken(token);
+        if (byToken.getToken().equals(token)) {
+            int userID = iToken.decodeJWT(token);
+           userRepository.findById(userID).orElseThrow(()->new UserServiceException("User Not Found"));
+            List<NoteDetails> allByUserAndTrashFalse = noteRepository.findAllNotes(userID);
+            if(!allByUserAndTrashFalse.isEmpty()){
+                return allByUserAndTrashFalse;
+            }
+            throw new NoteServiceException("No Any Note Available");
+        }
+        throw new JWTException("Token Not Found");
     }
 
 }
