@@ -140,4 +140,40 @@ public class NoteServiceTest {
         }
     }
 
+    @Test
+    void givenNoteID_WhenNotAvailableInTrash_ShouldThrowException(){
+        NoteDetails noteDetails=new NoteDetails();
+        Integer noteId=2;
+        noteDetails.setTrash(false);
+        String token="token";
+        String message="Note is Not in trash";
+
+        try{
+            when(redisUserRepository.findByToken(token)).thenReturn(redisUserModel);
+            when(redisUserModel.getToken()).thenReturn(token);
+            when(noteRepository.findById(any())).thenReturn(java.util.Optional.of(noteDetails));
+            noteService.deleteNote(noteId, token);
+        }catch (NoteServiceException e){
+            Assert.assertEquals(message,e.getMessage());
+        }
+    }
+
+    @Test
+    void givenToken_WhenNotCorrect_ShouldThrowException(){
+        NoteDetails noteDetails=new NoteDetails();
+        Integer noteId=2;
+        noteDetails.setTrash(true);
+        String token="token";
+        String message="Token Not Found";
+
+        try{
+            when(redisUserRepository.findByToken(token)).thenReturn(redisUserModel);
+            when(redisUserModel.getToken()).thenReturn("tokennn");
+            when(noteRepository.findById(any())).thenReturn(java.util.Optional.of(noteDetails));
+            noteService.deleteNote(noteId, token);
+        }catch (NoteServiceException e){
+            Assert.assertEquals(message,e.getMessage());
+        }
+    }
+
 }
