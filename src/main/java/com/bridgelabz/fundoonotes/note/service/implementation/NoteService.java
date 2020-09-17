@@ -13,13 +13,11 @@ import com.bridgelabz.fundoonotes.user.model.UserDetails;
 import com.bridgelabz.fundoonotes.user.repository.IUserRepository;
 import com.bridgelabz.fundoonotes.user.repository.RedisUserRepository;
 import com.bridgelabz.fundoonotes.utils.IToken;
-import io.jsonwebtoken.JwtException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -38,96 +36,70 @@ public class NoteService implements INoteService {
     INoteRepository noteRepository;
 
     @Override
-    public String createNote(NoteDTO noteDTO, String token) {
-        RedisUserModel byToken = redisUserRepository.findByToken(token);
+    public String createNote(NoteDTO noteDTO, UserDetails user) {
 
-        if (byToken.getToken().equals(token)){
-            int userID = iToken.decodeJWT(token);
-            UserDetails user = userRepository.findById(userID).orElseThrow(()->new UserServiceException("User Not Found"));
-            NoteDetails noteDetails=new NoteDetails();
-            BeanUtils.copyProperties(noteDTO,noteDetails);
-            noteDetails.setUser(user);
+        NoteDetails noteDetails=new NoteDetails();
+        BeanUtils.copyProperties(noteDTO,noteDetails);
+        noteDetails.setUser(user);
+        noteRepository.save(noteDetails);
+        return "NEW NOTE CREATE";
+    }
+
+    @Override
+    public String trashNote(Integer noteID) {
+        NoteDetails noteDetails = noteRepository.findById(noteID).orElseThrow(() -> new NoteServiceException("Note Not Found"));
+        noteDetails.setTrash(true);
+        noteRepository.save(noteDetails);
+        return "Note Added In Trash";
+
+    }
+
+    @Override
+    public String deleteNote(Integer noteID){
+        NoteDetails noteDetails = noteRepository.findById(noteID).orElseThrow(() -> new NoteServiceException("Note Not Found"));
+        if(noteDetails.isTrash()){
+            noteRepository.delete(noteDetails);
+            return "Note Deleted Successfully";
+        }
+        throw new NoteServiceException("Note is Not in trash");
+    }
+
+    @Override
+    public List<NoteDetails> getAllNotes(UserDetails user) {
+
+        int userID=user.getId();
+        List<NoteDetails> allByUserAndTrashFalse = noteRepository.findAllNotes(userID);
+        if(!allByUserAndTrashFalse.isEmpty()){
+            return allByUserAndTrashFalse;
+        }
+        throw new NoteServiceException("No Any Note Available");
+
+    }
+
+    @Override
+    public String updateNote(NoteDTO noteDTO) {
+
+        NoteDetails noteDetails = noteRepository.findById(noteDTO.id).orElseThrow(() -> new NoteServiceException("Note Not Found"));
+        if(!noteDetails.isTrash()){
+            noteDetails.setTitle(noteDTO.title);
+            noteDetails.setDescription(noteDTO.description);
+            noteDetails.setModified(LocalDateTime.now());
             noteRepository.save(noteDetails);
-            return "NEW NOTE CREATE";
+            return "Note Updated Successful";
         }
-        throw new NoteServiceException("Token Not Found");
+        throw new NoteServiceException("Can't Edit In Trash");
+
     }
 
     @Override
-    public String trashNote(Integer noteID, String token) {
-        RedisUserModel byToken = redisUserRepository.findByToken(token);
-        if (byToken.getToken().equals(token)) {
-            NoteDetails noteDetails = noteRepository.findById(noteID).orElseThrow(() -> new NoteServiceException("Note Not Found"));
-            noteDetails.setTrash(true);
-            noteRepository.save(noteDetails);
-            return "Note Added In Trash";
+    public List<NoteDetails> getAllNotesOfTrash(UserDetails user) {
+
+        int userID=user.getId();
+        List<NoteDetails> allByUserAndTrashFalse = noteRepository.findAllNotesOfTrash(userID);
+        if(!allByUserAndTrashFalse.isEmpty()){
+            return allByUserAndTrashFalse;
         }
-        throw new JWTException("Token Not Found");
-    }
-
-    @Override
-    public String deleteNote(Integer noteID, String token) {
-        RedisUserModel byToken = redisUserRepository.findByToken(token);
-        if (byToken.getToken().equals(token)) {
-            NoteDetails noteDetails = noteRepository.findById(noteID).orElseThrow(() -> new NoteServiceException("Note Not Found"));
-            if(noteDetails.isTrash()){
-                noteRepository.delete(noteDetails);
-                return "Note Deleted Successfully";
-            }
-            throw new NoteServiceException("Note is Not in trash");
-        }
-        throw new JWTException("Token Not Found");
-    }
-
-    @Override
-    public List<NoteDetails> getAllNotes(String token) {
-
-        RedisUserModel byToken = redisUserRepository.findByToken(token);
-        if (byToken.getToken().equals(token)) {
-            int userID = iToken.decodeJWT(token);
-           userRepository.findById(userID).orElseThrow(()->new UserServiceException("User Not Found"));
-            List<NoteDetails> allByUserAndTrashFalse = noteRepository.findAllNotes(userID);
-            if(!allByUserAndTrashFalse.isEmpty()){
-                return allByUserAndTrashFalse;
-            }
-            throw new NoteServiceException("No Any Note Available");
-        }
-        throw new JWTException("Token Not Found");
-    }
-
-    @Override
-    public String updateNote(NoteDTO noteDTO, String token) {
-        RedisUserModel byToken = redisUserRepository.findByToken(token);
-        if (byToken.getToken().equals(token)) {
-            int userID = iToken.decodeJWT(token);
-            userRepository.findById(userID).orElseThrow(() -> new UserServiceException("User Not Found"));
-            NoteDetails noteDetails = noteRepository.findById(noteDTO.id).orElseThrow(() -> new NoteServiceException("Note Not Found"));
-            if(!noteDetails.isTrash()){
-                noteDetails.setTitle(noteDTO.title);
-                noteDetails.setDescription(noteDTO.description);
-                noteDetails.setModified(LocalDateTime.now());
-                noteRepository.save(noteDetails);
-                return "Note Updated Successful";
-            }
-            throw new NoteServiceException("Can't Edit In Trash");
-        }
-        throw new JWTException("Token Not Found");
-    }
-
-    @Override
-    public List<NoteDetails> getAllNotesOfTrash(String token) {
-
-        RedisUserModel byToken = redisUserRepository.findByToken(token);
-        if (byToken.getToken().equals(token)) {
-            int userID = iToken.decodeJWT(token);
-            userRepository.findById(userID).orElseThrow(()->new UserServiceException("User Not Found"));
-            List<NoteDetails> allByUserAndTrashFalse = noteRepository.findAllNotesOfTrash(userID);
-            if(!allByUserAndTrashFalse.isEmpty()){
-                return allByUserAndTrashFalse;
-            }
-            throw new NoteServiceException("No Any Note Available");
-        }
-        throw new JWTException("Token Not Found");
+        throw new NoteServiceException("No Any Note Available");
 
     }
 

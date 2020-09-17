@@ -61,12 +61,8 @@ public class NoteServiceTest {
         String token="token";
         String message = "NEW NOTE CREATE";
 
-        when(redisUserRepository.findByToken(token)).thenReturn(redisUserModel);
-        when(redisUserModel.getToken()).thenReturn(token);
-        when(jwtToken.decodeJWT(token)).thenReturn(2);
-        when(userRepository.findById(2)).thenReturn(java.util.Optional.of(userDetails));
         when(noteRepository.save(noteDetails)).thenReturn(noteDetails);
-        String note = noteService.createNote(noteDTO, token);
+        String note = noteService.createNote(noteDTO,userDetails);
         Assert.assertEquals(message,note);
 
     }
@@ -86,7 +82,7 @@ public class NoteServiceTest {
             when(jwtToken.decodeJWT(token)).thenReturn(2);
             when(userRepository.findById(2)).thenReturn(java.util.Optional.of(userDetails));
             when(noteRepository.save(noteDetails)).thenReturn(noteDetails);
-            noteService.createNote(noteDTO, token);
+            noteService.createNote(noteDTO,userDetails);
         }catch (NoteServiceException e){
             Assert.assertEquals(message,e.getMessage());
         }
@@ -96,14 +92,11 @@ public class NoteServiceTest {
     void givenNoteId_WhenCorrect_ShouldReturnMeassage(){
         NoteDetails noteDetails=new NoteDetails();
         Integer noteId=2;
-        String token="token";
         String message="Note Added In Trash";
 
-        when(redisUserRepository.findByToken(token)).thenReturn(redisUserModel);
-        when(redisUserModel.getToken()).thenReturn(token);
         when(noteRepository.findById(any())).thenReturn(java.util.Optional.of(noteDetails));
         when(noteRepository.save(noteDetails)).thenReturn(noteDetails);
-        String note = noteService.trashNote(noteId, token);
+        String note = noteService.trashNote(noteId);
 
         Assert.assertEquals(message,note);
     }
@@ -120,7 +113,7 @@ public class NoteServiceTest {
             when(redisUserModel.getToken()).thenReturn(token);
             when(noteRepository.findById(any())).thenThrow(new NoteServiceException("Note Not Found"));
             when(noteRepository.save(noteDetails)).thenReturn(noteDetails);
-            noteService.trashNote(noteId, token);
+            noteService.trashNote(noteId);
         }catch (NoteServiceException e){
             Assert.assertEquals(message,e.getMessage());
         }
@@ -139,7 +132,7 @@ public class NoteServiceTest {
             when(redisUserModel.getToken()).thenReturn("tokennn");
             when(noteRepository.findById(any())).thenReturn(java.util.Optional.of(noteDetails));
             when(noteRepository.save(noteDetails)).thenReturn(noteDetails);
-            noteService.trashNote(noteId, token);
+            noteService.trashNote(noteId);
         }catch (NoteServiceException e){
             Assert.assertEquals(message,e.getMessage());
         }
@@ -151,13 +144,10 @@ public class NoteServiceTest {
         NoteDetails noteDetails=new NoteDetails();
         Integer noteId=2;
         noteDetails.setTrash(true);
-        String token="token";
         String message="Note Deleted Successfully";
 
-        when(redisUserRepository.findByToken(token)).thenReturn(redisUserModel);
-        when(redisUserModel.getToken()).thenReturn(token);
         when(noteRepository.findById(any())).thenReturn(java.util.Optional.of(noteDetails));
-        String note = noteService.deleteNote(noteId, token);
+        String note = noteService.deleteNote(noteId);
 
         Assert.assertEquals(message,note);
 
@@ -175,7 +165,7 @@ public class NoteServiceTest {
             when(redisUserRepository.findByToken(token)).thenReturn(redisUserModel);
             when(redisUserModel.getToken()).thenReturn(token);
             when(noteRepository.findById(any())).thenThrow(new NoteServiceException("Note Not Found"));
-            noteService.deleteNote(noteId, token);
+            noteService.deleteNote(noteId);
         }catch (NoteServiceException e){
             Assert.assertEquals(message,e.getMessage());
         }
@@ -193,7 +183,7 @@ public class NoteServiceTest {
             when(redisUserRepository.findByToken(token)).thenReturn(redisUserModel);
             when(redisUserModel.getToken()).thenReturn(token);
             when(noteRepository.findById(any())).thenReturn(java.util.Optional.of(noteDetails));
-            noteService.deleteNote(noteId, token);
+            noteService.deleteNote(noteId);
         }catch (NoteServiceException e){
             Assert.assertEquals(message,e.getMessage());
         }
@@ -211,7 +201,7 @@ public class NoteServiceTest {
             when(redisUserRepository.findByToken(token)).thenReturn(redisUserModel);
             when(redisUserModel.getToken()).thenReturn("tokennn");
             when(noteRepository.findById(any())).thenReturn(java.util.Optional.of(noteDetails));
-            noteService.deleteNote(noteId, token);
+            noteService.deleteNote(noteId);
         }catch (NoteServiceException e){
             Assert.assertEquals(message,e.getMessage());
         }
@@ -231,7 +221,7 @@ public class NoteServiceTest {
         when(jwtToken.decodeJWT(token)).thenReturn(2);
         when(userRepository.findById(2)).thenReturn(java.util.Optional.of(userDetails));
         when(noteRepository.findAllNotes(2)).thenReturn(noteDetailsList);
-        List<NoteDetails> allNotes = noteService.getAllNotes(token);
+        List<NoteDetails> allNotes = noteService.getAllNotes(userDetails);
         Assert.assertEquals(noteDetailsList,allNotes);
     }
 
@@ -240,16 +230,11 @@ public class NoteServiceTest {
         NoteDTO noteDTO=new NoteDTO(2,"First Note","This is my first note");
         NoteDetails noteDetails=new NoteDetails();
         BeanUtils.copyProperties(noteDTO,noteDetails);
-        String token="token";
         String message = "Note Updated Successful";
 
-        when(redisUserRepository.findByToken(token)).thenReturn(redisUserModel);
-        when(redisUserModel.getToken()).thenReturn(token);
-        when(jwtToken.decodeJWT(token)).thenReturn(2);
-        when(userRepository.findById(2)).thenReturn(java.util.Optional.of(userDetails));
         when(noteRepository.findById(2)).thenReturn(java.util.Optional.of(noteDetails));
         when(noteRepository.save(noteDetails)).thenReturn(noteDetails);
-        String note = noteService.updateNote(noteDTO, token);
+        String note = noteService.updateNote(noteDTO);
         Assert.assertEquals(message,note);
     }
 
@@ -260,14 +245,9 @@ public class NoteServiceTest {
         NoteDetails noteDetails=new NoteDetails();
         BeanUtils.copyProperties(noteDTO,noteDetails);
         noteDetailsList.add(noteDetails);
-        String token="token";
-
-        when(redisUserRepository.findByToken(token)).thenReturn(redisUserModel);
-        when(redisUserModel.getToken()).thenReturn(token);
-        when(jwtToken.decodeJWT(token)).thenReturn(2);
-        when(userRepository.findById(2)).thenReturn(java.util.Optional.of(userDetails));
-        when(noteRepository.findAllNotesOfTrash(2)).thenReturn(noteDetailsList);
-        List<NoteDetails> allNotes = noteService.getAllNotesOfTrash(token);
+        when(noteRepository.findAllNotesOfTrash(3)).thenReturn(noteDetailsList);
+        List<NoteDetails> allNotes = noteService.getAllNotesOfTrash(userDetails);
+        System.out.println(allNotes);
         Assert.assertEquals(noteDetailsList,allNotes);
     }
 
