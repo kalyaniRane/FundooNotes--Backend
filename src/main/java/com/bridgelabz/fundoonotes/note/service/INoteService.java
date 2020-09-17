@@ -14,4 +14,6 @@ public interface INoteService {
     List<NoteDetails> getAllNotes(String token);
 
     String updateNote(NoteDTO noteDTO, String token);
+
+    List<NoteDetails> getAllNotesOfTrash(String token);
 }

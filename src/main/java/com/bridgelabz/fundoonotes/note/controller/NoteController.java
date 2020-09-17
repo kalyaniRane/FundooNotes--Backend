@@ -61,4 +61,11 @@ public class NoteController {
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
 
+    @GetMapping("/trash/list")
+    public ResponseEntity<ResponseDTO> getAllNotesOfTrash (@RequestHeader(value = "token",required = false) String token){
+        List<NoteDetails> allNotesOfTrash = noteService.getAllNotesOfTrash(token);
+        ResponseDTO responseDTO = new ResponseDTO("Notes Fetched",200,allNotesOfTrash);
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+    }
+
 }

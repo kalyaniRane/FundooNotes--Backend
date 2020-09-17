@@ -113,5 +113,10 @@ public class NoteService implements INoteService {
         throw new JWTException("Token Not Found");
     }
 
+    @Override
+    public List<NoteDetails> getAllNotesOfTrash(String token) {
+        return null;
+    }
+
 
 }

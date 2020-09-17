@@ -153,7 +153,7 @@ public class NoteControllerTest {
     @Test
     void getAllNotes_ShouldReturnStatus() throws Exception {
         List<NoteDetails> noteDetailsList=new ArrayList();
-        NoteDTO noteDTO=new NoteDTO(2," ","This is my first note");
+        NoteDTO noteDTO=new NoteDTO(2,"First Note","This is my first note");
         NoteDetails noteDetails=new NoteDetails();
         BeanUtils.copyProperties(noteDTO,noteDetails);
         noteDetailsList.add(noteDetails);
@@ -178,6 +178,25 @@ public class NoteControllerTest {
         MvcResult mvcResult = this.mockMvc.perform(post("/note/update")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(stringConvertedDto)).andReturn();
+
+        String response = mvcResult.getResponse().getContentAsString();
+        ResponseDTO responseDto = gson.fromJson(response, ResponseDTO.class);
+        String responseMessage = responseDto.message;
+        Assert.assertEquals(message, responseMessage);
+    }
+
+    @Test
+    void getAllNotesOfTrash() throws Exception {
+        List<NoteDetails> noteDetailsList=new ArrayList();
+        NoteDTO noteDTO=new NoteDTO(2,"First Note","This is my first note");
+        NoteDetails noteDetails=new NoteDetails();
+        BeanUtils.copyProperties(noteDTO,noteDetails);
+        noteDetailsList.add(noteDetails);
+        String message="Notes Fetched";
+
+        when(noteService.getAllNotesOfTrash(any())).thenReturn(noteDetailsList);
+        MvcResult mvcResult = this.mockMvc.perform(get("/note/trash/list")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         String response = mvcResult.getResponse().getContentAsString();
         ResponseDTO responseDto = gson.fromJson(response, ResponseDTO.class);
