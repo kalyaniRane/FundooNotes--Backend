@@ -117,8 +117,17 @@ public class NoteService implements INoteService {
     @Override
     public List<NoteDetails> getAllNotesOfTrash(String token) {
 
-    List<NoteDetails> noteDetails=new ArrayList<>();
-    return noteDetails;
+        RedisUserModel byToken = redisUserRepository.findByToken(token);
+        if (byToken.getToken().equals(token)) {
+            int userID = iToken.decodeJWT(token);
+            userRepository.findById(userID).orElseThrow(()->new UserServiceException("User Not Found"));
+            List<NoteDetails> allByUserAndTrashFalse = noteRepository.findAllNotesOfTrash(userID);
+            if(!allByUserAndTrashFalse.isEmpty()){
+                return allByUserAndTrashFalse;
+            }
+            throw new NoteServiceException("No Any Note Available");
+        }
+        throw new JWTException("Token Not Found");
 
     }
 
