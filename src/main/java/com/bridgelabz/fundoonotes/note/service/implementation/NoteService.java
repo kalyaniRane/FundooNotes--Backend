@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -115,7 +116,10 @@ public class NoteService implements INoteService {
 
     @Override
     public List<NoteDetails> getAllNotesOfTrash(String token) {
-        return null;
+
+    List<NoteDetails> noteDetails=new ArrayList<>();
+    return noteDetails;
+
     }
 
 

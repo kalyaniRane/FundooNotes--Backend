@@ -253,4 +253,22 @@ public class NoteServiceTest {
         Assert.assertEquals(message,note);
     }
 
+    @Test
+    void givenToken_WhenCorrect_ShouldReturnNotesOfTrash(){
+        List<NoteDetails> noteDetailsList=new ArrayList();
+        NoteDTO noteDTO=new NoteDTO(2,"First Note","This is my first note");
+        NoteDetails noteDetails=new NoteDetails();
+        BeanUtils.copyProperties(noteDTO,noteDetails);
+        noteDetailsList.add(noteDetails);
+        String token="token";
+
+        when(redisUserRepository.findByToken(token)).thenReturn(redisUserModel);
+        when(redisUserModel.getToken()).thenReturn(token);
+        when(jwtToken.decodeJWT(token)).thenReturn(2);
+        when(userRepository.findById(2)).thenReturn(java.util.Optional.of(userDetails));
+        when(noteRepository.findAllNotesOfTrash(2)).thenReturn(noteDetailsList);
+        List<NoteDetails> allNotes = noteService.getAllNotesOfTrash(token);
+        Assert.assertEquals(noteDetailsList,allNotes);
+    }
+
 }
