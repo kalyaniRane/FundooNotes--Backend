@@ -8,8 +8,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Component
 public class NoteServiceInterceptorAppConfig extends WebMvcConfigurerAdapter {
 
-    @Autowired
-    NoteServiceInterceptor noteServiceInterceptor;
+   @Autowired
+   NoteServiceInterceptor noteServiceInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

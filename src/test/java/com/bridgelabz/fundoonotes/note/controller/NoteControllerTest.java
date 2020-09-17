@@ -2,6 +2,8 @@ package com.bridgelabz.fundoonotes.note.controller;
 
 
 import com.bridgelabz.fundoonotes.dto.ResponseDTO;
+import com.bridgelabz.fundoonotes.interceptor.NoteServiceInterceptor;
+import com.bridgelabz.fundoonotes.interceptor.NoteServiceInterceptorAppConfig;
 import com.bridgelabz.fundoonotes.note.controller.NoteController;
 import com.bridgelabz.fundoonotes.note.dto.NoteDTO;
 import com.bridgelabz.fundoonotes.note.model.NoteDetails;
@@ -41,6 +43,12 @@ public class NoteControllerTest {
 
     @MockBean
     FileProperties fileProperties;
+
+    @MockBean
+    NoteServiceInterceptor noteServiceInterceptor;
+
+    @MockBean
+    NoteServiceInterceptorAppConfig noteServiceInterceptorAppConfig;
 
     Gson gson = new Gson();
 
