@@ -29,6 +29,8 @@ public class LabelService implements ILabelService {
 
     @Override
     public String deleteLabel(Integer labelID) {
+        LabelDetails byId = labelRepository.findById(labelID).orElseThrow(()->new NoteServiceException("Label Not Found"));
+        labelRepository.delete(byId);
         return "LABEL DELETED";
     }
 
