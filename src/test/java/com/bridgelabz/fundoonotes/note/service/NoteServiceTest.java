@@ -1,6 +1,7 @@
 package com.bridgelabz.fundoonotes.note.service;
 
 
+import com.bridgelabz.fundoonotes.enums.SortedNotesEnum;
 import com.bridgelabz.fundoonotes.exceptions.NoteServiceException;
 import com.bridgelabz.fundoonotes.note.dto.NoteDTO;
 import com.bridgelabz.fundoonotes.note.model.NoteDetails;
@@ -52,6 +53,9 @@ public class NoteServiceTest {
 
     @Mock
     UserDetails userDetails;
+
+    @Mock
+    SortedNotesEnum notesEnum;
 
     @Test
     void givenData_WhenCorrect_ShouldReturnMessage(){

@@ -66,7 +66,7 @@ public class NoteService implements INoteService {
 
     @Override
     public List<NoteDetails> getAllNotes(UserDetails user) {
-
+        System.out.println("notes");
         int userID=user.getId();
         List<NoteDetails> allByUserAndTrashFalse = noteRepository.findAllNotes(userID);
         if(!allByUserAndTrashFalse.isEmpty()){
@@ -109,7 +109,15 @@ public class NoteService implements INoteService {
     @Override
     public List<NoteDetails> sortNotes(UserDetails user, SortedNotesEnum notesEnum, String order) {
 
-       return null;
+        List<NoteDetails> allNotes = getAllNotes(user);
+
+        List<NoteDetails> noteDetails = notesEnum.sortedNotes(allNotes);
+
+        if(order.equals("desc")){
+            Collections.reverse(noteDetails);
+        }
+
+        return noteDetails;
     }
 
 }
