@@ -63,7 +63,6 @@ public class NoteServiceTest {
         NoteDTO noteDTO=new NoteDTO(2,"First Note","This is my first note");
         NoteDetails noteDetails=new NoteDetails();
         BeanUtils.copyProperties(noteDTO,noteDetails);
-        String token="token";
         String message = "NEW NOTE CREATE";
 
         when(noteRepository.save(noteDetails)).thenReturn(noteDetails);

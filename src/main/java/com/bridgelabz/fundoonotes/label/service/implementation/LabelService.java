@@ -18,8 +18,8 @@ public class LabelService implements ILabelService {
 
 
     @Override
-    public String createLabel(LabelDTO labelDTO, UserDetails user) {
-        return null;
+    public String createLabel(LabelDTO labelDTO, UserDetails user){
+        return "LABEL CREATED";
     }
 
 }

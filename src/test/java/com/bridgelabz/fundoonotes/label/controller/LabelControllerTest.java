@@ -57,13 +57,14 @@ public class LabelControllerTest {
 
         String stringConvertedDto = gson.toJson(labelDetails);
         String message="Label Created";
-        System.out.println(stringConvertedDto);
+
         when(labelService.createLabel(any(), any())).thenReturn(message);
         MvcResult mvcResult = this.mockMvc.perform(post("/label/create")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(stringConvertedDto)).andReturn();
+
         String response = mvcResult.getResponse().getContentAsString();
-        System.out.println("response= "+response);
+
         ResponseDTO responseDto = gson.fromJson(response, ResponseDTO.class);
         String responseMessage = responseDto.message;
         Assert.assertEquals(message, responseMessage);
