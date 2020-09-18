@@ -10,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -38,7 +39,9 @@ public class LabelService implements ILabelService {
 
     @Override
     public List<LabelDetails> getAllLabels(UserDetails user) {
-        return null;
+        List<LabelDetails> allByUser = new ArrayList<>();
+
+        return allByUser;
     }
 
 }

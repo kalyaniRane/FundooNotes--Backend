@@ -17,6 +17,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -58,7 +61,24 @@ public class LabelServiceTest {
         String label = labelService.deleteLabel(labelID);
 
         Assert.assertEquals(message,label);
+    }
 
+    @Test
+    void getAllLabels(){
+        List<LabelDetails> labelDetailsList= new ArrayList<>();
+        RegistrationDTO registrationDTO = new RegistrationDTO("Kalyani", "kalyani@gmail.com", "Kalyani@123", "8855885588");
+        UserDetails userDetails = new UserDetails(registrationDTO);
+        userDetails.setId(2);
+        LabelDTO labelDTO=new LabelDTO("First Label");
+        LabelDetails labelDetails=new LabelDetails();
+        labelDetails.setUser(userDetails);
+        BeanUtils.copyProperties(labelDTO,labelDetails);
+        labelDetailsList.add(labelDetails);
+
+        when(labelRepository.findAllByUser(any())).thenReturn(labelDetailsList);
+        List<LabelDetails> allLabels = labelService.getAllLabels(userDetails);
+
+        Assert.assertEquals(labelDetailsList,allLabels);
     }
 
 }
