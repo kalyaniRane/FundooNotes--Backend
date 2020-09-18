@@ -21,6 +21,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -89,6 +93,27 @@ public class LabelControllerTest {
         String responseMessage = responseDto.message;
         Assert.assertEquals(message, responseMessage);
 
+    }
+
+    @Test
+    void getAllLabels() throws Exception {
+        List<LabelDetails> labelDetailsList = new ArrayList<>();
+        LabelDTO labelDTO=new LabelDTO("First Label");
+        LabelDetails labelDetails=new LabelDetails();
+        BeanUtils.copyProperties(labelDTO,labelDetails);
+        labelDetailsList.add(labelDetails);
+
+        String message="Labels Fetched";
+
+        when(labelService.getAllLabels(any())).thenReturn(labelDetailsList);
+        MvcResult mvcResult = this.mockMvc.perform(get("/label")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        String response = mvcResult.getResponse().getContentAsString();
+        ResponseDTO responseDto = gson.fromJson(response, ResponseDTO.class);
+        String responseMessage = responseDto.message;
+        Assert.assertEquals(message, responseMessage);
     }
 
 }
