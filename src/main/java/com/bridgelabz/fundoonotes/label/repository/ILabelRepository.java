@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface ILabelRepository extends JpaRepository<LabelDetails,Integer> {
     List<LabelDetails> findAllByUser(UserDetails userDetails);
+
 }

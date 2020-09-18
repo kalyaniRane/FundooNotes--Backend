@@ -24,7 +24,6 @@ public class LabelController {
 
     @PostMapping("/create")
     public ResponseEntity<ResponseDTO> createLabel (@Valid @RequestBody LabelDTO labelDTO, @RequestHeader(value = "token",required = false) String token, BindingResult bindingResult, HttpServletRequest request){
-        System.out.println("controller");
         if(bindingResult.hasErrors()){
             return new ResponseEntity(bindingResult.getAllErrors().get(0).getDefaultMessage(), HttpStatus.NOT_ACCEPTABLE);
         }

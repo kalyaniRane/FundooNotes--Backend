@@ -28,4 +28,10 @@ public class FundooNotesExceptionHandler {
         return new ResponseEntity(responseDTO,HttpStatus.ALREADY_REPORTED);
     }
 
+    @ExceptionHandler(LabelServiceException.class)
+    public ResponseEntity labelServiceExceptionHandler(LabelServiceException e){
+        ResponseDTO responseDTO = new ResponseDTO(e.getMessage(),500);
+        return new ResponseEntity(responseDTO,HttpStatus.ALREADY_REPORTED);
+    }
+
 }
