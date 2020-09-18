@@ -26,4 +26,9 @@ public class LabelService implements ILabelService {
         return "LABEL CREATED";
     }
 
+    @Override
+    public String deleteLabel(Integer labelID) {
+        return null;
+    }
+
 }

@@ -32,4 +32,12 @@ public class LabelController {
         return new ResponseEntity(responseDTO, HttpStatus.OK);
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<ResponseDTO> deleteLabel (@RequestParam Integer labelID, @RequestHeader(value = "token",required = false) String token, HttpServletRequest request){
+
+        String label = labelService.deleteLabel(labelID);
+        ResponseDTO responseDTO=new ResponseDTO(label,200);
+        return new ResponseEntity(responseDTO, HttpStatus.OK);
+    }
+
 }

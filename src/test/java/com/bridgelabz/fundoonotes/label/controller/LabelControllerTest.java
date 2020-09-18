@@ -71,4 +71,24 @@ public class LabelControllerTest {
 
     }
 
+    @Test
+    void givenLabelID_WhenCorrect_ShouldReturnMessage() throws Exception {
+        Integer labelID=1;
+
+        String message="Label Deleted";
+
+        when(labelService.deleteLabel(any())).thenReturn(message);
+
+        MvcResult mvcResult = this.mockMvc.perform(delete("/label/delete")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("labelID", String.valueOf(labelID)))
+                .andReturn();
+
+        String response = mvcResult.getResponse().getContentAsString();
+        ResponseDTO responseDto = gson.fromJson(response, ResponseDTO.class);
+        String responseMessage = responseDto.message;
+        Assert.assertEquals(message, responseMessage);
+
+    }
+
 }

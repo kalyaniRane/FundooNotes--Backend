@@ -7,4 +7,5 @@ public interface ILabelService {
 
     String createLabel(LabelDTO labelDTO, UserDetails user);
 
+    String deleteLabel(Integer labelID);
 }
