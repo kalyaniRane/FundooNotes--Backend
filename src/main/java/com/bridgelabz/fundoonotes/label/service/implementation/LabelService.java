@@ -18,7 +18,11 @@ public class LabelService implements ILabelService {
 
 
     @Override
-    public String createLabel(LabelDTO labelDTO, UserDetails user){
+    public String createLabel(LabelDTO labelDTO, UserDetails user) {
+        LabelDetails labelDetails=new LabelDetails();
+        BeanUtils.copyProperties(labelDTO,labelDetails);
+        labelDetails.setUser(user);
+        labelRepository.save(labelDetails);
         return "LABEL CREATED";
     }
 
