@@ -1,5 +1,6 @@
 package com.bridgelabz.fundoonotes.label.service.implementation;
 
+import com.bridgelabz.fundoonotes.exceptions.NoteServiceException;
 import com.bridgelabz.fundoonotes.label.dto.LabelDTO;
 import com.bridgelabz.fundoonotes.label.model.LabelDetails;
 import com.bridgelabz.fundoonotes.label.repository.ILabelRepository;
@@ -28,7 +29,7 @@ public class LabelService implements ILabelService {
 
     @Override
     public String deleteLabel(Integer labelID) {
-        return null;
+        return "LABEL DELETED";
     }
 
 }

@@ -48,4 +48,17 @@ public class LabelServiceTest {
         Assert.assertEquals(message,label);
     }
 
+    @Test
+    void  givenLabelID_WhenCorrect_ShouldReturnMessage(){
+        LabelDetails labelDetails=new LabelDetails();
+        Integer labelID=1;
+        String message= "LABEL DELETED";
+
+        when(labelRepository.findById(any())).thenReturn(java.util.Optional.of(labelDetails));
+        String label = labelService.deleteLabel(labelID);
+
+        Assert.assertEquals(message,label);
+
+    }
+
 }
