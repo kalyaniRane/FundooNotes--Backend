@@ -66,7 +66,6 @@ public class NoteService implements INoteService {
 
     @Override
     public List<NoteDetails> getAllNotes(UserDetails user) {
-        System.out.println("notes");
         int userID=user.getId();
         List<NoteDetails> allByUserAndTrashFalse = noteRepository.findAllNotes(userID);
         if(!allByUserAndTrashFalse.isEmpty()){

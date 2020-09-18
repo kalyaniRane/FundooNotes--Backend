@@ -266,4 +266,25 @@ public class NoteServiceTest {
         Assert.assertEquals(noteDetailsList,allNotes);
     }
 
+
+    @Test
+    void givenSortType_WhenCorrect_ShouldReturnNotes(){
+        List<NoteDetails> noteDetailsList=new ArrayList();
+        RegistrationDTO registrationDTO = new RegistrationDTO("Kalyani", "kalyani@gmail.com", "Kalyani@123", "8855885588");
+        UserDetails userDetails = new UserDetails(registrationDTO);
+        userDetails.setId(1);
+        NoteDTO noteDTO=new NoteDTO(2,"First Note","This is my first note");
+        NoteDetails noteDetails=new NoteDetails();
+        BeanUtils.copyProperties(noteDTO,noteDetails);
+        noteDetailsList.add(noteDetails);
+
+        when(noteRepository.findAllNotes(1)).thenReturn(noteDetailsList);
+        when(noteService.getAllNotes(userDetails)).thenReturn(noteDetailsList);
+        when(notesEnum.sortedNotes(any())).thenReturn(noteDetailsList);
+
+        List<NoteDetails> noteDetails1 = noteService.sortNotes(userDetails, SortedNotesEnum.NAME, "desc");
+        Assert.assertEquals(noteDetailsList,noteDetails1);
+
+    }
+
 }
