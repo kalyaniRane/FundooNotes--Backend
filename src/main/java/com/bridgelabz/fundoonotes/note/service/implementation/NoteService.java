@@ -1,14 +1,12 @@
 package com.bridgelabz.fundoonotes.note.service.implementation;
 
 
-import com.bridgelabz.fundoonotes.exceptions.JWTException;
 import com.bridgelabz.fundoonotes.exceptions.NoteServiceException;
 import com.bridgelabz.fundoonotes.exceptions.UserServiceException;
 import com.bridgelabz.fundoonotes.note.dto.NoteDTO;
 import com.bridgelabz.fundoonotes.note.model.NoteDetails;
 import com.bridgelabz.fundoonotes.note.repository.INoteRepository;
 import com.bridgelabz.fundoonotes.note.service.INoteService;
-import com.bridgelabz.fundoonotes.user.model.RedisUserModel;
 import com.bridgelabz.fundoonotes.user.model.UserDetails;
 import com.bridgelabz.fundoonotes.user.repository.IUserRepository;
 import com.bridgelabz.fundoonotes.user.repository.RedisUserRepository;
@@ -77,15 +75,18 @@ public class NoteService implements INoteService {
     }
 
     @Override
-    public String updateNote(NoteDTO noteDTO) {
+    public String updateNote(NoteDTO noteDTO, UserDetails user) {
 
         NoteDetails noteDetails = noteRepository.findById(noteDTO.id).orElseThrow(() -> new NoteServiceException("Note Not Found"));
         if(!noteDetails.isTrash()){
-            noteDetails.setTitle(noteDTO.title);
-            noteDetails.setDescription(noteDTO.description);
-            noteDetails.setModified(LocalDateTime.now());
-            noteRepository.save(noteDetails);
-            return "Note Updated Successful";
+            if(noteDetails.getUser().equals(user)){
+                noteDetails.setTitle(noteDTO.title);
+                noteDetails.setDescription(noteDTO.description);
+                noteDetails.setModified(LocalDateTime.now());
+                noteRepository.save(noteDetails);
+                return "Note Updated Successful";
+            }
+            throw new UserServiceException("You Can't Access This Note");
         }
         throw new NoteServiceException("Can't Edit In Trash");
 

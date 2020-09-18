@@ -4,7 +4,6 @@ package com.bridgelabz.fundoonotes.note.controller;
 import com.bridgelabz.fundoonotes.dto.ResponseDTO;
 import com.bridgelabz.fundoonotes.interceptor.NoteServiceInterceptor;
 import com.bridgelabz.fundoonotes.interceptor.NoteServiceInterceptorAppConfig;
-import com.bridgelabz.fundoonotes.note.controller.NoteController;
 import com.bridgelabz.fundoonotes.note.dto.NoteDTO;
 import com.bridgelabz.fundoonotes.note.model.NoteDetails;
 import com.bridgelabz.fundoonotes.note.service.implementation.NoteService;
@@ -12,7 +11,6 @@ import com.bridgelabz.fundoonotes.properties.FileProperties;
 import com.google.gson.Gson;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -182,7 +180,7 @@ public class NoteControllerTest {
 
         String message="NOTE UPDATED";
 
-        when(noteService.updateNote(any())).thenReturn(message);
+        when(noteService.updateNote(any(), any())).thenReturn(message);
         MvcResult mvcResult = this.mockMvc.perform(post("/note/update")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(stringConvertedDto)).andReturn();

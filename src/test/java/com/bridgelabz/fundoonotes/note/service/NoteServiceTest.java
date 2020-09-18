@@ -7,6 +7,7 @@ import com.bridgelabz.fundoonotes.note.model.NoteDetails;
 import com.bridgelabz.fundoonotes.note.repository.INoteRepository;
 import com.bridgelabz.fundoonotes.note.service.implementation.NoteService;
 import com.bridgelabz.fundoonotes.properties.FileProperties;
+import com.bridgelabz.fundoonotes.user.dto.RegistrationDTO;
 import com.bridgelabz.fundoonotes.user.model.RedisUserModel;
 import com.bridgelabz.fundoonotes.user.model.UserDetails;
 import com.bridgelabz.fundoonotes.user.repository.IUserRepository;
@@ -210,6 +211,9 @@ public class NoteServiceTest {
     @Test
     void givenToken_WhenCorrect_ShouldReturnNotes(){
         List<NoteDetails> noteDetailsList=new ArrayList();
+        RegistrationDTO registrationDTO = new RegistrationDTO("Kalyani", "kalyani@gmail.com", "Kalyani@123", "8855885588");
+        UserDetails userDetails = new UserDetails(registrationDTO);
+        userDetails.setId(2);
         NoteDTO noteDTO=new NoteDTO(2,"First Note","This is my first note");
         NoteDetails noteDetails=new NoteDetails();
         BeanUtils.copyProperties(noteDTO,noteDetails);
@@ -227,25 +231,32 @@ public class NoteServiceTest {
 
     @Test
     void givenData_WhenCorrectToUpdate_ShouldReturnMessage() {
+        RegistrationDTO registrationDTO = new RegistrationDTO("Kalyani", "kalyani@gmail.com", "Kalyani@123", "8855885588");
+        UserDetails userDetails = new UserDetails(registrationDTO);
+
         NoteDTO noteDTO=new NoteDTO(2,"First Note","This is my first note");
         NoteDetails noteDetails=new NoteDetails();
+        noteDetails.setUser(userDetails);
         BeanUtils.copyProperties(noteDTO,noteDetails);
         String message = "Note Updated Successful";
 
         when(noteRepository.findById(2)).thenReturn(java.util.Optional.of(noteDetails));
         when(noteRepository.save(noteDetails)).thenReturn(noteDetails);
-        String note = noteService.updateNote(noteDTO);
+        String note = noteService.updateNote(noteDTO, userDetails);
         Assert.assertEquals(message,note);
     }
 
     @Test
     void givenToken_WhenCorrect_ShouldReturnNotesOfTrash(){
         List<NoteDetails> noteDetailsList=new ArrayList();
+        RegistrationDTO registrationDTO = new RegistrationDTO("Kalyani", "kalyani@gmail.com", "Kalyani@123", "8855885588");
+        UserDetails userDetails = new UserDetails(registrationDTO);
+        userDetails.setId(2);
         NoteDTO noteDTO=new NoteDTO(2,"First Note","This is my first note");
         NoteDetails noteDetails=new NoteDetails();
         BeanUtils.copyProperties(noteDTO,noteDetails);
         noteDetailsList.add(noteDetails);
-        when(noteRepository.findAllNotesOfTrash(3)).thenReturn(noteDetailsList);
+        when(noteRepository.findAllNotesOfTrash(2)).thenReturn(noteDetailsList);
         List<NoteDetails> allNotes = noteService.getAllNotesOfTrash(userDetails);
         System.out.println(allNotes);
         Assert.assertEquals(noteDetailsList,allNotes);
