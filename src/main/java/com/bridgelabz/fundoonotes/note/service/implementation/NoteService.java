@@ -1,6 +1,7 @@
 package com.bridgelabz.fundoonotes.note.service.implementation;
 
 
+import com.bridgelabz.fundoonotes.enums.SortedNotesEnum;
 import com.bridgelabz.fundoonotes.exceptions.NoteServiceException;
 import com.bridgelabz.fundoonotes.exceptions.UserServiceException;
 import com.bridgelabz.fundoonotes.note.dto.NoteDTO;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -104,5 +106,10 @@ public class NoteService implements INoteService {
 
     }
 
+    @Override
+    public List<NoteDetails> sortNotes(UserDetails user, SortedNotesEnum notesEnum, String order) {
+
+       return null;
+    }
 
 }

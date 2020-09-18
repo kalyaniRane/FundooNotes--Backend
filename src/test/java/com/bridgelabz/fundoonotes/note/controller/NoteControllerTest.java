@@ -210,4 +210,24 @@ public class NoteControllerTest {
         Assert.assertEquals(message, responseMessage);
     }
 
+    @Test
+    void givenTypeForSortNoteList_WhenCorrect_ShouldReturnList() throws Exception {
+        List<NoteDetails> noteDetailsList=new ArrayList();
+        NoteDTO noteDTO=new NoteDTO(2,"First Note","This is my first note");
+        NoteDetails noteDetails=new NoteDetails();
+        BeanUtils.copyProperties(noteDTO,noteDetails);
+        noteDetailsList.add(noteDetails);
+        String message="Notes Fetched";
+
+        when(noteService.sortNotes(any(),any(),any())).thenReturn(noteDetailsList);
+        MvcResult mvcResult = this.mockMvc.perform(post("/note/sort/NAME/desc")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        String response = mvcResult.getResponse().getContentAsString();
+        ResponseDTO responseDto = gson.fromJson(response, ResponseDTO.class);
+        String responseMessage = responseDto.message;
+        Assert.assertEquals(message, responseMessage);
+
+    }
+
 }

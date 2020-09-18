@@ -2,6 +2,7 @@ package com.bridgelabz.fundoonotes.note.controller;
 
 
 import com.bridgelabz.fundoonotes.dto.ResponseDTO;
+import com.bridgelabz.fundoonotes.enums.SortedNotesEnum;
 import com.bridgelabz.fundoonotes.note.dto.NoteDTO;
 import com.bridgelabz.fundoonotes.note.model.NoteDetails;
 import com.bridgelabz.fundoonotes.note.service.INoteService;
@@ -71,6 +72,14 @@ public class NoteController {
         UserDetails user = (UserDetails) request.getAttribute("user");
         List<NoteDetails> allNotesOfTrash = noteService.getAllNotesOfTrash(user);
         ResponseDTO responseDTO = new ResponseDTO("Notes Fetched",200,allNotesOfTrash);
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+    }
+
+    @PostMapping("/sort/{sortedField}/{order}")
+    public ResponseEntity<ResponseDTO> sortNotesByName(@PathVariable SortedNotesEnum sortedField,@PathVariable String order ,@RequestHeader(value = "token",required = false) String token, HttpServletRequest request){
+        UserDetails user = (UserDetails) request.getAttribute("user");
+        List<NoteDetails> noteDetails = noteService.sortNotes(user,sortedField,order);
+        ResponseDTO responseDTO = new ResponseDTO("Notes Fetched",200,noteDetails);
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
 
