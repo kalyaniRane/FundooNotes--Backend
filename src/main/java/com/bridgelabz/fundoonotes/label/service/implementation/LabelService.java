@@ -85,7 +85,14 @@ public class LabelService implements ILabelService {
 
     @Override
     public String removeNoteLabel(MapDTO mapDTO) {
-        return null;
+        LabelDetails label = labelRepository.findById(mapDTO.labelID).orElseThrow(()-> new LabelServiceException("Label Not Found"));
+        NoteDetails note = noteRepository.findById(mapDTO.noteID).orElseThrow(()-> new NoteServiceException("Note Not Found"));
+        if(!note.isTrash()){
+            label.getNoteList().remove(note);
+            labelRepository.save(label);
+            return "Label Removed";
+        }
+        throw new NoteServiceException("Sorry,You Can't Removed Label From Trash");
     }
 
 }
