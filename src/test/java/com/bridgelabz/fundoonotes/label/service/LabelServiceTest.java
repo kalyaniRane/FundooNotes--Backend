@@ -2,6 +2,7 @@ package com.bridgelabz.fundoonotes.label.service;
 
 
 import com.bridgelabz.fundoonotes.label.dto.LabelDTO;
+import com.bridgelabz.fundoonotes.label.dto.MapDTO;
 import com.bridgelabz.fundoonotes.label.model.LabelDetails;
 import com.bridgelabz.fundoonotes.label.repository.ILabelRepository;
 import com.bridgelabz.fundoonotes.label.service.implementation.LabelService;
@@ -21,6 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -145,6 +147,31 @@ public class LabelServiceTest {
     }
 
 
+    @Test
+    void givenLabelID_WhenCorrectToRemove_ShouldReturnMessage(){
+        List<NoteDetails> noteDetailsList = new ArrayList();
 
+        NoteDTO noteDTO = new NoteDTO(2, "First Note", "This is my first note");
+        NoteDetails noteDetails = new NoteDetails();
+        BeanUtils.copyProperties(noteDTO, noteDetails);
+        noteDetailsList.add(noteDetails);
+
+        LabelDTO labelDTO = new LabelDTO(2, "First Label");
+        LabelDetails labelDetails = new LabelDetails();
+        labelDetails.setNoteList(noteDetailsList);
+        BeanUtils.copyProperties(labelDTO, labelDetails);
+
+        MapDTO mapDTO=new MapDTO(2,2);
+
+        String message="Label Removed";
+
+        when(labelRepository.findById(any())).thenReturn(java.util.Optional.of(labelDetails));
+        when(noteRepository.findById(any())).thenReturn(java.util.Optional.of(noteDetails));
+        when(labelRepository.save(any())).thenReturn(labelDetails);
+
+        String noteLabel = labelService.removeNoteLabel(mapDTO);
+        Assert.assertEquals(message,noteLabel);
+
+    }
 
 }
