@@ -57,7 +57,10 @@ public class LabelService implements ILabelService {
 
     @Override
     public String updateLabel(String labelName, Integer labelID) {
-
+        LabelDetails labelDetails = labelRepository.findById(labelID).orElseThrow(() -> new NoteServiceException("Label Not Found"));
+        labelDetails.setLabelName(labelName);
+        labelDetails.setModified(LocalDateTime.now());
+        labelRepository.save(labelDetails);
         return "Label Updated Successful";
     }
 
