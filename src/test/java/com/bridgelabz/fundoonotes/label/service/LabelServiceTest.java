@@ -5,6 +5,9 @@ import com.bridgelabz.fundoonotes.label.dto.LabelDTO;
 import com.bridgelabz.fundoonotes.label.model.LabelDetails;
 import com.bridgelabz.fundoonotes.label.repository.ILabelRepository;
 import com.bridgelabz.fundoonotes.label.service.implementation.LabelService;
+import com.bridgelabz.fundoonotes.note.dto.NoteDTO;
+import com.bridgelabz.fundoonotes.note.model.NoteDetails;
+import com.bridgelabz.fundoonotes.note.repository.INoteRepository;
 import com.bridgelabz.fundoonotes.properties.FileProperties;
 import com.bridgelabz.fundoonotes.user.dto.RegistrationDTO;
 import com.bridgelabz.fundoonotes.user.model.UserDetails;
@@ -33,6 +36,9 @@ public class LabelServiceTest {
 
     @InjectMocks
     LabelService labelService;
+
+    @Mock
+    INoteRepository noteRepository;
 
     @Test
     void givenData_WhenCorrect_ShouldReturnMessage(){
@@ -72,6 +78,8 @@ public class LabelServiceTest {
         LabelDTO labelDTO=new LabelDTO("First Label");
         LabelDetails labelDetails=new LabelDetails();
         labelDetails.setUser(userDetails);
+        labelDetails.setId(1);
+        labelDetails.setUser(userDetails);
         BeanUtils.copyProperties(labelDTO,labelDetails);
         labelDetailsList.add(labelDetails);
 
@@ -83,7 +91,6 @@ public class LabelServiceTest {
 
     @Test
     void givenLabelData_WhenCorrect_ShouldReturnMessage(){
-
 
         LabelDTO labelDTO=new LabelDTO("First Label");
         LabelDetails labelDetails=new LabelDetails();
@@ -98,6 +105,37 @@ public class LabelServiceTest {
         when(labelRepository.save(any())).thenReturn(labelDetails);
         String label = labelService.updateLabel(labelName, labelID);
         Assert.assertEquals(message,label);
+    }
+
+    @Test
+    void givenLabel_WhenMapWithGivenNote_ShouldReturnMessage(){
+        List<NoteDetails> noteDetailsList=new ArrayList();
+
+        RegistrationDTO registrationDTO = new RegistrationDTO("Kalyani", "kalyani@gmail.com", "Kalyani@123", "8855885588");
+        UserDetails userDetails = new UserDetails(registrationDTO);
+        userDetails.setId(1);
+
+        NoteDTO noteDTO=new NoteDTO(2,"First Note","This is my first note");
+        NoteDetails noteDetails=new NoteDetails();
+        BeanUtils.copyProperties(noteDTO,noteDetails);
+        noteDetailsList.add(noteDetails);
+
+        LabelDTO labelDTO=new LabelDTO(2,"First Label");
+        LabelDetails labelDetails=new LabelDetails();
+        labelDetails.setNoteList(noteDetailsList);
+        BeanUtils.copyProperties(labelDTO,labelDetails);
+
+
+        String message="Label Created";
+
+        when(labelRepository.findByLabelName(any())).thenReturn(java.util.Optional.of(labelDetails));
+        when(noteRepository.findById(any())).thenReturn(java.util.Optional.of(noteDetails));
+        when(labelRepository.save(any())).thenReturn(labelDetails);
+
+        String label = labelService.mapLabel(labelDTO, userDetails);
+
+        Assert.assertEquals(message,label);
+
     }
 
 }

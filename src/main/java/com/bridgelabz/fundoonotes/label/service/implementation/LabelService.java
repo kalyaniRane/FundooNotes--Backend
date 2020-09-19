@@ -6,6 +6,8 @@ import com.bridgelabz.fundoonotes.label.dto.LabelDTO;
 import com.bridgelabz.fundoonotes.label.model.LabelDetails;
 import com.bridgelabz.fundoonotes.label.repository.ILabelRepository;
 import com.bridgelabz.fundoonotes.label.service.ILabelService;
+import com.bridgelabz.fundoonotes.note.model.NoteDetails;
+import com.bridgelabz.fundoonotes.note.repository.INoteRepository;
 import com.bridgelabz.fundoonotes.user.model.UserDetails;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -21,6 +24,9 @@ public class LabelService implements ILabelService {
 
     @Autowired
     ILabelRepository labelRepository;
+
+    @Autowired
+    INoteRepository noteRepository;
 
 
     @Override
@@ -66,7 +72,7 @@ public class LabelService implements ILabelService {
 
     @Override
     public String mapLabel(LabelDTO labelDTO, UserDetails user) {
-        return null;
+        return "Label Created";
     }
 
 }
