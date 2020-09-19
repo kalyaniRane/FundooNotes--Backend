@@ -72,7 +72,14 @@ public class LabelService implements ILabelService {
 
     @Override
     public String mapLabel(LabelDTO labelDTO, UserDetails user) {
-        return "Label Created";
+        LabelDetails label = labelRepository.findByLabelName(labelDTO.labelName).orElseThrow(()-> new LabelServiceException("Label Not Found"));
+            NoteDetails note = noteRepository.findById(labelDTO.noteID).orElseThrow(()-> new NoteServiceException("Note Not Found"));
+        if(!note.isTrash() && !label.getNoteList().contains(note)){
+            label.getNoteList().add(note);
+            labelRepository.save(label);
+            return "Label Created";
+        }
+            throw new NoteServiceException("Sorry,You Can't Create Label Here");
     }
 
 }
