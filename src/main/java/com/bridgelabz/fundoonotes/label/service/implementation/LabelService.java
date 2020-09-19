@@ -3,6 +3,7 @@ package com.bridgelabz.fundoonotes.label.service.implementation;
 import com.bridgelabz.fundoonotes.exceptions.LabelServiceException;
 import com.bridgelabz.fundoonotes.exceptions.NoteServiceException;
 import com.bridgelabz.fundoonotes.label.dto.LabelDTO;
+import com.bridgelabz.fundoonotes.label.dto.MapDTO;
 import com.bridgelabz.fundoonotes.label.model.LabelDetails;
 import com.bridgelabz.fundoonotes.label.repository.ILabelRepository;
 import com.bridgelabz.fundoonotes.label.service.ILabelService;
@@ -80,6 +81,11 @@ public class LabelService implements ILabelService {
             return "Label Created";
         }
             throw new NoteServiceException("Sorry,You Can't Create Label Here");
+    }
+
+    @Override
+    public String removeNoteLabel(MapDTO mapDTO) {
+        return null;
     }
 
 }

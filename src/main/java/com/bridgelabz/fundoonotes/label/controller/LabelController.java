@@ -2,6 +2,7 @@ package com.bridgelabz.fundoonotes.label.controller;
 
 import com.bridgelabz.fundoonotes.dto.ResponseDTO;
 import com.bridgelabz.fundoonotes.label.dto.LabelDTO;
+import com.bridgelabz.fundoonotes.label.dto.MapDTO;
 import com.bridgelabz.fundoonotes.label.model.LabelDetails;
 import com.bridgelabz.fundoonotes.label.service.ILabelService;
 import com.bridgelabz.fundoonotes.user.model.UserDetails;
@@ -61,6 +62,13 @@ public class LabelController {
         UserDetails user = (UserDetails) request.getAttribute("user");
         String label = labelService.mapLabel(labelDTO, user);
         ResponseDTO responseDTO=new ResponseDTO(label,200);
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+    }
+
+    @PutMapping("/remove")
+    public ResponseEntity<ResponseDTO> removeNoteLabel(@RequestBody MapDTO mapDTO, @RequestHeader(value = "token",required = false) String token){
+        String noteLabel = labelService.removeNoteLabel(mapDTO);
+        ResponseDTO responseDTO=new ResponseDTO(noteLabel,200);
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
 

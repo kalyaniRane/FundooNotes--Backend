@@ -1,6 +1,7 @@
 package com.bridgelabz.fundoonotes.label.service;
 
 import com.bridgelabz.fundoonotes.label.dto.LabelDTO;
+import com.bridgelabz.fundoonotes.label.dto.MapDTO;
 import com.bridgelabz.fundoonotes.label.model.LabelDetails;
 import com.bridgelabz.fundoonotes.user.model.UserDetails;
 
@@ -17,4 +18,6 @@ public interface ILabelService {
     String updateLabel(String labelName, Integer labelID);
 
     String mapLabel(LabelDTO labelDTO, UserDetails user);
+
+    String removeNoteLabel(MapDTO mapDTO);
 }

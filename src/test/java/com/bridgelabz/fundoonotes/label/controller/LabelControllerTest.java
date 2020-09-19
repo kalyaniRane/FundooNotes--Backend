@@ -5,6 +5,7 @@ import com.bridgelabz.fundoonotes.dto.ResponseDTO;
 import com.bridgelabz.fundoonotes.interceptor.NoteServiceInterceptor;
 import com.bridgelabz.fundoonotes.interceptor.NoteServiceInterceptorAppConfig;
 import com.bridgelabz.fundoonotes.label.dto.LabelDTO;
+import com.bridgelabz.fundoonotes.label.dto.MapDTO;
 import com.bridgelabz.fundoonotes.label.model.LabelDetails;
 import com.bridgelabz.fundoonotes.label.service.implementation.LabelService;
 import com.bridgelabz.fundoonotes.properties.FileProperties;
@@ -157,5 +158,23 @@ public class LabelControllerTest {
         String responseMessage = responseDto.message;
         Assert.assertEquals(message, responseMessage);
     }
+    @Test
+    void givenData_WhenCorrect_ShouldReturnMessage() throws Exception {
 
+        MapDTO mapDTO=new MapDTO(1,2);
+        String stringConvertedDto = gson.toJson(mapDTO);
+        String message="Label Removed";
+
+
+        when(labelService.removeNoteLabel(any())).thenReturn(message);
+        MvcResult mvcResult = this.mockMvc.perform(put("/label/remove")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(stringConvertedDto)).andReturn();
+
+        String response = mvcResult.getResponse().getContentAsString();
+
+        ResponseDTO responseDto = gson.fromJson(response, ResponseDTO.class);
+        String responseMessage = responseDto.message;
+        Assert.assertEquals(message, responseMessage);
+    }
 }
