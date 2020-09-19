@@ -81,4 +81,23 @@ public class LabelServiceTest {
         Assert.assertEquals(labelDetailsList,allLabels);
     }
 
+    @Test
+    void givenLabelData_WhenCorrect_ShouldReturnMessage(){
+
+
+        LabelDTO labelDTO=new LabelDTO("First Label");
+        LabelDetails labelDetails=new LabelDetails();
+        BeanUtils.copyProperties(labelDTO,labelDetails);
+
+        String labelName="First Label";
+        Integer labelID=1;
+
+        String message="Label Updated Successful";
+
+        when(labelRepository.findById(any())).thenReturn(java.util.Optional.of(labelDetails));
+        when(labelRepository.save(any())).thenReturn(labelDetails);
+        String label = labelService.updateLabel(labelName, labelID);
+        Assert.assertEquals(message,label);
+    }
+
 }
