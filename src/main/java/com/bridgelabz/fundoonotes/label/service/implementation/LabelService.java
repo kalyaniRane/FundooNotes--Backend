@@ -64,4 +64,9 @@ public class LabelService implements ILabelService {
         return "Label Updated Successful";
     }
 
+    @Override
+    public String mapLabel(LabelDTO labelDTO, UserDetails user) {
+        return null;
+    }
+
 }

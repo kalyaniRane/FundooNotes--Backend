@@ -13,7 +13,12 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class LabelDTO {
 
+    public Integer noteID;
+
     @NotNull(message = "Please Enter Title")
     public String labelName;
 
+    public LabelDTO(String labelName) {
+     this.labelName=labelName;
+    }
 }

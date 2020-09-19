@@ -137,4 +137,25 @@ public class LabelControllerTest {
 
     }
 
+    @Test
+    void givenLabel_WhenMapWithGivenNote_ShouldReturnMessage() throws Exception {
+        LabelDTO labelDTO=new LabelDTO(2,"First Label");
+        LabelDetails labelDetails=new LabelDetails();
+        BeanUtils.copyProperties(labelDTO,labelDetails);
+
+        String stringConvertedDto = gson.toJson(labelDetails);
+        String message="Label Created";
+
+        when(labelService.mapLabel(any(),any())).thenReturn(message);
+        MvcResult mvcResult = this.mockMvc.perform(post("/label/map")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(stringConvertedDto)).andReturn();
+
+        String response = mvcResult.getResponse().getContentAsString();
+
+        ResponseDTO responseDto = gson.fromJson(response, ResponseDTO.class);
+        String responseMessage = responseDto.message;
+        Assert.assertEquals(message, responseMessage);
+    }
+
 }

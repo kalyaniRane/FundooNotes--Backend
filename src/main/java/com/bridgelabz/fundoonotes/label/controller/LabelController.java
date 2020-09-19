@@ -56,4 +56,12 @@ public class LabelController {
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
 
+    @PostMapping("/map")
+    public ResponseEntity<ResponseDTO> mapLabel(@RequestBody LabelDTO labelDTO,HttpServletRequest request,@RequestHeader(value = "token",required = false) String token){
+        UserDetails user = (UserDetails) request.getAttribute("user");
+        String label = labelService.mapLabel(labelDTO, user);
+        ResponseDTO responseDTO=new ResponseDTO(label,200);
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+    }
+
 }

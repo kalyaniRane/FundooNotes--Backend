@@ -15,4 +15,6 @@ public interface ILabelService {
     List<LabelDetails> getAllLabels(UserDetails user);
 
     String updateLabel(String labelName, Integer labelID);
+
+    String mapLabel(LabelDTO labelDTO, UserDetails user);
 }
