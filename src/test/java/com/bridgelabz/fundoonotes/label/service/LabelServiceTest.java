@@ -19,6 +19,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,92 +42,97 @@ public class LabelServiceTest {
     INoteRepository noteRepository;
 
     @Test
-    void givenData_WhenCorrect_ShouldReturnMessage(){
+    void givenData_WhenCorrect_ShouldReturnMessage() {
         RegistrationDTO registrationDTO = new RegistrationDTO("Kalyani", "kalyani@gmail.com", "Kalyani@123", "8855885588");
         UserDetails userDetails = new UserDetails(registrationDTO);
         userDetails.setId(1);
-        LabelDTO labelDTO=new LabelDTO("First Label");
-        LabelDetails labelDetails=new LabelDetails();
+        LabelDTO labelDTO = new LabelDTO("First Label");
+        LabelDetails labelDetails = new LabelDetails();
         labelDetails.setUser(userDetails);
-        BeanUtils.copyProperties(labelDTO,labelDetails);
+        BeanUtils.copyProperties(labelDTO, labelDetails);
 
-        String message="LABEL CREATED";
+        String message = "LABEL CREATED";
 
         when(labelRepository.save(labelDetails)).thenReturn(labelDetails);
         String label = labelService.createLabel(labelDTO, userDetails);
-        Assert.assertEquals(message,label);
+        Assert.assertEquals(message, label);
     }
 
     @Test
-    void  givenLabelID_WhenCorrect_ShouldReturnMessage(){
-        LabelDetails labelDetails=new LabelDetails();
-        Integer labelID=1;
-        String message= "LABEL DELETED";
+    void givenLabelID_WhenCorrect_ShouldReturnMessage() {
+        LabelDetails labelDetails = new LabelDetails();
+        Integer labelID = 1;
+        String message = "LABEL DELETED";
 
         when(labelRepository.findById(any())).thenReturn(java.util.Optional.of(labelDetails));
         String label = labelService.deleteLabel(labelID);
 
-        Assert.assertEquals(message,label);
+        Assert.assertEquals(message, label);
     }
 
     @Test
-    void getAllLabels(){
-        List<LabelDetails> labelDetailsList= new ArrayList<>();
+    void getAllLabels() {
+        List<LabelDetails> labelDetailsList = new ArrayList<>();
         RegistrationDTO registrationDTO = new RegistrationDTO("Kalyani", "kalyani@gmail.com", "Kalyani@123", "8855885588");
         UserDetails userDetails = new UserDetails(registrationDTO);
         userDetails.setId(2);
-        LabelDTO labelDTO=new LabelDTO("First Label");
-        LabelDetails labelDetails=new LabelDetails();
+        LabelDTO labelDTO = new LabelDTO("First Label");
+        LabelDetails labelDetails = new LabelDetails();
         labelDetails.setUser(userDetails);
         labelDetails.setId(1);
         labelDetails.setUser(userDetails);
-        BeanUtils.copyProperties(labelDTO,labelDetails);
+        BeanUtils.copyProperties(labelDTO, labelDetails);
         labelDetailsList.add(labelDetails);
 
         when(labelRepository.findAllByUser(any())).thenReturn(labelDetailsList);
         List<LabelDetails> allLabels = labelService.getAllLabels(userDetails);
 
-        Assert.assertEquals(labelDetailsList,allLabels);
+        Assert.assertEquals(labelDetailsList, allLabels);
     }
 
     @Test
-    void givenLabelData_WhenCorrect_ShouldReturnMessage(){
+    void givenLabelData_WhenCorrect_ShouldReturnMessage() {
 
-        LabelDTO labelDTO=new LabelDTO("First Label");
-        LabelDetails labelDetails=new LabelDetails();
-        BeanUtils.copyProperties(labelDTO,labelDetails);
+        LabelDTO labelDTO = new LabelDTO("First Label");
+        LabelDetails labelDetails = new LabelDetails();
+        BeanUtils.copyProperties(labelDTO, labelDetails);
 
-        String labelName="First Label";
-        Integer labelID=1;
+        String labelName = "First Label";
+        Integer labelID = 1;
 
-        String message="Label Updated Successful";
+        String message = "Label Updated Successful";
 
         when(labelRepository.findById(any())).thenReturn(java.util.Optional.of(labelDetails));
         when(labelRepository.save(any())).thenReturn(labelDetails);
         String label = labelService.updateLabel(labelName, labelID);
-        Assert.assertEquals(message,label);
+        Assert.assertEquals(message, label);
     }
 
     @Test
-    void givenLabel_WhenMapWithGivenNote_ShouldReturnMessage(){
-        List<NoteDetails> noteDetailsList=new ArrayList();
+    void givenLabel_WhenMapWithGivenNote_ShouldReturnMessage() {
+        List<NoteDetails> noteDetailsList = new ArrayList();
 
         RegistrationDTO registrationDTO = new RegistrationDTO("Kalyani", "kalyani@gmail.com", "Kalyani@123", "8855885588");
         UserDetails userDetails = new UserDetails(registrationDTO);
         userDetails.setId(1);
 
-        NoteDTO noteDTO=new NoteDTO(2,"First Note","This is my first note");
-        NoteDetails noteDetails=new NoteDetails();
-        BeanUtils.copyProperties(noteDTO,noteDetails);
-        noteDetailsList.add(noteDetails);
+        NoteDTO noteDTO = new NoteDTO(2, "First Note", "This is my first note");
+        NoteDetails noteDetails = new NoteDetails();
+        BeanUtils.copyProperties(noteDTO, noteDetails);
 
-        LabelDTO labelDTO=new LabelDTO(2,"First Label");
-        LabelDetails labelDetails=new LabelDetails();
+        NoteDTO noteDTO1 = new NoteDTO(3, "Second Note", "This is my second note");
+        NoteDetails details = new NoteDetails();
+        BeanUtils.copyProperties(noteDTO1, details);
+        noteDetailsList.add(details);
+
+
+        LabelDTO labelDTO = new LabelDTO(2, "First Label");
+        LabelDetails labelDetails = new LabelDetails();
         labelDetails.setNoteList(noteDetailsList);
-        BeanUtils.copyProperties(labelDTO,labelDetails);
+        BeanUtils.copyProperties(labelDTO, labelDetails);
 
 
-        String message="Label Created";
+        String message = "Label Created";
 
         when(labelRepository.findByLabelName(any())).thenReturn(java.util.Optional.of(labelDetails));
         when(noteRepository.findById(any())).thenReturn(java.util.Optional.of(noteDetails));
@@ -134,8 +140,11 @@ public class LabelServiceTest {
 
         String label = labelService.mapLabel(labelDTO, userDetails);
 
-        Assert.assertEquals(message,label);
+        Assert.assertEquals(message, label);
 
     }
+
+
+
 
 }
