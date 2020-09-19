@@ -13,4 +13,6 @@ public interface ILabelService {
     String deleteLabel(Integer labelID);
 
     List<LabelDetails> getAllLabels(UserDetails user);
+
+    String updateLabel(String labelName, Integer labelID);
 }

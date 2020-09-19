@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -53,6 +52,11 @@ public class LabelService implements ILabelService {
         List<LabelDetails> allByUser = labelRepository.findAllByUser(user);
 
         return allByUser;
+    }
+
+    @Override
+    public String updateLabel(String labelName, Integer labelID) {
+        return null;
     }
 
 }

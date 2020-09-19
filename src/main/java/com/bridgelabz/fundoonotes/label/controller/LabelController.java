@@ -49,4 +49,11 @@ public class LabelController {
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
 
+    @PutMapping("/edit")
+    public ResponseEntity<ResponseDTO> updateLabel (@RequestParam String labelName,@RequestParam Integer labelID,@RequestHeader(value = "token",required = false) String token){
+        String note = labelService.updateLabel(labelName,labelID);
+        ResponseDTO responseDTO=new ResponseDTO(note,200);
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+    }
+
 }

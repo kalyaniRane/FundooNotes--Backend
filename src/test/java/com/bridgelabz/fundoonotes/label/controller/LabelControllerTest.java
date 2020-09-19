@@ -116,4 +116,25 @@ public class LabelControllerTest {
         Assert.assertEquals(message, responseMessage);
     }
 
+    @Test
+    void givenLabelData_WhenCorrect_ShouldReturnMessage() throws Exception {
+
+        String labelName="First Label";
+        Integer labelID=1;
+
+        String message="Label Update Successful";
+
+        when(labelService.updateLabel(any(),any())).thenReturn(message);
+        MvcResult mvcResult = this.mockMvc.perform(put("/label/edit")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("labelName", labelName)
+                .param("labelID", String.valueOf(labelID))).andReturn();
+
+        String response = mvcResult.getResponse().getContentAsString();
+        ResponseDTO responseDto = gson.fromJson(response, ResponseDTO.class);
+        String responseMessage = responseDto.message;
+        Assert.assertEquals(message, responseMessage);
+
+    }
+
 }
