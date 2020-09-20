@@ -19,6 +19,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import javax.mail.MessagingException;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
@@ -190,6 +193,27 @@ public class UserServiceTest {
         when(userRepository.save(any())).thenReturn(userDetails);
         String reset = userService.resetPassword(password,token);
         Assert.assertEquals(message,reset);
+    }
+
+    @Test
+    void givenField_WhenCorrect_ShouldReturnMessage(){
+
+        List<UserDetails> userDetailsList=new ArrayList<>();
+
+        RegistrationDTO registrationDTO = new RegistrationDTO("kalyani","kalyanirane19@gmail.com","Kalyani@123","8855223366");
+        UserDetails userDetails=new UserDetails(registrationDTO);
+        userDetails.setVerified(true);
+
+        String userField="verified";
+
+        userDetailsList.add(userDetails);
+
+        when(userRepository.findAllByVerified(true)).thenReturn(userDetailsList);
+
+        List<UserDetails> allUsers = userService.getAllUsers(userField);
+
+        Assert.assertEquals(userDetailsList,allUsers);
+
     }
 
 }
