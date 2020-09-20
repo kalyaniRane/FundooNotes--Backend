@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -116,8 +115,10 @@ public class UserService implements IUserService {
 
     @Override
     public List<UserDetails> getAllUsers(String userField) {
-        List<UserDetails> allByVerified = new ArrayList<>();
-        return allByVerified;
+        List<UserDetails> allByVerified = userField.equals("verified") ? userRepository.findAllByVerified(true) : userRepository.findAllByVerified(false);
+
+        if(allByVerified.isEmpty()) throw new UserServiceException("User Not Available");
+        else return allByVerified;
     }
 
 }
