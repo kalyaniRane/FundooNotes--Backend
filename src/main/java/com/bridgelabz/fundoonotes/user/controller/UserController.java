@@ -4,6 +4,7 @@ package com.bridgelabz.fundoonotes.user.controller;
 import com.bridgelabz.fundoonotes.user.dto.LoginDTO;
 import com.bridgelabz.fundoonotes.user.dto.RegistrationDTO;
 import com.bridgelabz.fundoonotes.dto.ResponseDTO;
+import com.bridgelabz.fundoonotes.user.model.UserDetails;
 import com.bridgelabz.fundoonotes.user.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -65,6 +67,13 @@ public class UserController {
         String resetPassword = userService.resetPassword(password,urlToken);
         ResponseDTO response = new ResponseDTO(resetPassword,200);
         return new ResponseEntity(response,HttpStatus.OK);
+    }
+
+    @GetMapping()
+    public ResponseEntity<ResponseDTO> getAllUsers(@RequestParam(name="userField") String userField){
+        List<UserDetails> allUsers = userService.getAllUsers(userField);
+        ResponseDTO responseDTO=new ResponseDTO("User List Fetched",200,allUsers);
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
 
 }

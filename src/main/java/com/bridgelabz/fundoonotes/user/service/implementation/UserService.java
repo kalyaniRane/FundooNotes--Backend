@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -110,6 +111,11 @@ public class UserService implements IUserService {
         userDetails.setModified(LocalDateTime.now());
         userRepository.save(userDetails);
         return "Password Has Been Reset";
+    }
+
+    @Override
+    public List<UserDetails> getAllUsers(String userField) {
+        return null;
     }
 
 }
