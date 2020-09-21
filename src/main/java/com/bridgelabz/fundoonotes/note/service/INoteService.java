@@ -28,5 +28,7 @@ public interface INoteService {
     String archiveNote(Integer noteID, UserDetails user);
 
     String unarchiveNote(Integer noteID, UserDetails user);
+
+    List<NoteDetails> getAllNotesOfPin(UserDetails user);
 }
 

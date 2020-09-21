@@ -115,4 +115,12 @@ public class NoteController {
         return new ResponseEntity(responseDTO, HttpStatus.OK);
     }
 
+    @GetMapping("/pin")
+    public  ResponseEntity<ResponseDTO>getNoteOfPin(@RequestHeader(value = "token",required = false) String token,HttpServletRequest request){
+        UserDetails user = (UserDetails) request.getAttribute("user");
+        List<NoteDetails> allNotesOfTrash = noteService.getAllNotesOfPin(user);
+        ResponseDTO responseDTO = new ResponseDTO("Notes Fetched",200,allNotesOfTrash);
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+    }
+
 }

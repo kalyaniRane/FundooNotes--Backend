@@ -175,4 +175,9 @@ public class NoteService implements INoteService {
         throw new NoteServiceException("Can't Unarchive In Trash");
     }
 
+    @Override
+    public List<NoteDetails> getAllNotesOfPin(UserDetails user) {
+        return null;
+    }
+
 }
