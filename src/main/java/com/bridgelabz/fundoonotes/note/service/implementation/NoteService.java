@@ -197,4 +197,9 @@ public class NoteService implements INoteService {
         throw new NoteServiceException("No Any Note Available");
     }
 
+    @Override
+    public String restoreNote(Integer noteID) {
+        return null;
+    }
+
 }

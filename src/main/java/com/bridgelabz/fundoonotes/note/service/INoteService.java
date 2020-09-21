@@ -32,5 +32,7 @@ public interface INoteService {
     List<NoteDetails> getAllNotesOfPin(UserDetails user);
 
     List<NoteDetails> getAllNotesOfArchive(UserDetails user);
+
+    String restoreNote(Integer noteID);
 }
 

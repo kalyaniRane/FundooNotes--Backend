@@ -131,4 +131,13 @@ public class NoteController {
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
 
+    @PutMapping("/restore")
+    public ResponseEntity<ResponseDTO> restoreNote (@RequestParam(value = "noteID") Integer noteID,@RequestHeader(value = "token",required = false) String token){
+
+        String message = noteService.restoreNote(noteID);
+        ResponseDTO responseDTO=new ResponseDTO(message,200);
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+
+    }
+
 }
