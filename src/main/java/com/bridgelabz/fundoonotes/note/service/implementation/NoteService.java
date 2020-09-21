@@ -199,6 +199,9 @@ public class NoteService implements INoteService {
 
     @Override
     public String restoreNote(Integer noteID) {
+        NoteDetails noteDetails = noteRepository.findById(noteID).orElseThrow(() -> new NoteServiceException("Note Not Found"));
+        noteDetails.setTrash(false);
+        noteRepository.save(noteDetails);
         return "Note Restored";
     }
 
