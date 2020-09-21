@@ -121,7 +121,16 @@ public class NoteService implements INoteService {
 
     @Override
     public String pinNote(Integer noteID, UserDetails user) {
-        return "Pinned";
+        NoteDetails noteDetails = noteRepository.findById(noteID).orElseThrow(() -> new NoteServiceException("Note Not Found"));
+        if(!noteDetails.isTrash()){
+            if(noteDetails.getUser().getId().equals(user.getId())){
+                    noteDetails.setPin(true);
+                    noteRepository.save(noteDetails);
+                    return "Pinned";
+            }
+            throw new UserServiceException("You Can't Access This Note");
+        }
+        throw new NoteServiceException("Can't Pin In Trash");
     }
 
 }
