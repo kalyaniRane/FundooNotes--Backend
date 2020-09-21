@@ -147,4 +147,9 @@ public class NoteService implements INoteService {
         throw new NoteServiceException("Can't Pin In Trash");
     }
 
+    @Override
+    public String archiveNote(Integer noteID, UserDetails user) {
+        return null;
+    }
+
 }

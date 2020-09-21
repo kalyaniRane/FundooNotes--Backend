@@ -99,4 +99,12 @@ public class NoteController {
         return new ResponseEntity(responseDTO, HttpStatus.OK);
     }
 
+    @PostMapping("/archive")
+    public ResponseEntity<ResponseDTO> archieveNotes(@RequestParam(name = "noteID") Integer noteID,@RequestHeader(value = "token",required = false) String token,HttpServletRequest request){
+        UserDetails user = (UserDetails) request.getAttribute("user");
+        String note = noteService.archiveNote(noteID, user);
+        ResponseDTO responseDTO=new ResponseDTO(note,200);
+        return new ResponseEntity(responseDTO, HttpStatus.OK);
+    }
+
 }
