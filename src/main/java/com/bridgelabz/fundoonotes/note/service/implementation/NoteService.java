@@ -199,7 +199,7 @@ public class NoteService implements INoteService {
 
     @Override
     public String restoreNote(Integer noteID) {
-        return null;
+        return "Note Restored";
     }
 
 }

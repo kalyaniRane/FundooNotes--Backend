@@ -411,4 +411,20 @@ public class NoteServiceTest {
         Assert.assertEquals(noteDetailsList,allNotesOfArchive);
     }
 
+    @Test
+    void givenNoteIDToRestore_WhenCorrect_ShouldReturnMessage(){
+
+        NoteDTO noteDTO=new NoteDTO(2,"First Note","This is my first note");
+        NoteDetails noteDetails=new NoteDetails();
+        BeanUtils.copyProperties(noteDTO,noteDetails);
+
+        String message="Note Restored";
+
+        when(noteRepository.findById(any())).thenReturn(java.util.Optional.of(noteDetails));
+        when(noteRepository.save(any())).thenReturn(noteDetails);
+
+        String note = noteService.restoreNote(2);
+        Assert.assertEquals(message,note);
+    }
+
 }
