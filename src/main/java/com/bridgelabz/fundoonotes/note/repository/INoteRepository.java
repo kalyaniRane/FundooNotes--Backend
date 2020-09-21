@@ -15,4 +15,8 @@ public interface INoteRepository extends JpaRepository<NoteDetails, Integer> {
 
     @Query(value = "select * from note_details where userid = :userid and is_trash = true",nativeQuery = true)
     List<NoteDetails> findAllNotesOfTrash(@Param("userid") Integer userid);
+
+    @Query(value = "select * from note_details where userid = :userid and is_pin = true",nativeQuery = true)
+    List<NoteDetails> findAllNotesOfPin(@Param("userid") Integer userid);
+
 }

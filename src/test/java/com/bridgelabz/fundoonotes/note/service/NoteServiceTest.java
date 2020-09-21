@@ -375,4 +375,22 @@ public class NoteServiceTest {
 
     }
 
+    @Test
+    void getAllPinnedNotes(){
+
+        List<NoteDetails> noteDetailsList=new ArrayList();
+        RegistrationDTO registrationDTO = new RegistrationDTO("Kalyani", "kalyani@gmail.com", "Kalyani@123", "8855885588");
+        UserDetails userDetails = new UserDetails(registrationDTO);
+        userDetails.setId(2);
+        NoteDTO noteDTO=new NoteDTO(2,"First Note","This is my first note");
+        NoteDetails noteDetails=new NoteDetails();
+        noteDetails.setPin(true);
+        BeanUtils.copyProperties(noteDTO,noteDetails);
+        noteDetailsList.add(noteDetails);
+
+        when(noteRepository.findAllNotesOfPin(any())).thenReturn(noteDetailsList);
+        List<NoteDetails> allNotesOfPin = noteService.getAllNotesOfPin(userDetails);
+        Assert.assertEquals(noteDetailsList,allNotesOfPin);
+    }
+
 }
