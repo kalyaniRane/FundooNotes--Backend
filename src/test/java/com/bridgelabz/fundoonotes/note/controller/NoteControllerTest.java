@@ -341,4 +341,26 @@ public class NoteControllerTest {
 
     }
 
+    @Test
+    void getAllArchiveNotes() throws Exception {
+
+        List<NoteDetails> noteDetailsList=new ArrayList();
+        NoteDTO noteDTO=new NoteDTO(2,"First Note","This is my first note");
+        NoteDetails noteDetails=new NoteDetails();
+        BeanUtils.copyProperties(noteDTO,noteDetails);
+        noteDetailsList.add(noteDetails);
+        String message="Notes Fetched";
+
+        when(noteService.getAllNotesOfArchive(any())).thenReturn(noteDetailsList);
+
+        MvcResult mvcResult = this.mockMvc.perform(get("/note/archive")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        String response = mvcResult.getResponse().getContentAsString();
+        ResponseDTO responseDto = gson.fromJson(response, ResponseDTO.class);
+        String responseMessage = responseDto.message;
+        Assert.assertEquals(message, responseMessage);
+
+    }
+
 }

@@ -123,4 +123,12 @@ public class NoteController {
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
 
+    @GetMapping("/archive")
+    public  ResponseEntity<ResponseDTO>getNoteOfArchive(@RequestHeader(value = "token",required = false) String token,HttpServletRequest request){
+        UserDetails user = (UserDetails) request.getAttribute("user");
+        List<NoteDetails> allNotesOfTrash = noteService.getAllNotesOfArchive(user);
+        ResponseDTO responseDTO = new ResponseDTO("Notes Fetched",200,allNotesOfTrash);
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+    }
+
 }

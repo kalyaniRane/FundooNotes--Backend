@@ -30,5 +30,7 @@ public interface INoteService {
     String unarchiveNote(Integer noteID, UserDetails user);
 
     List<NoteDetails> getAllNotesOfPin(UserDetails user);
+
+    List<NoteDetails> getAllNotesOfArchive(UserDetails user);
 }
 
