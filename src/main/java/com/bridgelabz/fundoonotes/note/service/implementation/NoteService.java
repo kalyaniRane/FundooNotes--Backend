@@ -178,9 +178,12 @@ public class NoteService implements INoteService {
 
     @Override
     public List<NoteDetails> getAllNotesOfPin(UserDetails user) {
-        List<NoteDetails> allByUserAndTrashFalse = new ArrayList();
-
-        return allByUserAndTrashFalse;
+        int userID=user.getId();
+        List<NoteDetails> allByUserAndTrashFalse = noteRepository.findAllNotesOfPin(userID);
+        if(!allByUserAndTrashFalse.isEmpty()){
+            return allByUserAndTrashFalse;
+        }
+        throw new NoteServiceException("No Any Note Available");
 
     }
 
