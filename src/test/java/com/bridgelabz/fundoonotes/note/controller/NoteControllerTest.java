@@ -297,4 +297,26 @@ public class NoteControllerTest {
 
     }
 
+    @Test
+    void givenNoteIDToUnarchive_WhenCorrect_ShouldReturnMessage() throws Exception {
+
+        NoteDTO noteDTO=new NoteDTO(2,"First Note","This is my first note");
+        NoteDetails noteDetails=new NoteDetails();
+        BeanUtils.copyProperties(noteDTO,noteDetails);
+
+        String message="Note Unarchive";
+
+        when(noteService.unarchiveNote(any(),any())).thenReturn(message);
+
+        MvcResult mvcResult = this.mockMvc.perform(post("/note/unarchive")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("noteID", String.valueOf(2))).andReturn();
+
+        String response = mvcResult.getResponse().getContentAsString();
+        ResponseDTO responseDto = gson.fromJson(response, ResponseDTO.class);
+        String responseMessage = responseDto.message;
+        Assert.assertEquals(message, responseMessage);
+
+    }
+
 }

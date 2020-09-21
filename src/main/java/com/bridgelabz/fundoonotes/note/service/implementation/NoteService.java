@@ -161,4 +161,9 @@ public class NoteService implements INoteService {
         throw new NoteServiceException("Can't Archive In Trash");
     }
 
+    @Override
+    public String unarchiveNote(Integer noteID, UserDetails user) {
+        return null;
+    }
+
 }

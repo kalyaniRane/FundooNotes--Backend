@@ -26,5 +26,7 @@ public interface INoteService {
     String unpinNote(Integer noteID, UserDetails user);
 
     String archiveNote(Integer noteID, UserDetails user);
+
+    String unarchiveNote(Integer noteID, UserDetails user);
 }
 
