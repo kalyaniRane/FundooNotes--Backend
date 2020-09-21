@@ -40,6 +40,9 @@ public class NoteDetails {
     @Column(nullable = false)
     private boolean isPin;
 
+    @Column(nullable = false)
+    private boolean isArchive;
+
     @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "userID")
