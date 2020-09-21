@@ -393,4 +393,22 @@ public class NoteServiceTest {
         Assert.assertEquals(noteDetailsList,allNotesOfPin);
     }
 
+    @Test
+    void getAllArchiveNotes(){
+
+        List<NoteDetails> noteDetailsList=new ArrayList();
+        RegistrationDTO registrationDTO = new RegistrationDTO("Kalyani", "kalyani@gmail.com", "Kalyani@123", "8855885588");
+        UserDetails userDetails = new UserDetails(registrationDTO);
+        userDetails.setId(2);
+        NoteDTO noteDTO=new NoteDTO(2,"First Note","This is my first note");
+        NoteDetails noteDetails=new NoteDetails();
+        noteDetails.setArchive(true);
+        BeanUtils.copyProperties(noteDTO,noteDetails);
+        noteDetailsList.add(noteDetails);
+
+        when(noteRepository.findAllNotesOfArchive(any())).thenReturn(noteDetailsList);
+        List<NoteDetails> allNotesOfArchive = noteService.getAllNotesOfArchive(userDetails);
+        Assert.assertEquals(noteDetailsList,allNotesOfArchive);
+    }
+
 }

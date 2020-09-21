@@ -189,7 +189,9 @@ public class NoteService implements INoteService {
 
     @Override
     public List<NoteDetails> getAllNotesOfArchive(UserDetails user) {
-        return null;
+
+        List<NoteDetails> allByUserAndTrashFalse = new ArrayList<>();
+            return allByUserAndTrashFalse;
     }
 
 }
