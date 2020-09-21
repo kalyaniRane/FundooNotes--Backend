@@ -22,5 +22,7 @@ public interface INoteService {
     List<NoteDetails> sortNotes(UserDetails user, SortedNotesEnum notesEnum, String order);
 
     String pinNote(Integer noteID, UserDetails user);
+
+    String unpinNote(Integer noteID, UserDetails user);
 }
 

@@ -133,4 +133,9 @@ public class NoteService implements INoteService {
         throw new NoteServiceException("Can't Pin In Trash");
     }
 
+    @Override
+    public String unpinNote(Integer noteID, UserDetails user) {
+        return null;
+    }
+
 }
