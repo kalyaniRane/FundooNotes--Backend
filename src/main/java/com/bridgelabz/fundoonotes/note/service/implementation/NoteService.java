@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,8 +38,8 @@ public class NoteService implements INoteService {
     @Override
     public String createNote(NoteDTO noteDTO, UserDetails user) {
 
-        NoteDetails noteDetails = new NoteDetails();
-        BeanUtils.copyProperties(noteDTO, noteDetails);
+        NoteDetails noteDetails=new NoteDetails();
+        BeanUtils.copyProperties(noteDTO,noteDetails);
         noteDetails.setUser(user);
         noteRepository.save(noteDetails);
         return "NEW NOTE CREATE";
@@ -48,7 +47,7 @@ public class NoteService implements INoteService {
 
     @Override
     public String trashNote(Integer noteID) {
-        NoteDetails noteDetails = noteRepository.findById(noteID).orElseThrow(() -> new NoteServiceException("Note Not Found"));
+        NoteDetails noteDetails = getNotesByID(noteID);
         noteDetails.setTrash(true);
         noteRepository.save(noteDetails);
         return "Note Added In Trash";
@@ -56,9 +55,9 @@ public class NoteService implements INoteService {
     }
 
     @Override
-    public String deleteNote(Integer noteID) {
-        NoteDetails noteDetails = noteRepository.findById(noteID).orElseThrow(() -> new NoteServiceException("Note Not Found"));
-        if (noteDetails.isTrash()) {
+    public String deleteNote(Integer noteID){
+        NoteDetails noteDetails = getNotesByID(noteID);
+        if(noteDetails.isTrash()){
             noteRepository.delete(noteDetails);
             return "Note Deleted Successfully";
         }
@@ -67,9 +66,9 @@ public class NoteService implements INoteService {
 
     @Override
     public List<NoteDetails> getAllNotes(UserDetails user) {
-        int userID = user.getId();
+        int userID=user.getId();
         List<NoteDetails> allByUserAndTrashFalse = noteRepository.findAllNotes(userID);
-        if (!allByUserAndTrashFalse.isEmpty()) {
+        if(!allByUserAndTrashFalse.isEmpty()){
             return allByUserAndTrashFalse;
         }
         throw new NoteServiceException("No Any Note Available");
@@ -79,9 +78,9 @@ public class NoteService implements INoteService {
     @Override
     public String updateNote(NoteDTO noteDTO, UserDetails user) {
 
-        NoteDetails noteDetails = noteRepository.findById(noteDTO.id).orElseThrow(() -> new NoteServiceException("Note Not Found"));
-        if (!noteDetails.isTrash()) {
-            if (noteDetails.getUser().equals(user)) {
+        NoteDetails noteDetails = getNotesByID(noteDTO.id);
+        if(!noteDetails.isTrash()){
+            if(noteDetails.getUser().getId().equals(user.getId())){
                 noteDetails.setTitle(noteDTO.title);
                 noteDetails.setDescription(noteDTO.description);
                 noteDetails.setModified(LocalDateTime.now());
@@ -97,9 +96,9 @@ public class NoteService implements INoteService {
     @Override
     public List<NoteDetails> getAllNotesOfTrash(UserDetails user) {
 
-        int userID = user.getId();
+        int userID=user.getId();
         List<NoteDetails> allByUserAndTrashFalse = noteRepository.findAllNotesOfTrash(userID);
-        if (!allByUserAndTrashFalse.isEmpty()) {
+        if(!allByUserAndTrashFalse.isEmpty()){
             return allByUserAndTrashFalse;
         }
         throw new NoteServiceException("No Any Note Available");
@@ -113,7 +112,7 @@ public class NoteService implements INoteService {
 
         List<NoteDetails> noteDetails = notesEnum.sortedNotes(allNotes);
 
-        if (order.equals("desc")) {
+        if(order.equals("desc")){
             Collections.reverse(noteDetails);
         }
 
@@ -122,9 +121,16 @@ public class NoteService implements INoteService {
 
     @Override
     public String pinNote(Integer noteID, UserDetails user) {
-        NoteDetails noteDetails = noteRepository.findById(noteID).orElseThrow(() -> new NoteServiceException("Note Not Found"));
-        if (!noteDetails.isTrash()) {
-            if (noteDetails.getUser().getId().equals(user.getId())) {
+
+        NoteDetails noteDetails = getNotesByID(noteID);
+        if(!noteDetails.isTrash()){
+            if(noteDetails.getUser().getId().equals(user.getId())){
+                if(noteDetails.isArchive()){
+                    noteDetails.setArchive(false);
+                    noteDetails.setPin(true);
+                    noteRepository.save(noteDetails);
+                    return "Pinned";
+                }
                 noteDetails.setPin(true);
                 noteRepository.save(noteDetails);
                 return "Pinned";
@@ -136,9 +142,9 @@ public class NoteService implements INoteService {
 
     @Override
     public String unpinNote(Integer noteID, UserDetails user) {
-        NoteDetails noteDetails = noteRepository.findById(noteID).orElseThrow(() -> new NoteServiceException("Note Not Found"));
-        if (!noteDetails.isTrash()) {
-            if (noteDetails.getUser().getId().equals(user.getId())) {
+        NoteDetails noteDetails = getNotesByID(noteID);
+        if(!noteDetails.isTrash()){
+            if(noteDetails.getUser().getId().equals(user.getId())){
                 noteDetails.setPin(false);
                 noteRepository.save(noteDetails);
                 return "Unpinned";
@@ -150,9 +156,9 @@ public class NoteService implements INoteService {
 
     @Override
     public String archiveNote(Integer noteID, UserDetails user) {
-        NoteDetails noteDetails = noteRepository.findById(noteID).orElseThrow(() -> new NoteServiceException("Note Not Found"));
-        if (!noteDetails.isTrash()) {
-            if (noteDetails.getUser().getId().equals(user.getId())) {
+        NoteDetails noteDetails = getNotesByID(noteID);
+        if(!noteDetails.isTrash()){
+            if(noteDetails.getUser().getId().equals(user.getId())){
                 noteDetails.setArchive(true);
                 noteRepository.save(noteDetails);
                 return "Note Archive";
@@ -164,9 +170,9 @@ public class NoteService implements INoteService {
 
     @Override
     public String unarchiveNote(Integer noteID, UserDetails user) {
-        NoteDetails noteDetails = noteRepository.findById(noteID).orElseThrow(() -> new NoteServiceException("Note Not Found"));
-        if (!noteDetails.isTrash()) {
-            if (noteDetails.getUser().getId().equals(user.getId())) {
+        NoteDetails noteDetails = getNotesByID(noteID);
+        if(!noteDetails.isTrash()){
+            if(noteDetails.getUser().getId().equals(user.getId())){
                 noteDetails.setArchive(false);
                 noteRepository.save(noteDetails);
                 return "Note Unarchive";
@@ -184,7 +190,6 @@ public class NoteService implements INoteService {
             return allByUserAndTrashFalse;
         }
         throw new NoteServiceException("No Any Note Available");
-
     }
 
     @Override
@@ -199,10 +204,16 @@ public class NoteService implements INoteService {
 
     @Override
     public String restoreNote(Integer noteID) {
-        NoteDetails noteDetails = noteRepository.findById(noteID).orElseThrow(() -> new NoteServiceException("Note Not Found"));
+        NoteDetails noteDetails = getNotesByID(noteID);
         noteDetails.setTrash(false);
         noteRepository.save(noteDetails);
         return "Note Restored";
     }
+
+    public NoteDetails getNotesByID(Integer noteID){
+        NoteDetails noteDetails = noteRepository.findById(noteID).orElseThrow(() -> new NoteServiceException("Note Not Found"));
+        return noteDetails;
+    }
+
 
 }
