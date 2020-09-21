@@ -37,6 +37,9 @@ public class NoteDetails {
     @Column(nullable = false)
     private boolean isTrash;
 
+    @Column(nullable = false)
+    private boolean isPin;
+
     @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "userID")

@@ -286,4 +286,25 @@ public class NoteServiceTest {
 
     }
 
+    @Test
+    void givenNoteID_WhenCorrect_ShouldReturnMessage(){
+        RegistrationDTO registrationDTO = new RegistrationDTO("Kalyani", "kalyani@gmail.com", "Kalyani@123", "8855885588");
+        UserDetails userDetails = new UserDetails(registrationDTO);
+        userDetails.setId(1);
+
+        Integer noteID=2;
+        NoteDTO noteDTO=new NoteDTO(2,"First Note","This is my first note");
+        NoteDetails noteDetails=new NoteDetails();
+        noteDetails.setUser(userDetails);
+        BeanUtils.copyProperties(noteDTO,noteDetails);
+
+        String message="Pinned";
+
+        when(noteRepository.findById(any())).thenReturn(java.util.Optional.of(noteDetails));
+        when(noteRepository.save(any())).thenReturn(noteDetails);
+        String note = noteService.pinNote(noteID, userDetails);
+        Assert.assertEquals(message,note);
+
+    }
+
 }
