@@ -189,9 +189,12 @@ public class NoteService implements INoteService {
 
     @Override
     public List<NoteDetails> getAllNotesOfArchive(UserDetails user) {
-
-        List<NoteDetails> allByUserAndTrashFalse = new ArrayList<>();
+        int userID=user.getId();
+        List<NoteDetails> allByUserAndTrashFalse = noteRepository.findAllNotesOfArchive(userID);
+        if(!allByUserAndTrashFalse.isEmpty()){
             return allByUserAndTrashFalse;
+        }
+        throw new NoteServiceException("No Any Note Available");
     }
 
 }
