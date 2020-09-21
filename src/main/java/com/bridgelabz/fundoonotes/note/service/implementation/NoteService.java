@@ -119,4 +119,9 @@ public class NoteService implements INoteService {
         return noteDetails;
     }
 
+    @Override
+    public String pinNote(Integer noteID, UserDetails user) {
+        return null;
+    }
+
 }
