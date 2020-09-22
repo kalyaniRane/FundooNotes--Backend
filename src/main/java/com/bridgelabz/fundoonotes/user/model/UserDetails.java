@@ -46,6 +46,10 @@ public class UserDetails {
     @OneToMany(mappedBy = "user")
     private List<NoteDetails> noteDetailsList;
 
+    @JsonIgnore
+    @ManyToMany()
+    private List<NoteDetails> collaborateNotes;
+
     public UserDetails() {
     }
 
