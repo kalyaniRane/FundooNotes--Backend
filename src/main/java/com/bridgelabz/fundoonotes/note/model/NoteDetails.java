@@ -43,6 +43,8 @@ public class NoteDetails {
     @Column(nullable = false)
     private boolean isArchive;
 
+    private String reminder;
+
     @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "userID")

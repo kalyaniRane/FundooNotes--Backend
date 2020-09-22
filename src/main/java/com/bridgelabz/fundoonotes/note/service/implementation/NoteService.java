@@ -5,6 +5,7 @@ import com.bridgelabz.fundoonotes.enums.SortedNotesEnum;
 import com.bridgelabz.fundoonotes.exceptions.NoteServiceException;
 import com.bridgelabz.fundoonotes.exceptions.UserServiceException;
 import com.bridgelabz.fundoonotes.note.dto.NoteDTO;
+import com.bridgelabz.fundoonotes.note.dto.ReminderDTO;
 import com.bridgelabz.fundoonotes.note.model.NoteDetails;
 import com.bridgelabz.fundoonotes.note.repository.INoteRepository;
 import com.bridgelabz.fundoonotes.note.service.INoteService;
@@ -208,6 +209,11 @@ public class NoteService implements INoteService {
         noteDetails.setTrash(false);
         noteRepository.save(noteDetails);
         return "Note Restored";
+    }
+
+    @Override
+    public String createReminder(ReminderDTO reminderDTO, UserDetails user) {
+        return null;
     }
 
     public NoteDetails getNotesByID(Integer noteID){

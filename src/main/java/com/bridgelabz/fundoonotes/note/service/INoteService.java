@@ -2,6 +2,7 @@ package com.bridgelabz.fundoonotes.note.service;
 
 import com.bridgelabz.fundoonotes.enums.SortedNotesEnum;
 import com.bridgelabz.fundoonotes.note.dto.NoteDTO;
+import com.bridgelabz.fundoonotes.note.dto.ReminderDTO;
 import com.bridgelabz.fundoonotes.note.model.NoteDetails;
 import com.bridgelabz.fundoonotes.user.model.UserDetails;
 
@@ -34,5 +35,7 @@ public interface INoteService {
     List<NoteDetails> getAllNotesOfArchive(UserDetails user);
 
     String restoreNote(Integer noteID);
+
+    String createReminder(ReminderDTO reminderDTO, UserDetails user);
 }
 

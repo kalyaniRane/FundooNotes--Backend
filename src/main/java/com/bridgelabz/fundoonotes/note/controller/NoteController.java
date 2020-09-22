@@ -4,6 +4,7 @@ package com.bridgelabz.fundoonotes.note.controller;
 import com.bridgelabz.fundoonotes.dto.ResponseDTO;
 import com.bridgelabz.fundoonotes.enums.SortedNotesEnum;
 import com.bridgelabz.fundoonotes.note.dto.NoteDTO;
+import com.bridgelabz.fundoonotes.note.dto.ReminderDTO;
 import com.bridgelabz.fundoonotes.note.model.NoteDetails;
 import com.bridgelabz.fundoonotes.note.service.INoteService;
 import com.bridgelabz.fundoonotes.user.model.UserDetails;
@@ -138,6 +139,14 @@ public class NoteController {
         ResponseDTO responseDTO=new ResponseDTO(message,200);
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
 
+    }
+
+    @PostMapping("/reminder")
+    public ResponseEntity<ResponseDTO> addReminder(@RequestBody ReminderDTO reminderDTO, @RequestHeader(value = "token",required = false) String token, HttpServletRequest request){
+        UserDetails user = (UserDetails) request.getAttribute("user");
+        String message=noteService.createReminder(reminderDTO,user);
+        ResponseDTO responseDTO=new ResponseDTO(message,200);
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
 
 }
