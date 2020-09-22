@@ -4,6 +4,7 @@ package com.bridgelabz.fundoonotes.note.service;
 import com.bridgelabz.fundoonotes.enums.SortedNotesEnum;
 import com.bridgelabz.fundoonotes.exceptions.NoteServiceException;
 import com.bridgelabz.fundoonotes.note.dto.NoteDTO;
+import com.bridgelabz.fundoonotes.note.dto.ReminderDTO;
 import com.bridgelabz.fundoonotes.note.model.NoteDetails;
 import com.bridgelabz.fundoonotes.note.repository.INoteRepository;
 import com.bridgelabz.fundoonotes.note.service.implementation.NoteService;
@@ -23,6 +24,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
@@ -236,6 +238,7 @@ public class NoteServiceTest {
     void givenData_WhenCorrectToUpdate_ShouldReturnMessage() {
         RegistrationDTO registrationDTO = new RegistrationDTO("Kalyani", "kalyani@gmail.com", "Kalyani@123", "8855885588");
         UserDetails userDetails = new UserDetails(registrationDTO);
+        userDetails.setId(2);
 
         NoteDTO noteDTO=new NoteDTO(2,"First Note","This is my first note");
         NoteDetails noteDetails=new NoteDetails();
@@ -425,6 +428,30 @@ public class NoteServiceTest {
 
         String note = noteService.restoreNote(2);
         Assert.assertEquals(message,note);
+    }
+
+    @Test
+    void givenReminderData_WhenCorrect_ShouldReturnMessage(){
+
+        RegistrationDTO registrationDTO = new RegistrationDTO("Kalyani", "kalyani@gmail.com", "Kalyani@123", "8855885588");
+        UserDetails userDetails = new UserDetails(registrationDTO);
+        userDetails.setId(2);
+
+        NoteDTO noteDTO=new NoteDTO(2,"First Note","This is my first note");
+        NoteDetails noteDetails=new NoteDetails();
+        noteDetails.setUser(userDetails);
+        BeanUtils.copyProperties(noteDTO,noteDetails);
+
+        ReminderDTO reminderDTO=new ReminderDTO(2,new Date());
+
+        String message="REMINDER ADDED";
+
+        when(noteRepository.findById(any())).thenReturn(java.util.Optional.of(noteDetails));
+        when(noteRepository.save(any())).thenReturn(noteDetails);
+
+        String reminder = noteService.createReminder(reminderDTO, userDetails);
+        Assert.assertEquals(message,reminder);
+
     }
 
 }

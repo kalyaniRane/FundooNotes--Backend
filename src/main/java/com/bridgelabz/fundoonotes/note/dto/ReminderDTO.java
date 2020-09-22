@@ -7,8 +7,8 @@ import lombok.Setter;
 
 import java.util.Date;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class ReminderDTO {

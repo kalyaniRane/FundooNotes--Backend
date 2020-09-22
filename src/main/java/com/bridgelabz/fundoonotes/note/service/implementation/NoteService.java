@@ -17,8 +17,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -213,7 +215,19 @@ public class NoteService implements INoteService {
 
     @Override
     public String createReminder(ReminderDTO reminderDTO, UserDetails user) {
-        return null;
+        NoteDetails noteDetails = getNotesByID(reminderDTO.noteID);
+        if(!noteDetails.isTrash()){
+            if(noteDetails.getUser().getId().equals(user.getId())){
+                Date date =reminderDTO.dateAndTime;
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
+                String format = formatter.format(date);
+                noteDetails.setReminder(format);
+                noteRepository.save(noteDetails);
+                return "REMINDER ADDED";
+            }
+            throw new UserServiceException("You Can't Access This Note");
+        }
+        throw new NoteServiceException("Can't Unarchive In Trash");
     }
 
     public NoteDetails getNotesByID(Integer noteID){
