@@ -244,6 +244,11 @@ public class NoteService implements INoteService {
         throw new NoteServiceException("Can't Unarchive In Trash");
     }
 
+    @Override
+    public List<NoteDetails> getReminderList(UserDetails user) {
+        return null;
+    }
+
     public NoteDetails getNotesByID(Integer noteID){
         NoteDetails noteDetails = noteRepository.findById(noteID).orElseThrow(() -> new NoteServiceException("Note Not Found"));
         return noteDetails;

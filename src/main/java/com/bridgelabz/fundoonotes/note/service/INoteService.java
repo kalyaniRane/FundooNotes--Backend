@@ -39,5 +39,7 @@ public interface INoteService {
     String createReminder(ReminderDTO reminderDTO, UserDetails user);
 
     String removeReminder(Integer noteID, UserDetails user);
+
+    List<NoteDetails> getReminderList(UserDetails user);
 }
 

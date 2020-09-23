@@ -157,4 +157,12 @@ public class NoteController {
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
 
+    @GetMapping("/reminder")
+    public ResponseEntity<ResponseDTO> getReminderList(@RequestHeader(value = "token",required = false) String token, HttpServletRequest request){
+        UserDetails user = (UserDetails) request.getAttribute("user");
+        List<NoteDetails> noteDetails=noteService.getReminderList(user);
+        ResponseDTO responseDTO=new ResponseDTO("List Fetched",200,noteDetails);
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+    }
+
 }
