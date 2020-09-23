@@ -232,7 +232,16 @@ public class NoteService implements INoteService {
 
     @Override
     public String removeReminder(Integer noteID, UserDetails user) {
-        return null;
+        NoteDetails noteDetails = getNotesByID(noteID);
+        if(!noteDetails.isTrash()){
+            if(noteDetails.getUser().getId().equals(user.getId())){
+                noteDetails.setReminder(null);
+                noteRepository.save(noteDetails);
+                return "REMINDER REMOVED";
+            }
+            throw new UserServiceException("You Can't Access This Note");
+        }
+        throw new NoteServiceException("Can't Unarchive In Trash");
     }
 
     public NoteDetails getNotesByID(Integer noteID){
