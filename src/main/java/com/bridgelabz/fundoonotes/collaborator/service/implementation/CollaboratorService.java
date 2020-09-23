@@ -34,6 +34,24 @@ public class CollaboratorService implements ICollaboratorService {
 
     @Override
     public String addCollaborator(CollaborateNoteDto collaborateNoteDto, UserDetails user) throws MessagingException {
+        UserDetails userDetails = userRepository.findById(user.getId()).orElseThrow(()->new UserServiceException("User Not Found"));
+        NoteDetails noteDetails = noteRepository.findById(collaborateNoteDto.getNoteID()).orElseThrow(() -> new NoteServiceException("Note Not Found"));
+        UserDetails anotherUser = userRepository.findByEmailID(collaborateNoteDto.emailID).orElseThrow(()-> new UserServiceException("User Not Present"));
+
+        if (noteDetails.getCollaborator_list().contains(anotherUser))
+            throw new NoteServiceException("Note Collaborate Already");
+        noteDetails.getCollaborator_list().add(0,anotherUser);
+        noteDetails.getCollaborator_list().add(1,userDetails);
+        userDetails.getCollaborateNotes().add(noteDetails);
+        anotherUser.getCollaborateNotes().add(noteDetails);
+        anotherUser.getNoteDetailsList().add(noteDetails);
+
+        userRepository.save(userDetails);
+        userRepository.save(anotherUser);
+
+        String template= collaborationInvitationTemplate.getHeader(userDetails,noteDetails);
+        mailService.sendMail(template,"Note Shared With You!!", anotherUser.getEmailID());
+        noteRepository.save(noteDetails);
         return "Note Collaborate Successfully";
     }
 
