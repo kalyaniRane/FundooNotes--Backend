@@ -383,5 +383,23 @@ public class NoteControllerTest {
         Assert.assertEquals(message, responseMessage);
     }
 
+    @Test
+    void givenDataOfReminder_WhenCorrect_ShouldReturnMessage() throws Exception {
+
+        Integer noteID=1;
+
+        String message="REMINDER REMOVED";
+
+        when(noteService.removeReminder(any(),any())).thenReturn(message);
+
+        MvcResult mvcResult = this.mockMvc.perform(put("/note/reminder")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("noteID", String.valueOf(noteID))).andReturn();
+
+        String response = mvcResult.getResponse().getContentAsString();
+        ResponseDTO responseDto = gson.fromJson(response, ResponseDTO.class);
+        String responseMessage = responseDto.message;
+        Assert.assertEquals(message, responseMessage);
+    }
 
 }

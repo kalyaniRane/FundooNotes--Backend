@@ -149,4 +149,12 @@ public class NoteController {
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
 
+    @PutMapping("/reminder")
+    public ResponseEntity<ResponseDTO> removeReminder(@RequestParam(name = "noteID") Integer noteID, @RequestHeader(value = "token",required = false) String token, HttpServletRequest request){
+        UserDetails user = (UserDetails) request.getAttribute("user");
+        String message=noteService.removeReminder(noteID,user);
+        ResponseDTO responseDTO=new ResponseDTO(message,200);
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+    }
+
 }
