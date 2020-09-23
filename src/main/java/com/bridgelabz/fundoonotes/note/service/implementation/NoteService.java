@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class NoteService implements INoteService {
@@ -246,7 +247,9 @@ public class NoteService implements INoteService {
 
     @Override
     public List<NoteDetails> getReminderList(UserDetails user) {
-        return null;
+        List<NoteDetails> allNotes = noteRepository.findAll();
+        List<NoteDetails> reminderNote = allNotes.stream().filter(noteDetails -> noteDetails.getReminder() != null).collect(Collectors.toList());
+        return reminderNote;
     }
 
     public NoteDetails getNotesByID(Integer noteID){
