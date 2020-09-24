@@ -30,4 +30,12 @@ public class CollaboratorController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
+    @GetMapping("/collaborate")
+    public ResponseEntity<ResponseDTO> getCollaboratorNote(@RequestHeader(value = "token",required = false) String token, HttpServletRequest request) {
+        UserDetails user = (UserDetails) request.getAttribute("user");
+        List<NoteDetails> noteDetails=collaborateService.getCollaboratorNotes(user);
+        ResponseDTO responseDTO = new ResponseDTO("List Fetched",200,noteDetails);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
 }

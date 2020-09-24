@@ -55,4 +55,9 @@ public class CollaboratorService implements ICollaboratorService {
         return "Note Collaborate Successfully";
     }
 
+    @Override
+    public List<NoteDetails> getCollaboratorNotes(UserDetails user) {
+        return null;
+    }
+
 }
