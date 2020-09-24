@@ -8,6 +8,7 @@ import com.bridgelabz.fundoonotes.dto.ResponseDTO;
 import com.bridgelabz.fundoonotes.interceptor.NoteServiceInterceptor;
 import com.bridgelabz.fundoonotes.interceptor.NoteServiceInterceptorAppConfig;
 import com.bridgelabz.fundoonotes.label.controller.LabelController;
+import com.bridgelabz.fundoonotes.note.model.NoteDetails;
 import com.bridgelabz.fundoonotes.properties.FileProperties;
 import com.google.gson.Gson;
 import org.junit.Assert;
@@ -20,8 +21,12 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @WebMvcTest(CollaboratorController.class)
@@ -55,7 +60,7 @@ public class CollaboratorControllerTest {
         String message="Note Collaborate Successfully";
 
         when(collaborateService.addCollaborator(any(), any())).thenReturn(message);
-        MvcResult mvcResult = mockMvc.perform(post("/note/collaborator")
+        MvcResult mvcResult = mockMvc.perform(post("/note/collaborate")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJson)).andReturn();
 
@@ -66,5 +71,22 @@ public class CollaboratorControllerTest {
 
     }
 
+    @Test
+    void getAllCollaboratorNote() throws Exception {
+
+        List<NoteDetails> noteDetailsList=new ArrayList<>();
+
+        String message="List Fetched";
+
+        when(collaborateService.getCollaboratorNotes(any())).thenReturn(noteDetailsList);
+        MvcResult mvcResult = this.mockMvc.perform(get("/note/collaborate")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        String response = mvcResult.getResponse().getContentAsString();
+        ResponseDTO responseDto = gson.fromJson(response, ResponseDTO.class);
+        String responseMessage = responseDto.message;
+        Assert.assertEquals(message, responseMessage);
+
+    }
 
 }

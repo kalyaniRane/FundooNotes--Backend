@@ -22,7 +22,7 @@ public class CollaboratorController {
     @Autowired
     ICollaboratorService collaborateService;
 
-    @PostMapping("/collaborator")
+    @PostMapping("/collaborate")
     public ResponseEntity<ResponseDTO> addCollaborator(@RequestHeader(value = "token",required = false) String token,@RequestBody CollaborateNoteDto collaborateNoteDto, HttpServletRequest request) throws MessagingException {
         UserDetails user = (UserDetails) request.getAttribute("user");
         String message=collaborateService.addCollaborator(collaborateNoteDto, user);
