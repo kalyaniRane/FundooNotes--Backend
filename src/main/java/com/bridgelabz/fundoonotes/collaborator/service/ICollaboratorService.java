@@ -11,4 +11,7 @@ public interface ICollaboratorService {
     String addCollaborator(CollaborateNoteDto collaborateNoteDto, UserDetails user) throws MessagingException;
 
     List<NoteDetails> getCollaboratorNotes(UserDetails user);
+
+    String removeCollaboration(CollaborateNoteDto collaborateNoteDto);
+
 }

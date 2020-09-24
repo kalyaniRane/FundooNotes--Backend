@@ -38,4 +38,11 @@ public class CollaboratorController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
+    @DeleteMapping("/collaborate")
+    public ResponseEntity<ResponseDTO> deleteCollaborateNote(@RequestHeader(value = "token",required = false) String token,@RequestBody CollaborateNoteDto collaborateNoteDto,HttpServletRequest request) {
+        String message=collaborateService.removeCollaboration(collaborateNoteDto);
+        ResponseDTO responseDTO = new ResponseDTO(message,200);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
 }

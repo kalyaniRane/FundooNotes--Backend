@@ -64,4 +64,9 @@ public class CollaboratorService implements ICollaboratorService {
         return collaborateNotes;
     }
 
+    @Override
+    public String removeCollaboration(CollaborateNoteDto collaborateNoteDto) {
+        return null;
+    }
+
 }
