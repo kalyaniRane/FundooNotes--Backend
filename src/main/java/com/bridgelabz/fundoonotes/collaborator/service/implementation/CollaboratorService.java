@@ -57,7 +57,11 @@ public class CollaboratorService implements ICollaboratorService {
 
     @Override
     public List<NoteDetails> getCollaboratorNotes(UserDetails user) {
-        return null;
+        UserDetails userDetails = userRepository.findByEmailID(user.getEmailID()).orElseThrow(()-> new UserServiceException("User Not Found"));
+        List<NoteDetails> collaborateNotes = userDetails.getCollaborateNotes();
+        if (collaborateNotes.isEmpty())
+            throw new NoteServiceException("No Collaborate Note");
+        return collaborateNotes;
     }
 
 }
