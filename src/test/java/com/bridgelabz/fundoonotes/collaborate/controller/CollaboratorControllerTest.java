@@ -26,8 +26,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 @WebMvcTest(CollaboratorController.class)
 @TestPropertySource(properties =
@@ -81,6 +80,27 @@ public class CollaboratorControllerTest {
         when(collaborateService.getCollaboratorNotes(any())).thenReturn(noteDetailsList);
         MvcResult mvcResult = this.mockMvc.perform(get("/note/collaborate")
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        String response = mvcResult.getResponse().getContentAsString();
+        ResponseDTO responseDto = gson.fromJson(response, ResponseDTO.class);
+        String responseMessage = responseDto.message;
+        Assert.assertEquals(message, responseMessage);
+
+    }
+
+    @Test
+    void givenData_WhenCorrect_ShouldReturnMessage() throws Exception {
+
+        CollaborateNoteDto collaborateNoteDto = new CollaborateNoteDto(3, "kdw@gmail.com");
+        String toJson = gson.toJson(collaborateNoteDto);
+
+        String message="Collaboration removed Successfully";
+
+        when(collaborateService.removeCollaboration(any())).thenReturn(message);
+
+        MvcResult mvcResult = this.mockMvc.perform(delete("/note/collaborate")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson)).andReturn();
 
         String response = mvcResult.getResponse().getContentAsString();
         ResponseDTO responseDto = gson.fromJson(response, ResponseDTO.class);
