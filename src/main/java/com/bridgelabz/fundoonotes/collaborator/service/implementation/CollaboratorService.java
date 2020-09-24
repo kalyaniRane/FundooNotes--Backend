@@ -66,7 +66,15 @@ public class CollaboratorService implements ICollaboratorService {
 
     @Override
     public String removeCollaboration(CollaborateNoteDto collaborateNoteDto) {
-        return null;
+        NoteDetails noteDetails = noteRepository.findById(collaborateNoteDto.getNoteID()).orElseThrow(() -> new NoteServiceException("Note Not Found"));
+        UserDetails anotherUser = userRepository.findByEmailID(collaborateNoteDto.getEmailID()).orElseThrow(() -> new UserServiceException("User Not Found"));
+
+        if (!noteDetails.getCollaborator_list().contains(anotherUser))
+            throw new NoteServiceException("Note Not Collaborate");
+        noteDetails.getCollaborator_list().remove(anotherUser);
+        anotherUser.getCollaborateNotes().remove(noteDetails);
+        noteRepository.save(noteDetails);
+        return "Collaboration removed Successfully";
     }
 
 }
