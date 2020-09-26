@@ -2,6 +2,7 @@ package com.bridgelabz.fundoonotes.note.controller;
 
 
 import com.bridgelabz.fundoonotes.dto.ResponseDTO;
+import com.bridgelabz.fundoonotes.elasticsearch.ElasticSearch;
 import com.bridgelabz.fundoonotes.interceptor.NoteServiceInterceptor;
 import com.bridgelabz.fundoonotes.interceptor.NoteServiceInterceptorAppConfig;
 import com.bridgelabz.fundoonotes.note.dto.NoteDTO;
@@ -47,6 +48,9 @@ public class NoteControllerTest {
 
     @MockBean
     NoteServiceInterceptorAppConfig noteServiceInterceptorAppConfig;
+
+    @MockBean
+    ElasticSearch elasticSearch;
 
     Gson gson = new Gson();
 
@@ -395,6 +399,24 @@ public class NoteControllerTest {
         MvcResult mvcResult = this.mockMvc.perform(put("/note/reminder")
                 .contentType(MediaType.APPLICATION_JSON)
                 .param("noteID", String.valueOf(noteID))).andReturn();
+
+        String response = mvcResult.getResponse().getContentAsString();
+        ResponseDTO responseDto = gson.fromJson(response, ResponseDTO.class);
+        String responseMessage = responseDto.message;
+        Assert.assertEquals(message, responseMessage);
+    }
+
+    @Test
+    void givenText_WhenAvailable_ShouldReturnNotes() throws Exception {
+
+        List<NoteDetails> noteDetailsList=new ArrayList<>();
+        String searchText="a";
+        String message="List Fetched";
+        when(elasticSearch.searchNote(any(),any())).thenReturn(noteDetailsList);
+
+        MvcResult mvcResult = this.mockMvc.perform(get("/note/search")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("searchText", searchText)).andReturn();
 
         String response = mvcResult.getResponse().getContentAsString();
         ResponseDTO responseDto = gson.fromJson(response, ResponseDTO.class);
