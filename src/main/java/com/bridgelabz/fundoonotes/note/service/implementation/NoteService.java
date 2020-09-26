@@ -1,6 +1,7 @@
 package com.bridgelabz.fundoonotes.note.service.implementation;
 
 
+import com.bridgelabz.fundoonotes.elasticsearch.IElasticSearch;
 import com.bridgelabz.fundoonotes.enums.SortedNotesEnum;
 import com.bridgelabz.fundoonotes.exceptions.NoteServiceException;
 import com.bridgelabz.fundoonotes.exceptions.UserServiceException;
@@ -39,6 +40,9 @@ public class NoteService implements INoteService {
     @Autowired
     INoteRepository noteRepository;
 
+    @Autowired
+    IElasticSearch elasticSearch;
+
     @Override
     public String createNote(NoteDTO noteDTO, UserDetails user) {
 
@@ -46,6 +50,7 @@ public class NoteService implements INoteService {
         BeanUtils.copyProperties(noteDTO,noteDetails);
         noteDetails.setUser(user);
         noteRepository.save(noteDetails);
+        elasticSearch.createNote(noteDetails);
         return "NEW NOTE CREATE";
     }
 
