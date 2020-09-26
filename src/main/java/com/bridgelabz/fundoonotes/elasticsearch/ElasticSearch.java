@@ -77,8 +77,24 @@ public class ElasticSearch implements IElasticSearch {
     }
 
     @Override
-    public List<NoteDetails> searchNote(String searchText, UserDetails user) {
-        return null;
+    public List<NoteDetails> searchNote(String title, UserDetails userDetails) throws IOException {
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        QueryBuilder queryBuilder = QueryBuilders.boolQuery().must(QueryBuilders.queryStringQuery("*" + title + "*").analyzeWildcard(true).field("title").field("description"));
+        searchSourceBuilder.query(queryBuilder);
+        SearchRequest searchRequest = new SearchRequest(INDEX).types(TYPE);
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse search = client.search(searchRequest, RequestOptions.DEFAULT);
+        System.out.println(getSearchResult(search));
+        return getSearchResult(search);
+    }
+
+    private List<NoteDetails> getSearchResult(SearchResponse search) {
+        SearchHit[] hits = search.getHits().getHits();
+        List<NoteDetails> list = new ArrayList<>();
+        if (hits.length > 0) {
+            Arrays.stream(hits).forEach(note -> list.add(objectMapper.convertValue(note.getSourceAsMap(), NoteDetails.class)));
+        }
+        return list;
     }
 
 }
