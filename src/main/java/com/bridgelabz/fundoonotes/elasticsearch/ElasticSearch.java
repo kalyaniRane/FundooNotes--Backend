@@ -52,4 +52,13 @@ public class ElasticSearch implements IElasticSearch {
         return "Note Creation Successfully";
     }
 
+    @Override
+    @SuppressWarnings("unchecked")
+    public String updateNote(NoteDetails note) throws IOException {
+        Map<String, Object> document = objectMapper.convertValue(note, Map.class);
+        UpdateRequest updateRequest = new UpdateRequest(INDEX, TYPE, String.valueOf(note.getId())).doc(document);
+        UpdateResponse update = client.update(updateRequest, RequestOptions.DEFAULT);
+        return update.getResult().name();
+    }
+
 }

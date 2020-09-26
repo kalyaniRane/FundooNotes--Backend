@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -61,7 +62,7 @@ public class NoteController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<ResponseDTO> updateNote (@RequestBody NoteDTO noteDTO,@RequestHeader(value = "token",required = false) String token,HttpServletRequest request){
+    public ResponseEntity<ResponseDTO> updateNote (@RequestBody NoteDTO noteDTO,@RequestHeader(value = "token",required = false) String token,HttpServletRequest request) throws IOException {
         UserDetails user = (UserDetails) request.getAttribute("user");
         String note = noteService.updateNote(noteDTO,user);
         ResponseDTO responseDTO=new ResponseDTO(note,200);

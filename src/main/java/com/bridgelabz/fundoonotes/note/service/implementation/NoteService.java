@@ -18,6 +18,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -85,7 +86,7 @@ public class NoteService implements INoteService {
     }
 
     @Override
-    public String updateNote(NoteDTO noteDTO, UserDetails user) {
+    public String updateNote(NoteDTO noteDTO, UserDetails user) throws IOException {
 
         NoteDetails noteDetails = getNotesByID(noteDTO.id);
         if(!noteDetails.isTrash()){
@@ -94,6 +95,7 @@ public class NoteService implements INoteService {
                 noteDetails.setDescription(noteDTO.description);
                 noteDetails.setModified(LocalDateTime.now());
                 noteRepository.save(noteDetails);
+                elasticSearch.updateNote(noteDetails);
                 return "Note Updated Successful";
             }
             throw new UserServiceException("You Can't Access This Note");

@@ -6,6 +6,7 @@ import com.bridgelabz.fundoonotes.note.dto.ReminderDTO;
 import com.bridgelabz.fundoonotes.note.model.NoteDetails;
 import com.bridgelabz.fundoonotes.user.model.UserDetails;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface INoteService {
@@ -16,7 +17,7 @@ public interface INoteService {
     String deleteNote(Integer noteID);
     List<NoteDetails> getAllNotes(UserDetails user);
 
-    String updateNote(NoteDTO noteDTO, UserDetails user);
+    String updateNote(NoteDTO noteDTO, UserDetails user) throws IOException;
 
     List<NoteDetails> getAllNotesOfTrash(UserDetails user);
 
