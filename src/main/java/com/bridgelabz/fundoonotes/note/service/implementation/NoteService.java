@@ -59,6 +59,7 @@ public class NoteService implements INoteService {
     public String trashNote(Integer noteID) {
         NoteDetails noteDetails = getNotesByID(noteID);
         noteDetails.setTrash(true);
+        elasticSearch.deleteNote(noteID);
         noteRepository.save(noteDetails);
         return "Note Added In Trash";
 
@@ -69,6 +70,7 @@ public class NoteService implements INoteService {
         NoteDetails noteDetails = getNotesByID(noteID);
         if(noteDetails.isTrash()){
             noteRepository.delete(noteDetails);
+            elasticSearch.deleteNote(noteID);
             return "Note Deleted Successfully";
         }
         throw new NoteServiceException("Note is Not in trash");

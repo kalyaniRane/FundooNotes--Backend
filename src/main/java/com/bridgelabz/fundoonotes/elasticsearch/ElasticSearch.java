@@ -61,4 +61,19 @@ public class ElasticSearch implements IElasticSearch {
         return update.getResult().name();
     }
 
+    @Override
+    public String deleteNote(Integer noteID) {
+
+        DeleteRequest deleteRequest = new DeleteRequest(INDEX, TYPE, String.valueOf(noteID));
+
+        try {
+            client.delete(deleteRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Note");
+        return "Delete User Successfull";
+
+    }
+
 }
