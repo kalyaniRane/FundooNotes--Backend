@@ -72,8 +72,13 @@ public class ElasticSearch implements IElasticSearch {
             e.printStackTrace();
         }
         System.out.println("Note");
-        return "Delete User Successfull";
+        return "Delete User Successful";
 
+    }
+
+    @Override
+    public List<NoteDetails> searchNote(String searchText, UserDetails user) {
+        return null;
     }
 
 }

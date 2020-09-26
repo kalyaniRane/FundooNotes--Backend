@@ -11,4 +11,7 @@ public interface IElasticSearch {
     String createNote(NoteDetails noteDetails);
     String updateNote(NoteDetails note) throws IOException;
     String deleteNote(Integer noteID);
+
+    List<NoteDetails> searchNote(String searchText, UserDetails user);
+
 }

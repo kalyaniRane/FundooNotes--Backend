@@ -2,6 +2,7 @@ package com.bridgelabz.fundoonotes.note.controller;
 
 
 import com.bridgelabz.fundoonotes.dto.ResponseDTO;
+import com.bridgelabz.fundoonotes.elasticsearch.IElasticSearch;
 import com.bridgelabz.fundoonotes.enums.SortedNotesEnum;
 import com.bridgelabz.fundoonotes.note.dto.NoteDTO;
 import com.bridgelabz.fundoonotes.note.dto.ReminderDTO;
@@ -13,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
@@ -25,6 +25,9 @@ public class NoteController {
 
     @Autowired
     INoteService noteService;
+
+    @Autowired
+    IElasticSearch elasticSearch;
 
     @PostMapping("/create")
     public ResponseEntity<ResponseDTO> createNote (@Valid @RequestBody NoteDTO noteDTO, @RequestHeader(value = "token",required = false) String token, BindingResult bindingResult, HttpServletRequest request){
@@ -162,6 +165,14 @@ public class NoteController {
     public ResponseEntity<ResponseDTO> getReminderList(@RequestHeader(value = "token",required = false) String token, HttpServletRequest request){
         UserDetails user = (UserDetails) request.getAttribute("user");
         List<NoteDetails> noteDetails=noteService.getReminderList(user);
+        ResponseDTO responseDTO=new ResponseDTO("List Fetched",200,noteDetails);
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<ResponseDTO> searchNote(@RequestParam(name = "searchText") String searchText, @RequestHeader(value = "token",required = false) String token, HttpServletRequest request) throws IOException {
+        UserDetails user = (UserDetails) request.getAttribute("user");
+        List<NoteDetails> noteDetails = elasticSearch.searchNote(searchText, user);
         ResponseDTO responseDTO=new ResponseDTO("List Fetched",200,noteDetails);
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
