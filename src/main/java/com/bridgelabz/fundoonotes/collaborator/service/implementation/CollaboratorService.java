@@ -2,10 +2,12 @@ package com.bridgelabz.fundoonotes.collaborator.service.implementation;
 
 import com.bridgelabz.fundoonotes.collaborator.dto.CollaborateNoteDto;
 import com.bridgelabz.fundoonotes.collaborator.service.ICollaboratorService;
+import com.bridgelabz.fundoonotes.dto.EmailTemplateDTO;
 import com.bridgelabz.fundoonotes.exceptions.NoteServiceException;
 import com.bridgelabz.fundoonotes.exceptions.UserServiceException;
 import com.bridgelabz.fundoonotes.note.model.NoteDetails;
 import com.bridgelabz.fundoonotes.note.repository.INoteRepository;
+import com.bridgelabz.fundoonotes.rabbitmq.producer.NotificationSender;
 import com.bridgelabz.fundoonotes.user.model.UserDetails;
 import com.bridgelabz.fundoonotes.user.repository.IUserRepository;
 import com.bridgelabz.fundoonotes.utils.implementation.MailService;
@@ -32,6 +34,9 @@ public class CollaboratorService implements ICollaboratorService {
     @Autowired
     CollaborationInvitationTemplate collaborationInvitationTemplate;
 
+    @Autowired
+    NotificationSender notificationSender;
+
     @Override
     public String addCollaborator(CollaborateNoteDto collaborateNoteDto, UserDetails user) throws MessagingException {
         UserDetails userDetails = userRepository.findById(user.getId()).orElseThrow(()->new UserServiceException("User Not Found"));
@@ -50,7 +55,8 @@ public class CollaboratorService implements ICollaboratorService {
         userRepository.save(anotherUser);
 
         String template= collaborationInvitationTemplate.getHeader(userDetails,noteDetails);
-        mailService.sendMail(template,"Note Shared With You!!", anotherUser.getEmailID());
+        EmailTemplateDTO email = new EmailTemplateDTO(anotherUser.getEmailID(), "Note Shared With You!!", template);
+        notificationSender.addToQueue(email);
         noteRepository.save(noteDetails);
         return "Note Collaborate Successfully";
     }
