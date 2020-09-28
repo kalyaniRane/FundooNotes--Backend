@@ -13,8 +13,10 @@ import com.bridgelabz.fundoonotes.utils.template.EmailVerificationTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -119,6 +121,11 @@ public class UserService implements IUserService {
 
         if(allByVerified.isEmpty()) throw new UserServiceException("User Not Available");
         else return allByVerified;
+    }
+
+    public String uploadFile(MultipartFile multipartFile) {
+
+        return null;
     }
 
 }

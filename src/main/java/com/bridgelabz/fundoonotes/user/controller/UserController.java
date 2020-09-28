@@ -6,12 +6,14 @@ import com.bridgelabz.fundoonotes.user.dto.RegistrationDTO;
 import com.bridgelabz.fundoonotes.dto.ResponseDTO;
 import com.bridgelabz.fundoonotes.user.model.UserDetails;
 import com.bridgelabz.fundoonotes.user.service.IUserService;
+import com.bridgelabz.fundoonotes.user.service.implementation.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +27,13 @@ public class UserController {
 
     @Autowired
     IUserService userService;
+
+    private UserService user;
+
+    @Autowired
+    UserController(UserService userService) {
+        this.user = userService;
+    }
 
     @PostMapping("/register")
     public ResponseEntity<ResponseDTO> userRegistration(@Valid @RequestBody RegistrationDTO registrationDTO , BindingResult bindingResult, HttpServletRequest request) throws MessagingException {
@@ -74,6 +83,11 @@ public class UserController {
         List<UserDetails> allUsers = userService.getAllUsers(userField);
         ResponseDTO responseDTO=new ResponseDTO("User List Fetched",200,allUsers);
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+    }
+
+    @PostMapping("/profile/upload")
+    public String uploadFile(@RequestPart(value = "file") MultipartFile file) {
+        return this.user.uploadFile(file);
     }
 
 }
