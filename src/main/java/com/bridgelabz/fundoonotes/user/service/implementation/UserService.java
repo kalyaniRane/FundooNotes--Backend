@@ -1,5 +1,12 @@
 package com.bridgelabz.fundoonotes.user.service.implementation;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.bridgelabz.fundoonotes.properties.FileProperties;
 import com.bridgelabz.fundoonotes.user.dto.LoginDTO;
 import com.bridgelabz.fundoonotes.user.dto.RedisUserDto;
 import com.bridgelabz.fundoonotes.user.dto.RegistrationDTO;
@@ -15,9 +22,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
 import javax.mail.MessagingException;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,6 +52,17 @@ public class UserService implements IUserService {
 
     @Autowired
     RedisUserService redisUserService;
+
+    @Autowired
+    FileProperties properties;
+
+    private AmazonS3 s3client;
+
+    @PostConstruct
+    private void initializeAmazon() {
+        AWSCredentials credentials = new BasicAWSCredentials(properties.getAccess_key(), properties.getSecrete_key());
+        this.s3client = new AmazonS3Client(credentials);
+    }
 
     @Override
     public String userRegistration(RegistrationDTO registrationDTO, String requestURL) throws MessagingException {
@@ -123,9 +145,35 @@ public class UserService implements IUserService {
         else return allByVerified;
     }
 
-    public String uploadFile(MultipartFile multipartFile) {
-
-        return null;
+    private File convertMultiPartToFile(MultipartFile file) throws IOException {
+        File convFile = new File(file.getOriginalFilename());
+        FileOutputStream fos = new FileOutputStream(convFile);
+        fos.write(file.getBytes());
+        fos.close();
+        return convFile;
     }
 
+    private String generateFileName(MultipartFile multiPart) {
+        return new Date().getTime() + "-" + multiPart.getOriginalFilename().replace(" ", "_");
+    }
+
+    private void uploadFileTos3bucket(String fileName, File file) {
+        s3client.putObject(new PutObjectRequest(properties.getBucket_name(), fileName, file)
+                .withCannedAcl(CannedAccessControlList.PublicRead));
+    }
+
+    public String uploadFile(MultipartFile multipartFile) {
+
+        String fileUrl = "";
+        try {
+            File file = convertMultiPartToFile(multipartFile);
+            String fileName = generateFileName(multipartFile);
+            fileUrl = properties.getEnd_point_url() + "/" + properties.getBucket_name() + "/" + fileName;
+            uploadFileTos3bucket(fileName, file);
+            file.delete();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fileUrl;
+    }
 }
