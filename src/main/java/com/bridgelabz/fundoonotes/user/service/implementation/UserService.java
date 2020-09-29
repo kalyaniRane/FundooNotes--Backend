@@ -60,7 +60,7 @@ public class UserService implements IUserService {
 
     @PostConstruct
     private void initializeAmazon() {
-        AWSCredentials credentials = new BasicAWSCredentials(properties.getAccess_key(), properties.getSecrete_key());
+        AWSCredentials credentials = new BasicAWSCredentials(properties.getAccess_key(), properties.getSecret_key());
         this.s3client = new AmazonS3Client(credentials);
     }
 

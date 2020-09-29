@@ -9,7 +9,7 @@ public class FileProperties {
     private int jwtExpirationMs;
     private String end_point_url;
     private String access_key;
-    private String secrete_key;
+    private String secret_key;
     private String bucket_name;
 
     public int getJwtExpirationMs() {
@@ -52,12 +52,12 @@ public class FileProperties {
         this.access_key = access_key;
     }
 
-    public String getSecrete_key() {
-        return secrete_key;
+    public String getSecret_key() {
+        return secret_key;
     }
 
-    public void setSecrete_key(String secrete_key) {
-        this.secrete_key = secrete_key;
+    public void setSecret_key(String secret_key) {
+        this.secret_key = secret_key;
     }
 
     public String getBucket_name() {
