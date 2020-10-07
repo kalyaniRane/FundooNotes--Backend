@@ -23,6 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin(exposedHeaders = "Authorization")
 public class UserController {
 
     @Autowired

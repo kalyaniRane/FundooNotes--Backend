@@ -18,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/label")
+@CrossOrigin(exposedHeaders = "Authorization")
 public class LabelController {
 
     @Autowired

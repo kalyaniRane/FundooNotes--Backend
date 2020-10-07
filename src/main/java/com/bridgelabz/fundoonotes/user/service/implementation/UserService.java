@@ -82,7 +82,7 @@ public class UserService implements IUserService {
     public String sendVerificationMail(String email, String requestURL) throws MessagingException {
         UserDetails user = userRepository.findByEmailID(email).orElseThrow(()->new UserServiceException("User Not Found"));
         String token = jwtToken.generateVerificationToken(user);
-        requestURL = requestURL.substring(0, requestURL.lastIndexOf("s") - 1) + "/user/verify/mail/" + token;
+        requestURL ="http://localhost:8080/user/verify/mail/" + token;
         String subject="Email Verification";
         mailService.sendMail(requestURL,subject,user.getEmailID());
         return "Verification Mail Has Been Sent Successfully";
@@ -121,7 +121,7 @@ public class UserService implements IUserService {
     public String resetPasswordLink(String email, String urlToken) throws MessagingException {
         UserDetails user = userRepository.findByEmailID(email).orElseThrow(() -> new UserServiceException("User Not Found"));
         String tokenGenerate = jwtToken.generateVerificationToken(user);
-        urlToken = urlToken.substring(0, urlToken.lastIndexOf("s") - 1) + "/user/reset/password/" + tokenGenerate;
+        urlToken = urlToken+"reset/"+ tokenGenerate;
         mailService.sendMail(urlToken, "Reset Password", user.getEmailID());
         return "Reset Password Link Has Been Sent To Your Email Address";
     }

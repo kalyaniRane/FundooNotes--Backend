@@ -21,6 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/note")
+@CrossOrigin(exposedHeaders = "Authorization")
 public class NoteController {
 
     @Autowired
